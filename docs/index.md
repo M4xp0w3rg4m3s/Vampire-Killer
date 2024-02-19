@@ -1,3 +1,6 @@
+title: [Zephyrus Games]
+description: [Project 1: Vampire Killers]
+
 # Zephyrus Games - Project 1: Vampire Killers
 ## Logo
 
