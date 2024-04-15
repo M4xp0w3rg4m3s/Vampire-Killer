@@ -11,6 +11,7 @@ Player::Player(const Point& p, State s, Look view) :
 	state = s;
 	look = view;
 	jump_delay = PLAYER_JUMP_DELAY;
+	throw_delay = PLAYER_THROW_DELAY;
 	map = nullptr;
 	score = 0;
 }
@@ -73,7 +74,21 @@ AppStatus Player::Initialise()
 	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_PRE_TOP, { 0, 2 * n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_TOP, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_TOP, { n, 2 * n, n, n });
-		
+
+	sprite->SetAnimationDelay((int)PlayerAnim::THROWING_RIGHT, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::THROWING_RIGHT, { (float)i * n, 5 * n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::THROWING_LEFT, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::THROWING_LEFT, { (float)i * n, 5 * n, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::CROUCHING_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_RIGHT, { 0, n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::CROUCHING_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_LEFT, { 0, n, -n, n });
+
+
+
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
 	return AppStatus::OK;
@@ -166,6 +181,25 @@ void Player::StartJumping()
 	else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
 	jump_delay = PLAYER_JUMP_DELAY;
 }
+void Player::StartThrowing()
+{
+	state = State::THROWING;
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::THROWING_RIGHT);
+	else					SetAnimation((int)PlayerAnim::THROWING_LEFT);
+
+	throw_delay--;
+	if (throw_delay == 0) {
+		throw_delay = PLAYER_THROW_DELAY;
+		Stop();
+	}
+}
+void Player::StartCrouching()
+{
+	dir.y = PLAYER_SPEED;
+	state = State::CROUCHING;
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCHING_RIGHT);
+	else					SetAnimation((int)PlayerAnim::CROUCHING_LEFT);
+}
 void Player::StartClimbingUp()
 {
 	state = State::CLIMBING;
@@ -185,10 +219,12 @@ void Player::ChangeAnimRight()
 	look = Look::RIGHT;
 	switch (state)
 	{
-		case State::IDLE:	 SetAnimation((int)PlayerAnim::IDLE_RIGHT);    break; 
-		case State::WALKING: SetAnimation((int)PlayerAnim::WALKING_RIGHT); break;
-		case State::JUMPING: SetAnimation((int)PlayerAnim::JUMPING_RIGHT); break;
-		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_RIGHT); break;
+		case State::IDLE:	 SetAnimation((int)PlayerAnim::IDLE_RIGHT);			break; 
+		case State::WALKING: SetAnimation((int)PlayerAnim::WALKING_RIGHT);		break;
+		case State::JUMPING: SetAnimation((int)PlayerAnim::JUMPING_RIGHT);		break;
+		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_RIGHT);		break;
+		case State::CROUCHING:	 SetAnimation((int)PlayerAnim::CROUCHING_RIGHT);break;
+		case State::THROWING:	 SetAnimation((int)PlayerAnim::THROWING_RIGHT); break;
 	}
 }
 void Player::ChangeAnimLeft()
@@ -196,10 +232,12 @@ void Player::ChangeAnimLeft()
 	look = Look::LEFT;
 	switch (state)
 	{
-		case State::IDLE:	 SetAnimation((int)PlayerAnim::IDLE_LEFT);    break;
-		case State::WALKING: SetAnimation((int)PlayerAnim::WALKING_LEFT); break;
-		case State::JUMPING: SetAnimation((int)PlayerAnim::JUMPING_LEFT); break;
-		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_LEFT); break;
+		case State::IDLE:	 SetAnimation((int)PlayerAnim::IDLE_LEFT);			break;
+		case State::WALKING: SetAnimation((int)PlayerAnim::WALKING_LEFT);		break;
+		case State::JUMPING: SetAnimation((int)PlayerAnim::JUMPING_LEFT);		break;
+		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_LEFT);		break;
+		case State::CROUCHING:	 SetAnimation((int)PlayerAnim::CROUCHING_LEFT);break;
+		case State::THROWING:	 SetAnimation((int)PlayerAnim::THROWING_LEFT); break;
 	}
 }
 void Player::Update()
@@ -220,10 +258,12 @@ void Player::MoveX()
 	//We can only go up and down while climbing
 	if (state == State::CLIMBING)	return;
 
+	//Same with crouching
+
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 	{
 		pos.x += -PLAYER_SPEED;
-		if (state == State::IDLE) StartWalkingLeft();
+		if (state == State::IDLE || state == State::CROUCHING) StartWalkingLeft();
 		else
 		{
 			if (IsLookingRight()) ChangeAnimLeft();
@@ -239,7 +279,7 @@ void Player::MoveX()
 	else if (IsKeyDown(KEY_RIGHT))
 	{
 		pos.x += PLAYER_SPEED;
-		if (state == State::IDLE) StartWalkingRight();
+		if (state == State::IDLE || state == State::CROUCHING) StartWalkingRight();
 		else
 		{
 			if (IsLookingLeft()) ChangeAnimRight();
@@ -283,15 +323,11 @@ void Player::MoveY()
 			}
 			else if (IsKeyDown(KEY_DOWN))
 			{
-				//To climb up the ladder, we need to check the control point (x, y)
-				//To climb down the ladder, we need to check pixel below (x, y+1) instead
-				box = GetHitbox();
-				box.pos.y++;
-					
+				StartCrouching();	
 			}
 			else if (IsKeyPressed(KEY_SPACE))
 			{
-
+				StartThrowing();
 			}
 		}
 		else

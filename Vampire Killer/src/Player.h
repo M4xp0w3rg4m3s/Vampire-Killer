@@ -24,6 +24,9 @@
 //Frame delay for updating the jump velocity
 #define PLAYER_JUMP_DELAY		2
 
+//Frame delay for updating the throwing velocity
+#define PLAYER_THROW_DELAY		2
+
 //Player is levitating when abs(speed) <= this value
 #define PLAYER_LEVITATING_SPEED	4
 
@@ -31,7 +34,7 @@
 #define GRAVITY_FORCE			1
 
 //Logic states
-enum class State { IDLE, WALKING, JUMPING, FALLING, CLIMBING, DEAD };
+enum class State { IDLE, WALKING, JUMPING, FALLING, THROWING, CLIMBING, CROUCHING, DEAD };
 enum class Look { RIGHT, LEFT };
 
 //Rendering states
@@ -43,7 +46,8 @@ enum class PlayerAnim {
 	FALLING_LEFT, FALLING_RIGHT,
 	CLIMBING, CLIMBING_PRE_TOP, CLIMBING_TOP,
 	DYING_LEFT, DYING_RIGHT,
-	THROW_LEFT, TROW_RIGHT,
+	THROWING_LEFT, THROWING_RIGHT,
+	CROUCHING_LEFT, CROUCHING_RIGHT,
 	STANDING,
 	NUM_ANIMATIONS
 };
@@ -82,7 +86,9 @@ private:
 	void StartWalkingLeft();
 	void StartWalkingRight();
 	void StartFalling();
-	void StartJumping();
+	void StartJumping(); 
+	void StartThrowing();
+	void StartCrouching();
 	void StartClimbingUp();
 	void StartClimbingDown();
 	void ChangeAnimRight();
@@ -100,6 +106,7 @@ private:
 	State state;
 	Look look;
 	int jump_delay;
+	int throw_delay;
 
 	TileMap *map;
 
