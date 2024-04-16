@@ -36,7 +36,7 @@
 #define GRAVITY_FORCE			1
 
 //Logic states
-enum class State { IDLE, WALKING, JUMPING, FALLING, THROWING, CLIMBING, CROUCHING, DEAD };
+enum class State { IDLE, WALKING, JUMPING, FALLING, THROWING, CROUCH_THROWING, CLIMBING, CROUCHING, DEAD };
 enum class Look { RIGHT, LEFT };
 
 //Rendering states
@@ -50,6 +50,7 @@ enum class PlayerAnim {
 	DYING_LEFT, DYING_RIGHT,
 	THROWING_LEFT, THROWING_RIGHT,
 	CROUCHING_LEFT, CROUCHING_RIGHT,
+	CROUCH_THROW_LEFT, CROUCH_THROW_RIGHT,
 	STANDING,
 	NUM_ANIMATIONS
 };
@@ -95,6 +96,7 @@ private:
 	void StartJumping(); 
 	void StartThrowing();
 	void StartCrouching();
+	void StartCrouchThrowing();
 	void StartClimbingUp();
 	void StartClimbingDown();
 	void ChangeAnimRight();

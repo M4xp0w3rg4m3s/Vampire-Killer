@@ -61,13 +61,13 @@ AppStatus Player::Initialise()
 	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 0, n, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { 0, 6 * n, n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { n, n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { 0, 6*n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { n, n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { 0, 6*n, n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { n, n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { 0, 6*n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { n, n, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING, ANIM_LADDER_DELAY);
 	for (i = 0; i < 2; ++i)
@@ -88,6 +88,13 @@ AppStatus Player::Initialise()
 	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_RIGHT, { 0, n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::CROUCHING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_LEFT, { 0, n, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::CROUCH_THROW_RIGHT, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::CROUCH_THROW_RIGHT, { (float)i * n, 6 * n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::CROUCH_THROW_LEFT, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::CROUCH_THROW_LEFT, { (float)i * n, 6 * n, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::DYING_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
@@ -202,7 +209,15 @@ void Player::StartCrouching()
 	state = State::CROUCHING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCHING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::CROUCHING_LEFT);
-
+}
+void Player::StartCrouchThrowing()
+{
+	state = State::CROUCH_THROWING;
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCH_THROW_RIGHT);
+	else					SetAnimation((int)PlayerAnim::CROUCH_THROW_LEFT);
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetManualMode();
+	throw_delay = PLAYER_THROW_DELAY;
 }
 void Player::StartClimbingUp()
 {
@@ -349,7 +364,11 @@ void Player::Static()
 	{
 		LogicCrouching();
 	}
-	if (state == State::THROWING)
+	else if (state == State::THROWING)
+	{
+		LogicThrowing();
+	}
+	else if (state == State::CROUCH_THROWING)
 	{
 		LogicThrowing();
 	}
@@ -362,12 +381,13 @@ void Player::Static()
 			{
 				StartCrouching();
 			}
-			else if (IsKeyReleased(KEY_DOWN)) {
-				Stop();
-			}
-			else if (IsKeyPressed(KEY_SPACE))
+			else if (IsKeyPressed(KEY_SPACE) && !IsKeyDown(KEY_DOWN))
 			{
 				StartThrowing();
+			}
+			else if (IsKeyPressed(KEY_SPACE) && IsKeyDown(KEY_DOWN))
+			{
+				StartCrouchThrowing();
 			}
 		}
 	}
@@ -463,6 +483,9 @@ void Player::LogicClimbing()
 void Player::LogicCrouching() 
 {
 	height = PLAYER_PHYSICAL_CROUCHING_HEIGHT;
+	if (IsKeyPressed(KEY_SPACE)) {
+		StartCrouchThrowing();
+	}
 	if (IsKeyReleased(KEY_DOWN)) {
 		Stop();
 		height = PLAYER_PHYSICAL_HEIGHT;
@@ -480,7 +503,14 @@ void Player::LogicThrowing()
 		throw_delay = PLAYER_THROW_DELAY;
 
 		if (AnimationFrame == 3) {
-			Stop();
+			
+			if (state == State::CROUCH_THROWING) {
+				StartCrouching();
+			}
+			else {
+				Stop();
+			}
+
 			sprite->SetAutomaticMode();
 			AnimationFrame = 0;
 		}
