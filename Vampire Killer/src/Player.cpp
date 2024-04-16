@@ -14,6 +14,7 @@ Player::Player(const Point& p, State s, Look view) :
 	throw_delay = PLAYER_THROW_DELAY;
 	map = nullptr;
 	score = 0;
+	AnimationFrame = 0;
 }
 Player::~Player()
 {
@@ -22,6 +23,7 @@ AppStatus Player::Initialise()
 {
 	int i;
 	const int n = PLAYER_FRAME_SIZE;
+	AnimationFrame = 0;
 
 	ResourceManager& data = ResourceManager::Instance();
 	if (data.LoadTexture(Resource::IMG_PLAYER, "images/Spritesheets/Simon/Simon Spritesheet.png") != AppStatus::OK)
@@ -59,13 +61,13 @@ AppStatus Player::Initialise()
 	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 0, n, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { 0, n, n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { 0, 6 * n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { 0, n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { 0, 6*n, -n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { 0, n, n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { 0, 6*n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { 0, n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { 0, 6*n, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING, ANIM_LADDER_DELAY);
 	for (i = 0; i < 2; ++i)
@@ -87,7 +89,12 @@ AppStatus Player::Initialise()
 	sprite->SetAnimationDelay((int)PlayerAnim::CROUCHING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_LEFT, { 0, n, -n, n });
 
-
+	sprite->SetAnimationDelay((int)PlayerAnim::DYING_RIGHT, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::DYING_RIGHT, { (float)i * n, 4 * n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::DYING_LEFT, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::DYING_LEFT, { (float)i * n, 4 * n, -n, n });
 
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
@@ -101,7 +108,7 @@ void Player::IncrScore(int n)
 {
 	score += n;
 }
-int Player::GetScore()
+int Player::GetScore() const
 {
 	return score;
 }
@@ -142,7 +149,7 @@ void Player::SetAnimation(int id)
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetAnimation(id);
 }
-PlayerAnim Player::GetAnimation()
+PlayerAnim Player::GetAnimation() const
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	return (PlayerAnim)sprite->GetAnimation();
@@ -186,12 +193,9 @@ void Player::StartThrowing()
 	state = State::THROWING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::THROWING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::THROWING_LEFT);
-
-	throw_delay--;
-	if (throw_delay == 0) {
-		throw_delay = PLAYER_THROW_DELAY;
-		Stop();
-	}
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetManualMode();
+	throw_delay = PLAYER_THROW_DELAY;
 }
 void Player::StartCrouching()
 {
@@ -246,6 +250,7 @@ void Player::Update()
 	//Instead, uses an independent behaviour for each axis.
 	MoveX();
 	MoveY();
+	Static();
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
@@ -256,10 +261,12 @@ void Player::MoveX()
 	int prev_x = pos.x;
 
 	//We can only go up and down while climbing
-	if (state == State::CLIMBING)	return;
+	if (state == State::CLIMBING)		return;
 
 	//Same with crouching
-	if (state == State::CROUCHING)	return;
+	else if (state == State::CROUCHING)	return;
+
+	else if (state == State::THROWING)	return;
 
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 	{
@@ -301,18 +308,19 @@ void Player::MoveX()
 void Player::MoveY()
 {
 	AABB box;
+	
+	// you can't move while crouching
+	if (state == State::CROUCHING)	return;
 
-	if (state == State::JUMPING)
+	else if (state == State::THROWING)	return;
+
+	else if (state == State::JUMPING)
 	{
 		LogicJumping();
 	}
 	else if (state == State::CLIMBING)
 	{
 		LogicClimbing();
-	}
-	else if (state == State::CROUCHING)
-	{
-		LogicCrouching();
 	}
 	else //idle, walking, falling
 	{
@@ -322,11 +330,35 @@ void Player::MoveY()
 		{
 			if (state == State::FALLING) Stop();
 
-			if (IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
+			if (IsKeyDown(KEY_UP))
 			{
 				StartJumping();
 			}
-			else if (IsKeyDown(KEY_DOWN))
+		}
+		else
+		{
+			if (state != State::FALLING) StartFalling();
+		}
+	}
+}
+void Player::Static()
+{
+	AABB box;
+
+	if (state == State::CROUCHING)
+	{
+		LogicCrouching();
+	}
+	if (state == State::THROWING)
+	{
+		LogicThrowing();
+	}
+	else {
+		pos.y += PLAYER_SPEED;
+		box = GetHitbox();
+		if (map->TestCollisionGround(box, &pos.y))
+		{
+			if (IsKeyDown(KEY_DOWN))
 			{
 				StartCrouching();
 			}
@@ -338,13 +370,8 @@ void Player::MoveY()
 				StartThrowing();
 			}
 		}
-		else
-		{
-			if (state != State::FALLING) StartFalling();
-		}
 	}
 }
-
 void Player::LogicJumping()
 {
 	AABB box, prev_box;
@@ -433,12 +460,38 @@ void Player::LogicClimbing()
 		if (GetAnimation() != PlayerAnim::CLIMBING)	SetAnimation((int)PlayerAnim::CLIMBING);
 	}
 }
-void Player::LogicCrouching() {
+void Player::LogicCrouching() 
+{
 	height = PLAYER_PHYSICAL_CROUCHING_HEIGHT;
 	if (IsKeyReleased(KEY_DOWN)) {
 		Stop();
 		height = PLAYER_PHYSICAL_HEIGHT;
 	}
+}
+void Player::LogicThrowing()
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+
+	throw_delay--;
+	if (throw_delay == 0)
+	{
+		AnimationFrame++;
+		sprite->NextFrame();
+		throw_delay = PLAYER_THROW_DELAY;
+
+		if (AnimationFrame == 3) {
+			Stop();
+			sprite->SetAutomaticMode();
+			AnimationFrame = 0;
+		}
+		else {
+			sprite->NextFrame();
+		}
+	}
+}
+void Player::Die() 
+{
+
 }
 void Player::DrawDebug(const Color& col) const
 {	

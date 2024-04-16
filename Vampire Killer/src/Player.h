@@ -27,7 +27,7 @@
 #define PLAYER_JUMP_DELAY		2
 
 //Frame delay for updating the throwing velocity
-#define PLAYER_THROW_DELAY		2
+#define PLAYER_THROW_DELAY		6
 
 //Player is levitating when abs(speed) <= this value
 #define PLAYER_LEVITATING_SPEED	4
@@ -65,7 +65,7 @@ public:
 
 	void InitScore();
 	void IncrScore(int n);
-	int GetScore();
+	int GetScore() const;
 
 	void Update();
 	void DrawDebug(const Color& col) const;
@@ -78,13 +78,16 @@ private:
 	//Player mechanics
 	void MoveX();
 	void MoveY();
+	void Static();
 	void LogicJumping();
 	void LogicClimbing();
 	void LogicCrouching();
+	void LogicThrowing();
+	void Die();
 
 	//Animation management
 	void SetAnimation(int id);
-	PlayerAnim GetAnimation();
+	PlayerAnim GetAnimation() const;
 	void Stop();
 	void StartWalkingLeft();
 	void StartWalkingRight();
@@ -110,6 +113,7 @@ private:
 	Look look;
 	int jump_delay;
 	int throw_delay;
+	int AnimationFrame;
 
 	TileMap *map;
 
