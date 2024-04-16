@@ -9,6 +9,8 @@
 #define PLAYER_PHYSICAL_WIDTH	12
 #define PLAYER_PHYSICAL_HEIGHT	28
 
+#define PLAYER_PHYSICAL_CROUCHING_HEIGHT	22
+
 //Horizontal speed and vertical speed while falling down
 #define PLAYER_SPEED			1
 
@@ -78,6 +80,7 @@ private:
 	void MoveY();
 	void LogicJumping();
 	void LogicClimbing();
+	void LogicCrouching();
 
 	//Animation management
 	void SetAnimation(int id);

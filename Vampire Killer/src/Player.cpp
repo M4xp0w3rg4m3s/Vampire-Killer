@@ -195,10 +195,10 @@ void Player::StartThrowing()
 }
 void Player::StartCrouching()
 {
-	dir.y = PLAYER_SPEED;
 	state = State::CROUCHING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCHING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::CROUCHING_LEFT);
+
 }
 void Player::StartClimbingUp()
 {
@@ -259,11 +259,12 @@ void Player::MoveX()
 	if (state == State::CLIMBING)	return;
 
 	//Same with crouching
+	if (state == State::CROUCHING)	return;
 
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 	{
 		pos.x += -PLAYER_SPEED;
-		if (state == State::IDLE || state == State::CROUCHING) StartWalkingLeft();
+		if (state == State::IDLE) StartWalkingLeft();
 		else
 		{
 			if (IsLookingRight()) ChangeAnimLeft();
@@ -279,7 +280,7 @@ void Player::MoveX()
 	else if (IsKeyDown(KEY_RIGHT))
 	{
 		pos.x += PLAYER_SPEED;
-		if (state == State::IDLE || state == State::CROUCHING) StartWalkingRight();
+		if (state == State::IDLE) StartWalkingRight();
 		else
 		{
 			if (IsLookingLeft()) ChangeAnimRight();
@@ -309,6 +310,10 @@ void Player::MoveY()
 	{
 		LogicClimbing();
 	}
+	else if (state == State::CROUCHING)
+	{
+		LogicCrouching();
+	}
 	else //idle, walking, falling
 	{
 		pos.y += PLAYER_SPEED;
@@ -317,13 +322,16 @@ void Player::MoveY()
 		{
 			if (state == State::FALLING) Stop();
 
-			if (IsKeyDown(KEY_UP))
+			if (IsKeyDown(KEY_UP) && !IsKeyDown(KEY_DOWN))
 			{
 				StartJumping();
 			}
 			else if (IsKeyDown(KEY_DOWN))
 			{
-				StartCrouching();	
+				StartCrouching();
+			}
+			else if (IsKeyReleased(KEY_DOWN)) {
+				Stop();
 			}
 			else if (IsKeyPressed(KEY_SPACE))
 			{
@@ -336,6 +344,7 @@ void Player::MoveY()
 		}
 	}
 }
+
 void Player::LogicJumping()
 {
 	AABB box, prev_box;
@@ -422,6 +431,13 @@ void Player::LogicClimbing()
 	else
 	{
 		if (GetAnimation() != PlayerAnim::CLIMBING)	SetAnimation((int)PlayerAnim::CLIMBING);
+	}
+}
+void Player::LogicCrouching() {
+	height = PLAYER_PHYSICAL_CROUCHING_HEIGHT;
+	if (IsKeyReleased(KEY_DOWN)) {
+		Stop();
+		height = PLAYER_PHYSICAL_HEIGHT;
 	}
 }
 void Player::DrawDebug(const Color& col) const
