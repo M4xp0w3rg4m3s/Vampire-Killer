@@ -119,8 +119,6 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::CASTLE_GREY_4] = { 7 * n, 4 * n, n, n };
 	dict_rect[(int)Tile::CASTLE_GREY_5] = { 8 * n, 4 * n, n, n };
 
-	dict_rect[(int)Tile::AIR] = { 9 * n, 4 * n, n, n };
-
 }
 AppStatus TileMap::Initialise()
 {
