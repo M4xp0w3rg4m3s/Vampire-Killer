@@ -30,6 +30,7 @@ void TileMap::InitTileDictionary()
 {
 	const int n = TILE_SIZE;
 
+	/* Level Intro */
 	dict_rect[(int)Tile::TREE_FIRST_1] = { 0,  0, n, n };
 	dict_rect[(int)Tile::TREE_FIRST_2] = { n,  0, n, n };
 	dict_rect[(int)Tile::TREE_FIRST_3] = { 2 * n, 0, n, n };
@@ -119,6 +120,59 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::CASTLE_GREY_4] = { 7 * n, 4 * n, n, n };
 	dict_rect[(int)Tile::CASTLE_GREY_5] = { 8 * n, 4 * n, n, n };
 
+	/* Level 1 */
+	dict_rect[(int)Tile::COLUMN_TOP] = { 0 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::COLUMN_MID] = { 1 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::COLUMN_BOT] = { 4 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::COLUMN_BROKE_DOWN] = { 2 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::COLUMN_BROKE_UP] = { 3 * n, 5 * n, n, n };
+
+	dict_rect[(int)Tile::CURTAIN_TOP_LEFT] = { 5 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::CURTAIN_TOP_RIGHT] = { 6 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::CURTAIN_MID_LEFT] = { 7 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::CURTAIN_MID_RIGHT] = { 8 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::CURTAIN_BOT_LEFT] = { 9 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::CURTAIN_BOT_RIGHT] = { 10 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::CURTAIN_STRAIGHT_MOST_LIGHT] = { 11 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::CURTAIN_STRAIGHT_LIGHT] = { 12 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::CURTAIN_STRAIGHT_LESS_LIGHT] = { 13 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::CURTAIN_STRAIGHT_ALMOST_END] = { 14 * n, 5 * n, n, n };
+	dict_rect[(int)Tile::CURTAIN_STRAIGHT_END] = { 15 * n, 5 * n, n, n };
+
+	dict_rect[(int)Tile::LEVEL1_WALL_0] = { 0 * n, 6* n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_1] = { 1 * n, 6* n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_2] = { 2 * n, 6* n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_3] = { 3 * n, 6* n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_4] = { 4 * n, 6* n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_5] = { 5 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_6] = { 6 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_7] = { 7 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_8] = { 8 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_9] = { 9 * n, 6 * n, n, n };
+
+	dict_rect[(int)Tile::WINDOW] = { 10 * n, 6 * n, n, n };
+
+	dict_rect[(int)Tile::WALL_STAIRS_CORNER] = { 11 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::WALL_STAIRS] = { 12 * n, 6 * n, n, n };
+
+	dict_rect[(int)Tile::LEVEL1_FLOOR_1] = { 13 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_FLOOR_2] = { 14 * n, 6 * n, n, n };
+
+	dict_rect[(int)Tile::WALL_DEFAULT] = { 15 * n, 6 * n, n, n };
+
+	dict_rect[(int)Tile::LEVEL1_WALL_CASTLE_0] = { 0 * n, 7 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_CASTLE_1] = { 1 * n, 7 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_CASTLE_2] = { 2 * n, 7 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_CASTLE_3] = { 3 * n, 7 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_CASTLE_4] = { 4 * n, 7 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_CASTLE_5] = { 5 * n, 7 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_CASTLE_6] = { 6 * n, 7 * n, n, n };
+	dict_rect[(int)Tile::LEVEL1_WALL_CASTLE_7] = { 7 * n, 7 * n, n, n };
+
+	dict_rect[(int)Tile::WALL_CASTLE_STAIRS_CORNER] = { 8 * n, 7 * n, n, n };
+	dict_rect[(int)Tile::WALL_CASTLE_STAIRS] = { 9 * n, 7 * n, n, n };
+
+	dict_rect[(int)Tile::PRISON] = { 10 * n, 7 * n, n, n };
 }
 AppStatus TileMap::Initialise()
 {
