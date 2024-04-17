@@ -6,6 +6,7 @@
 TileMap::TileMap()
 {
 	map = nullptr;
+	mapFront = nullptr;
 	width = 0;
 	height = 0;
 	img_tiles = nullptr;
@@ -14,10 +15,12 @@ TileMap::TileMap()
 }
 TileMap::~TileMap()
 {
-	if (map != nullptr)
+	if (map != nullptr && mapFront != nullptr)
 	{
 		delete[] map;
+		delete[] mapFront;
 		map = nullptr;
+		mapFront = nullptr;
 	}
 }
 void TileMap::InitTileDictionary()
@@ -126,7 +129,7 @@ AppStatus TileMap::Initialise()
 
 	return AppStatus::OK;
 }
-AppStatus TileMap::Load(int data[], int w, int h)
+AppStatus TileMap::Load(int data[], int dataFront[], int w, int h)
 {
 	size = w*h;
 	width = w;
@@ -142,6 +145,16 @@ AppStatus TileMap::Load(int data[], int w, int h)
 	}
 	memcpy(map, data, size * sizeof(int));
 
+	if (mapFront != nullptr)	delete[] mapFront;
+
+	mapFront = new Tile[size];
+	if (mapFront == nullptr)
+	{
+		LOG("Failed to allocate memory for tile mapFront");
+		return AppStatus::ERROR;
+	}
+	memcpy(mapFront, dataFront, size * sizeof(int));
+
 	return AppStatus::OK;
 }
 void TileMap::Update()
@@ -156,6 +169,16 @@ Tile TileMap::GetTileIndex(int x, int y) const
 		return Tile::AIR;
 	}
 	return map[x + y * width];
+}
+Tile TileMap::GetFrontTileIndex(int x, int y) const
+{
+	int idx = x + y * width;
+	if (idx < 0 || idx >= size)
+	{
+		LOG("Error: Index out of bounds. Tile mapFront dimensions: %dx%d. Given index: (%d, %d)", width, height, x, y)
+			return Tile::AIR;
+	}
+	return mapFront[x + y * width];
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
@@ -237,6 +260,28 @@ void TileMap::Render()
 		for (int j = 0; j < width; ++j)
 		{
 			tile = map[i * width + j];
+			if (tile != Tile::AIR)
+			{
+				pos.x = (float)j * TILE_SIZE;
+				pos.y = (float)i * TILE_SIZE;
+
+				rc = dict_rect[(int)tile];
+				DrawTextureRec(*img_tiles, rc, pos, WHITE);
+			}
+		}
+	}
+}
+void TileMap::RenderLate()
+{
+	Tile tile;
+	Rectangle rc;
+	Vector2 pos;
+
+	for (int i = 0; i < height; ++i)
+	{
+		for (int j = 0; j < width; ++j)
+		{
+			tile = mapFront[i * width + j];
 			if (tile != Tile::AIR)
 			{
 				pos.x = (float)j * TILE_SIZE;

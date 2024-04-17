@@ -66,9 +66,10 @@ public:
 	~TileMap();
 
 	AppStatus Initialise();
-	AppStatus Load(int data[], int w, int h);
+	AppStatus Load(int data[], int dataFront[], int w, int h);
 	void Update();
 	void Render();
+	void RenderLate();
 	void Release();
 
 	//Test for collisions with walls
@@ -87,12 +88,14 @@ private:
 	void InitTileDictionary();
 
 	Tile GetTileIndex(int x, int y) const;
+	Tile GetFrontTileIndex(int x, int y) const;
 	bool IsTileSolid(Tile tile) const;
 	bool CollisionX(const Point& p, int distance) const;
 	bool CollisionY(const Point& p, int distance) const;
 
 	//Tile map
 	Tile *map;
+	Tile *mapFront;
 
 	//Size of the tile map
 	int size, width, height;
