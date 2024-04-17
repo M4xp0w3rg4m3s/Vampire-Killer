@@ -7,6 +7,7 @@ TileMap::TileMap()
 {
 	map = nullptr;
 	mapFront = nullptr;
+	mapBack = nullptr;
 	width = 0;
 	height = 0;
 	img_tiles = nullptr;
@@ -15,12 +16,14 @@ TileMap::TileMap()
 }
 TileMap::~TileMap()
 {
-	if (map != nullptr && mapFront != nullptr)
+	if (map != nullptr && mapFront != nullptr && mapBack != nullptr)
 	{
 		delete[] map;
 		delete[] mapFront;
+		delete[] mapBack;
 		map = nullptr;
 		mapFront = nullptr;
+		mapBack = nullptr;
 	}
 }
 void TileMap::InitTileDictionary()
@@ -129,7 +132,7 @@ AppStatus TileMap::Initialise()
 
 	return AppStatus::OK;
 }
-AppStatus TileMap::Load(int data[], int dataFront[], int w, int h)
+AppStatus TileMap::Load(int data[], int dataFront[], int dataBack[], int w, int h)
 {
 	size = w*h;
 	width = w;
@@ -155,6 +158,16 @@ AppStatus TileMap::Load(int data[], int dataFront[], int w, int h)
 	}
 	memcpy(mapFront, dataFront, size * sizeof(int));
 
+	if (mapBack != nullptr)	delete[] mapBack;
+
+	mapBack = new Tile[size];
+	if (mapBack == nullptr)
+	{
+		LOG("Failed to allocate memory for tile mapBack");
+		return AppStatus::ERROR;
+	}
+	memcpy(mapBack, dataFront, size * sizeof(int));
+
 	return AppStatus::OK;
 }
 void TileMap::Update()
@@ -179,6 +192,16 @@ Tile TileMap::GetFrontTileIndex(int x, int y) const
 			return Tile::AIR;
 	}
 	return mapFront[x + y * width];
+}
+Tile TileMap::GetBackTileIndex(int x, int y) const
+{
+	int idx = x + y * width;
+	if (idx < 0 || idx >= size)
+	{
+		LOG("Error: Index out of bounds. Tile mapBack dimensions: %dx%d. Given index: (%d, %d)", width, height, x, y)
+			return Tile::AIR;
+	}
+	return mapBack[x + y * width];
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
@@ -248,6 +271,28 @@ bool TileMap::CollisionY(const Point& p, int distance) const
 			return true;
 	}
 	return false;
+}
+void TileMap::RenderEarly()
+{
+	Tile tile;
+	Rectangle rc;
+	Vector2 pos;
+
+	for (int i = 0; i < height; ++i)
+	{
+		for (int j = 0; j < width; ++j)
+		{
+			tile = mapBack[i * width + j];
+			if (tile != Tile::AIR)
+			{
+				pos.x = (float)j * TILE_SIZE;
+				pos.y = (float)i * TILE_SIZE;
+
+				rc = dict_rect[(int)tile];
+				DrawTextureRec(*img_tiles, rc, pos, WHITE);
+			}
+		}
+	}
 }
 void TileMap::Render()
 {
