@@ -126,7 +126,7 @@ AppStatus TileMap::Initialise()
 {
 	ResourceManager& data = ResourceManager::Instance();
 
-	if (data.LoadTexture(Resource::IMG_TILES, "images/outside/Outside Tileset.png") != AppStatus::OK)
+	if (data.LoadTexture(Resource::IMG_TILES, "images/Levels/LevelsTileset.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
 	}
