@@ -281,6 +281,8 @@ void Player::MoveX()
 	//Same with crouching
 	else if (state == State::CROUCHING)	return;
 
+	else if (state == State::CROUCH_THROWING) return;
+
 	else if (state == State::THROWING)	return;
 
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
