@@ -30,7 +30,7 @@
 #define PLAYER_THROW_DELAY		6
 
 //Frame delay for updating the dying velocity
-#define PLAYER_DYING_DELAY		10
+#define PLAYER_DYING_DELAY		20
 
 //Player is levitating when abs(speed) <= this value
 #define PLAYER_LEVITATING_SPEED	4
@@ -39,7 +39,7 @@
 #define GRAVITY_FORCE			1
 
 //Logic states
-enum class State { IDLE, WALKING, JUMPING, FALLING, THROWING, CROUCH_THROWING, CLIMBING, CROUCHING, DEAD };
+enum class State { IDLE, WALKING, JUMPING, FALLING, THROWING, CROUCH_THROWING, CLIMBING, CROUCHING, DYING, DEAD };
 enum class Look { RIGHT, LEFT };
 
 //Rendering states
@@ -74,6 +74,8 @@ public:
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void Release();
+
+	bool IsDead() const;
 
 private:
 	bool IsLookingRight() const;
@@ -110,6 +112,7 @@ private:
 	bool IsAscending() const;
 	bool IsLevitating() const;
 	bool IsDescending() const;
+
 
 	//Ladder get in/out steps
 	bool IsInFirstHalfTile() const;

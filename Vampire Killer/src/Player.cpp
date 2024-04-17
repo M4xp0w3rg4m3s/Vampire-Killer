@@ -152,6 +152,10 @@ bool Player::IsInSecondHalfTile() const
 {
 	return pos.y % TILE_SIZE >= TILE_SIZE/2;
 }
+bool Player::IsDead() const
+{
+	return state == State::DEAD;
+}
 void Player::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -222,7 +226,7 @@ void Player::StartCrouchThrowing()
 }
 void Player::StartDying()
 {
-	state = State::DEAD;
+	state = State::DYING;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::DYING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::DYING_LEFT);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -295,7 +299,7 @@ void Player::MoveX()
 
 	else if (state == State::THROWING)	return;
 
-	else if (state == State::DEAD)	return;
+	else if (state == State::DYING)	return;
 
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 	{
@@ -345,7 +349,7 @@ void Player::MoveY()
 
 	else if (state == State::CROUCH_THROWING)	return;
 
-	else if (state == State::DEAD)	return;
+	else if (state == State::DYING)	return;
 
 	else if (state == State::JUMPING)
 	{
@@ -390,9 +394,9 @@ void Player::Static()
 	{
 		LogicThrowing();
 	}
-	else if (state == State::DEAD)
+	else if (state == State::DYING)
 	{
-		LogicThrowing();
+		Die();
 	}
 	else {
 		pos.y += PLAYER_SPEED;
@@ -559,8 +563,8 @@ void Player::Die()
 
 		if (AnimationFrame == 3) {
 
-			if (state == State::DEAD) {
-				
+			if (state == State::DYING) {
+				state = State::DEAD;
 			}
 
 			sprite->SetAutomaticMode();

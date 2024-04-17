@@ -16,6 +16,7 @@ public:
     void Update();
     void Render();
     void Release();
+    bool PlayerIsDead() const;
 
 private:
     AppStatus LoadLevel(int stage);

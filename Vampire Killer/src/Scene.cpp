@@ -213,6 +213,9 @@ void Scene::Release()
 	player->Release();
 	ClearLevel();
 }
+bool Scene::PlayerIsDead() const {
+	return player->IsDead();
+}
 void Scene::CheckCollisions()
 {
 	AABB player_box, obj_box;

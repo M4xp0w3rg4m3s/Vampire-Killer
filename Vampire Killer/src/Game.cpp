@@ -112,6 +112,11 @@ AppStatus Game::Update()
                 FinishPlay();
                 state = GameState::MAIN_MENU;
             }
+            else if (scene->PlayerIsDead())
+            {
+                FinishPlay();
+                state = GameState::MAIN_MENU;
+            }
             else
             {
                 //Game logic
