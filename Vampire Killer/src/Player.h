@@ -29,6 +29,9 @@
 //Frame delay for updating the throwing velocity
 #define PLAYER_THROW_DELAY		6
 
+//Frame delay for updating the dying velocity
+#define PLAYER_DYING_DELAY		10
+
 //Player is levitating when abs(speed) <= this value
 #define PLAYER_LEVITATING_SPEED	4
 
@@ -96,6 +99,7 @@ private:
 	void StartJumping(); 
 	void StartThrowing();
 	void StartCrouching();
+	void StartDying();
 	void StartCrouchThrowing();
 	void StartClimbingUp();
 	void StartClimbingDown();
@@ -115,6 +119,7 @@ private:
 	Look look;
 	int jump_delay;
 	int throw_delay;
+	int	die_delay;
 	int AnimationFrame;
 
 	TileMap *map;

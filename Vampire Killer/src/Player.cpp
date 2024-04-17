@@ -12,6 +12,7 @@ Player::Player(const Point& p, State s, Look view) :
 	look = view;
 	jump_delay = PLAYER_JUMP_DELAY;
 	throw_delay = PLAYER_THROW_DELAY;
+	die_delay = PLAYER_DYING_DELAY;
 	map = nullptr;
 	score = 0;
 	AnimationFrame = 0;
@@ -219,6 +220,15 @@ void Player::StartCrouchThrowing()
 	sprite->SetManualMode();
 	throw_delay = PLAYER_THROW_DELAY;
 }
+void Player::StartDying()
+{
+	state = State::DEAD;
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::DYING_RIGHT);
+	else					SetAnimation((int)PlayerAnim::DYING_LEFT);
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetManualMode();
+	die_delay = PLAYER_DYING_DELAY;
+}
 void Player::StartClimbingUp()
 {
 	state = State::CLIMBING;
@@ -285,6 +295,8 @@ void Player::MoveX()
 
 	else if (state == State::THROWING)	return;
 
+	else if (state == State::DEAD)	return;
+
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 	{
 		pos.x += -PLAYER_SPEED;
@@ -331,6 +343,10 @@ void Player::MoveY()
 
 	else if (state == State::THROWING)	return;
 
+	else if (state == State::CROUCH_THROWING)	return;
+
+	else if (state == State::DEAD)	return;
+
 	else if (state == State::JUMPING)
 	{
 		LogicJumping();
@@ -374,6 +390,10 @@ void Player::Static()
 	{
 		LogicThrowing();
 	}
+	else if (state == State::DEAD)
+	{
+		LogicThrowing();
+	}
 	else {
 		pos.y += PLAYER_SPEED;
 		box = GetHitbox();
@@ -390,6 +410,10 @@ void Player::Static()
 			else if (IsKeyPressed(KEY_SPACE) && IsKeyDown(KEY_DOWN))
 			{
 				StartCrouchThrowing();
+			}
+			else if (IsKeyPressed(KEY_E))
+			{
+				StartDying();
 			}
 		}
 	}
@@ -492,6 +516,7 @@ void Player::LogicCrouching()
 		Stop();
 		height = PLAYER_PHYSICAL_HEIGHT;
 	}
+
 }
 void Player::LogicThrowing()
 {
@@ -523,7 +548,28 @@ void Player::LogicThrowing()
 }
 void Player::Die() 
 {
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
 
+	die_delay--;
+	if (die_delay == 0)
+	{
+		AnimationFrame++;
+		sprite->NextFrame();
+		die_delay = PLAYER_DYING_DELAY;
+
+		if (AnimationFrame == 3) {
+
+			if (state == State::DEAD) {
+				
+			}
+
+			sprite->SetAutomaticMode();
+			AnimationFrame = 0;
+		}
+		else {
+			sprite->NextFrame();
+		}
+	}
 }
 void Player::DrawDebug(const Color& col) const
 {	
