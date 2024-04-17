@@ -68,8 +68,8 @@ public:
 	AppStatus Initialise();
 	AppStatus Load(int data[], int dataFront[], int dataBack[], int w, int h);
 	void Update();
-	void Render();
 	void RenderEarly();
+	void Render();
 	void RenderLate();
 	void Release();
 
@@ -88,17 +88,17 @@ public:
 private:
 	void InitTileDictionary();
 
+	Tile GetBackTileIndex(int x, int y) const;
 	Tile GetTileIndex(int x, int y) const;
 	Tile GetFrontTileIndex(int x, int y) const;
-	Tile GetBackTileIndex(int x, int y) const;
 	bool IsTileSolid(Tile tile) const;
 	bool CollisionX(const Point& p, int distance) const;
 	bool CollisionY(const Point& p, int distance) const;
 
 	//Tile map
+	Tile *mapBack;
 	Tile *map;
 	Tile *mapFront;
-	Tile* mapBack;
 
 	//Size of the tile map
 	int size, width, height;
