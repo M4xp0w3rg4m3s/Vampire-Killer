@@ -124,7 +124,7 @@ AppStatus TileMap::Initialise()
 {
 	ResourceManager& data = ResourceManager::Instance();
 
-	if (data.LoadTexture(Resource::IMG_TILES, "images/outside/Outside Tileset.png") != AppStatus::OK)
+	if (data.LoadTexture(Resource::IMG_TILES, "images/Levels/LevelsTileset.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
 	}
@@ -137,6 +137,16 @@ AppStatus TileMap::Load(int data[], int dataFront[], int dataBack[], int w, int 
 	size = w*h;
 	width = w;
 	height = h;
+
+	if (mapBack != nullptr)	delete[] mapBack;
+
+	mapBack = new Tile[size];
+	if (mapBack == nullptr)
+	{
+		LOG("Failed to allocate memory for tile mapBack");
+		return AppStatus::ERROR;
+	}
+	memcpy(mapBack, dataBack, size * sizeof(int));
 
 	if (map != nullptr)	delete[] map;
 
@@ -158,20 +168,20 @@ AppStatus TileMap::Load(int data[], int dataFront[], int dataBack[], int w, int 
 	}
 	memcpy(mapFront, dataFront, size * sizeof(int));
 
-	if (mapBack != nullptr)	delete[] mapBack;
-
-	mapBack = new Tile[size];
-	if (mapBack == nullptr)
-	{
-		LOG("Failed to allocate memory for tile mapBack");
-		return AppStatus::ERROR;
-	}
-	memcpy(mapBack, dataFront, size * sizeof(int));
-
 	return AppStatus::OK;
 }
 void TileMap::Update()
 {
+}
+Tile TileMap::GetBackTileIndex(int x, int y) const
+{
+	int idx = x + y * width;
+	if (idx < 0 || idx >= size)
+	{
+		LOG("Error: Index out of bounds. Tile mapBack dimensions: %dx%d. Given index: (%d, %d)", width, height, x, y)
+			return Tile::AIR;
+	}
+	return mapBack[x + y * width];
 }
 Tile TileMap::GetTileIndex(int x, int y) const
 {
@@ -192,16 +202,6 @@ Tile TileMap::GetFrontTileIndex(int x, int y) const
 			return Tile::AIR;
 	}
 	return mapFront[x + y * width];
-}
-Tile TileMap::GetBackTileIndex(int x, int y) const
-{
-	int idx = x + y * width;
-	if (idx < 0 || idx >= size)
-	{
-		LOG("Error: Index out of bounds. Tile mapBack dimensions: %dx%d. Given index: (%d, %d)", width, height, x, y)
-			return Tile::AIR;
-	}
-	return mapBack[x + y * width];
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
