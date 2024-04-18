@@ -478,5 +478,5 @@ void Scene::RenderGUI() const
 }
 void Scene::RenderGameOver() const
 {
-	DrawTexture(*game_over, WINDOW_HEIGHT/2, WINDOW_WIDTH/2, WHITE);
+	DrawTexture(*game_over, 16, 0, WHITE);
 }
