@@ -6,6 +6,7 @@ Scene::Scene()
 {
 	player = nullptr;
     level = nullptr;
+	game_over = nullptr;
 	currentLevel = 0;
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { SIDE_MARGINS, TOP_MARGIN };	//Offset from the target (center of the screen)
@@ -36,6 +37,8 @@ Scene::~Scene()
 }
 AppStatus Scene::Init()
 {
+	ResourceManager& data = ResourceManager::Instance();
+
 	//Create player
 	player = new Player({ 20,144 }, State::IDLE, Look::RIGHT);
 	if (player == nullptr)
@@ -71,6 +74,12 @@ AppStatus Scene::Init()
 	}
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
+
+	if (data.LoadTexture(Resource::IMG_GAME_OVER, "images/Spritesheets/HUD Spritesheet/GameOver.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	game_over = data.GetTexture(Resource::IMG_GAME_OVER);
 
     return AppStatus::OK;
 }
@@ -382,21 +391,25 @@ void Scene::Update()
 void Scene::Render()
 {
 	BeginMode2D(camera);
+	if (!player->IsDead()) {
+		level->RenderEarly();
 
-	level->RenderEarly();
-
-    level->Render();
-	if (debug == DebugMode::OFF || debug == DebugMode::SPRITES_AND_HITBOXES)
-	{
-		RenderObjects(); 
-		player->Draw();
+		level->Render();
+		if (debug == DebugMode::OFF || debug == DebugMode::SPRITES_AND_HITBOXES)
+		{
+			RenderObjects(); 
+			player->Draw();
+		}
+		if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
+		{
+			RenderObjectsDebug(YELLOW);
+			player->DrawDebug(GREEN);
+		}
+		level->RenderLate();
 	}
-	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
-	{
-		RenderObjectsDebug(YELLOW);
-		player->DrawDebug(GREEN);
+	else {
+		RenderGameOver();
 	}
-	level->RenderLate();
 
 	EndMode2D();
 
@@ -462,4 +475,8 @@ void Scene::RenderGUI() const
 {
 	//Temporal approach
 	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 10, 8, LIGHTGRAY);
+}
+void Scene::RenderGameOver() const
+{
+	DrawTexture(*game_over, WINDOW_HEIGHT/2, WINDOW_WIDTH/2, WHITE);
 }

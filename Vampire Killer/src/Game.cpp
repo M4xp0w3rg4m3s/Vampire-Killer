@@ -109,12 +109,13 @@ AppStatus Game::Update()
         case GameState::PLAYING:  
             if (IsKeyPressed(KEY_ESCAPE))
             {
+
                 FinishPlay();
-                state = GameState::MAIN_MENU;
             }
             else if (scene->PlayerIsDead())
             {
                 FinishPlay();
+                WaitTime(5);
                 state = GameState::MAIN_MENU;
             }
             else

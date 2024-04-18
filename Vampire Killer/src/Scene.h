@@ -23,6 +23,7 @@ private:
     
     void CheckCollisions(); 
     void ClearLevel();
+    void RenderGameOver() const;
     void RenderObjects() const;
     void RenderObjectsDebug(const Color& col) const;
 
@@ -32,6 +33,7 @@ private:
     TileMap *level;
     std::vector<Object*> objects;
     int currentLevel;
+    const Texture2D* game_over;
 
     Camera2D camera;
     DebugMode debug;
