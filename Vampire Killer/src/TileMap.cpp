@@ -266,7 +266,7 @@ Tile TileMap::GetFrontTileIndex(int x, int y) const
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
-	return (tile == Tile::GRASS_FLOOR || tile == Tile::BRICK_FLOOR_1 || tile == Tile::BRICK_FLOOR_2);
+	return (tile == Tile::GRASS_FLOOR || tile == Tile::BRICK_FLOOR_1 || tile == Tile::BRICK_FLOOR_2 || tile == Tile::INVISIBLE);
 }
 bool TileMap::TestCollisionWallLeft(const AABB& box) const
 {
@@ -275,6 +275,56 @@ bool TileMap::TestCollisionWallLeft(const AABB& box) const
 bool TileMap::TestCollisionWallRight(const AABB& box) const
 {
 	return CollisionX(box.pos + Point(box.width - 1, 0), box.height);
+}
+bool TileMap::TestCollisionLeft(const AABB& box) const
+{
+	const Point& p = box.pos;
+	int distance = box.height;
+	Tile tile;
+
+	int x, y, y0, y1;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	x = (p.x-3) / TILE_SIZE;
+	y0 = p.y / TILE_SIZE;
+	y1 = (p.y + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the vertical range
+	for (y = y0; y <= y1; ++y)
+	{
+		tile = GetTileIndex(x, y);
+
+		//One solid tile is sufficient
+		if (tile == Tile::LEFT) {
+			return true;
+		}
+	}
+	return false;
+}
+bool TileMap::TestCollisionRight(const AABB& box) const
+{
+	const Point& p = box.pos;
+	int distance = box.height;
+	Tile tile;
+
+	int x, y, y0, y1;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	x = (p.x+14) / TILE_SIZE;
+	y0 = p.y / TILE_SIZE;
+	y1 = (p.y + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the vertical range
+	for (y = y0; y <= y1; ++y)
+	{
+		tile = GetTileIndex(x, y);
+
+		//One solid tile is sufficient
+		if (tile == Tile::RIGHT) {
+			return true;
+		}
+	}
+	return false;
 }
 bool TileMap::TestCollisionGround(const AABB& box, int *py) const
 {

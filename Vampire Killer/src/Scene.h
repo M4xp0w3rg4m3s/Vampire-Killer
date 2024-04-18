@@ -31,6 +31,7 @@ private:
     Player *player;
     TileMap *level;
     std::vector<Object*> objects;
+    int currentLevel;
 
     Camera2D camera;
     DebugMode debug;

@@ -101,8 +101,14 @@ enum class Tile {
 	// 123: boss fence
 	BOSS_FENCE,
 
-	// id >= 200: entities' initial locations
+	// 200 =< id: entities' initial locations
 	PLAYER = 200,
+
+	// 500 =< id: end invisible teletransportating walls
+	LEFT = 500, RIGHT,
+
+	// 550 = solid invisible tile
+	INVISIBLE = 550,
 
 	//Intervals
 	STATIC_FIRST = TREE_FIRST_1,
@@ -128,6 +134,10 @@ public:
 	//Test for collisions with walls
 	bool TestCollisionWallLeft(const AABB& box) const;
 	bool TestCollisionWallRight(const AABB& box) const;
+	bool TestCollisionLeft(const AABB& box) const;
+	bool TestCollisionRight(const AABB& box) const;
+
+
 	
 	//Test collision with the ground and update 'py' with the maximum y-position to prevent
 	//penetration of the grounded tile, that is, the pixel y-position above the grounded tile.
