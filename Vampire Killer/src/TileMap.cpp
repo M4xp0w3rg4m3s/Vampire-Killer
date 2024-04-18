@@ -270,11 +270,11 @@ bool TileMap::IsTileSolid(Tile tile) const
 }
 bool TileMap::TestCollisionWallLeft(const AABB& box) const
 {
-	return CollisionX(box.pos, box.height);
+	return CollisionX(box.pos + Point(-2, 0), box.height);
 }
 bool TileMap::TestCollisionWallRight(const AABB& box) const
 {
-	return CollisionX(box.pos + Point(box.width - 1, 0), box.height);
+	return CollisionX(box.pos + Point(box.width + 1, 0), box.height);
 }
 bool TileMap::TestCollisionLeft(const AABB& box) const
 {
@@ -349,7 +349,7 @@ bool TileMap::CollisionX(const Point& p, int distance) const
 	int x, y, y0, y1;
 
 	//Calculate the tile coordinates and the range of tiles to check for collision
-	x = p.x / TILE_SIZE;
+	x = (p.x) / TILE_SIZE;
 	y0 = p.y / TILE_SIZE;
 	y1 = (p.y + distance - 1) / TILE_SIZE;
 	
