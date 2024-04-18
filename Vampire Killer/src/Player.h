@@ -3,7 +3,7 @@
 #include "TileMap.h"
 
 //Representation model size: 32x32
-#define PLAYER_FRAME_SIZE		32
+#define PLAYER_FRAME_SIZE	32
 
 //Logical model size: 12x28
 #define PLAYER_PHYSICAL_WIDTH	12
@@ -26,8 +26,8 @@
 //Frame delay for updating the jump velocity
 #define PLAYER_JUMP_DELAY		2
 
-//Frame delay for updating the throwing velocity
-#define PLAYER_THROW_DELAY		6
+//Frame delay for updating the attack velocity
+#define PLAYER_ATTACK_DELAY		6
 
 //Frame delay for updating the dying velocity
 #define PLAYER_DYING_DELAY		20
@@ -39,7 +39,14 @@
 #define GRAVITY_FORCE			1
 
 //Logic states
-enum class State { IDLE, WALKING, JUMPING, FALLING, THROWING, CROUCH_THROWING, CLIMBING, CROUCHING, DYING, DEAD };
+enum class State {
+	IDLE, WALKING, JUMPING, FALLING,
+	WHIP, CROUCH_WHIP,
+	THROWING, CROUCH_THROWING,
+	CLIMBING, 
+	CROUCHING, 
+	DYING, DEAD 
+};
 enum class Look { RIGHT, LEFT };
 
 //Rendering states
@@ -51,8 +58,10 @@ enum class PlayerAnim {
 	FALLING_LEFT, FALLING_RIGHT,
 	CLIMBING, CLIMBING_PRE_TOP, CLIMBING_TOP,
 	DYING_LEFT, DYING_RIGHT,
+	WHIP_LEFT, WHIP_RIGHT,
 	THROWING_LEFT, THROWING_RIGHT,
 	CROUCHING_LEFT, CROUCHING_RIGHT,
+	CROUCH_WHIP_LEFT, CROUCH_WHIP_RIGHT,
 	CROUCH_THROW_LEFT, CROUCH_THROW_RIGHT,
 	STANDING,
 	NUM_ANIMATIONS
@@ -88,7 +97,7 @@ private:
 	void LogicJumping();
 	void LogicClimbing();
 	void LogicCrouching();
-	void LogicThrowing();
+	void LogicAttack();
 	void Die();
 
 	//Animation management
@@ -99,9 +108,11 @@ private:
 	void StartWalkingRight();
 	void StartFalling();
 	void StartJumping(); 
+	void StartWhip();
 	void StartThrowing();
 	void StartCrouching();
 	void StartDying();
+	void StartCrouchWhip();
 	void StartCrouchThrowing();
 	void StartClimbingUp();
 	void StartClimbingDown();
@@ -121,7 +132,7 @@ private:
 	State state;
 	Look look;
 	int jump_delay;
-	int throw_delay;
+	int attack_delay;
 	int	die_delay;
 	int AnimationFrame;
 
