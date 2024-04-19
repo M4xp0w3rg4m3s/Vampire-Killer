@@ -7,6 +7,7 @@ Scene::Scene()
 	player = nullptr;
     level = nullptr;
 	game_over = nullptr;
+	audio = nullptr;
 	currentLevel = 0;
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { SIDE_MARGINS, TOP_MARGIN };	//Offset from the target (center of the screen)
@@ -75,6 +76,7 @@ AppStatus Scene::Init()
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
 
+	//Add the Game Over image for the end
 	if (data.LoadTexture(Resource::IMG_GAME_OVER, "images/Spritesheets/HUD Spritesheet/GameOver.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
@@ -359,6 +361,7 @@ void Scene::Update()
 		debug = (DebugMode)(((int)debug + 1) % (int)DebugMode::SIZE);
 	}
 	//Debug levels instantly
+
 
 	if (IsKeyPressed(KEY_ONE))			LoadLevel(1);
 	else if (IsKeyPressed(KEY_TWO))		LoadLevel(2);

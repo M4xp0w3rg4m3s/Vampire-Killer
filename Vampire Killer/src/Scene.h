@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "TileMap.h"
 #include "Object.h"
+#include "AudioPlayer.h"
 
 enum class DebugMode { OFF, SPRITES_AND_HITBOXES, ONLY_HITBOXES, SIZE };
 
@@ -31,6 +32,7 @@ private:
 
     Player *player;
     TileMap *level;
+    AudioPlayer* audio;
     std::vector<Object*> objects;
     int currentLevel;
     const Texture2D* game_over;
