@@ -97,6 +97,7 @@ private:
 	void LogicJumping();
 	void LogicClimbing();
 	void LogicCrouching();
+	void LogicThrow();
 	void LogicAttack();
 	void Die();
 
