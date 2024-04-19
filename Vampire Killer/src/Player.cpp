@@ -595,7 +595,7 @@ void Player::LogicAttack()
 		sprite->NextFrame();
 		attack_delay = PLAYER_ATTACK_DELAY;
 
-		if (AnimationFrame == 4) {
+		if (AnimationFrame == 3) {
 			
 			if (state == State::CROUCH_THROWING) {
 				StartCrouching();
