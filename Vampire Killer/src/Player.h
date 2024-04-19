@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Weapon.h"
 #include "TileMap.h"
 
 //Representation model size: 32x32
@@ -49,6 +50,7 @@ enum class State {
 };
 enum class Look { RIGHT, LEFT };
 
+
 //Rendering states
 enum class PlayerAnim {
 	IDLE_LEFT, IDLE_RIGHT,
@@ -83,6 +85,8 @@ public:
 	void Release();
 
 	bool IsDead() const;
+
+	Weapon* weapon;
 
 private:
 	bool IsLookingRight() const;
@@ -136,6 +140,8 @@ private:
 	int AnimationFrame;
 
 	TileMap *map;
+
+	//Weapon
 
 	int score;
 };

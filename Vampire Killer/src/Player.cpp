@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "TileMap.h"
 #include "Globals.h"
+#include "Weapon.h"
 #include <raymath.h>
 
 Player::Player(const Point& p, State s, Look view) :
@@ -14,6 +15,8 @@ Player::Player(const Point& p, State s, Look view) :
 	attack_delay = PLAYER_ATTACK_DELAY;
 	die_delay = PLAYER_DYING_DELAY;
 	map = nullptr;
+	weapon = new Weapon({20,144});
+	weapon->SetWeapon(WeaponType::WHIP);
 	score = 0;
 	AnimationFrame = 0;
 }
@@ -202,11 +205,19 @@ void Player::StartJumping()
 }
 void Player::StartWhip() {
 	state = State::WHIP;
+	weapon->SetWeapon(WeaponType::WHIP);
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::ATTACKING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::ATTACKING_LEFT);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 	attack_delay = PLAYER_ATTACK_DELAY;
+	AnimationFrame = 0;
+	if (IsLookingRight()) {
+		weapon->Attack(AnimationFrame, (LookAt)Look::RIGHT);
+	}
+	else if (IsLookingLeft()) {
+		weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
+	}
 }
 void Player::StartThrowing()
 {
@@ -225,11 +236,19 @@ void Player::StartCrouching()
 }
 void Player::StartCrouchWhip() {
 	state = State::CROUCH_WHIP;
+	weapon->SetWeapon(WeaponType::WHIP);
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCH_ATTACK_RIGHT);
 	else					SetAnimation((int)PlayerAnim::CROUCH_ATTACK_LEFT);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 	attack_delay = PLAYER_ATTACK_DELAY;
+	AnimationFrame = 0;
+	if (IsLookingRight()) {
+		weapon->Attack(AnimationFrame, (LookAt)Look::RIGHT);
+	}
+	else if (IsLookingLeft()) {
+		weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
+	}
 }
 void Player::StartCrouchThrowing()
 {
@@ -302,6 +321,7 @@ void Player::Update()
 	MoveX();
 	MoveY();
 	Static();
+	weapon->Update(pos, (state == State::CROUCH_THROWING || state == State::CROUCH_WHIP));
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
@@ -602,10 +622,22 @@ void Player::LogicAttack()
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 
+	if (IsLookingRight()) {
+		weapon->Attack(AnimationFrame, (LookAt)Look::RIGHT);
+	}
+	else if (IsLookingLeft()) {
+		weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
+	}
 	attack_delay--;
 	if (attack_delay == 0)
 	{
 		AnimationFrame++;
+		if (IsLookingRight()) {
+			weapon->Attack(AnimationFrame, (LookAt)Look::RIGHT);
+		}
+		else if (IsLookingLeft()) {
+			weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
+		}
 		sprite->NextFrame();
 		attack_delay = PLAYER_ATTACK_DELAY;
 
