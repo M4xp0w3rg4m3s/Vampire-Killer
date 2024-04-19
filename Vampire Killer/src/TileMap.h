@@ -101,6 +101,10 @@ enum class Tile {
 	// 123: boss fence
 	BOSS_FENCE,
 
+	// 124 <= : special tiles
+	FIRE = 124, FIRE_FRAME1, FIRE_FRAME2,
+	CANDLE = 126, CANDLE_FRAME1, CANDLE_FRAME2,
+
 	// 200 =< id: entities' initial locations
 	PLAYER = 200,
 
@@ -168,6 +172,9 @@ private:
 	//Dictionary of tile frames
 	std::unordered_map<int, Rectangle> dict_rect;
 	
+	Sprite* fire;
+	Sprite* candle;
+
 	//Tile sheet
 	const Texture2D *img_tiles;
 };

@@ -10,6 +10,8 @@ TileMap::TileMap()
 	mapBack = nullptr;
 	width = 0;
 	height = 0;
+	candle = nullptr;
+	fire = nullptr;
 	img_tiles = nullptr;
 
 	InitTileDictionary();
@@ -24,6 +26,18 @@ TileMap::~TileMap()
 		map = nullptr;
 		mapFront = nullptr;
 		mapBack = nullptr;
+	}
+	if (fire != nullptr)
+	{
+		fire->Release();
+		delete fire;
+		fire = nullptr;
+	}
+	if (candle != nullptr)
+	{
+		candle->Release();
+		delete candle;
+		candle = nullptr;
 	}
 }
 void TileMap::InitTileDictionary()
@@ -120,6 +134,13 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::CASTLE_GREY_4] = { 7 * n, 4 * n, n, n };
 	dict_rect[(int)Tile::CASTLE_GREY_5] = { 8 * n, 4 * n, n, n };
 
+	/*Special Tiles*/
+	dict_rect[(int)Tile::FIRE_FRAME1] = { 11 * n, 4 * n, n, n };
+	dict_rect[(int)Tile::FIRE_FRAME2] = { 12 * n, 4 * n, n, n };
+
+	dict_rect[(int)Tile::CANDLE_FRAME1] = { 9 * n, 4 * n, n, n };
+	dict_rect[(int)Tile::CANDLE_FRAME2] = { 10 * n, 4 * n, n, n };
+
 	/* Level 1 */
 	dict_rect[(int)Tile::COLUMN_TOP_RIGHT] = { 0 * n, 5 * n, n, n };
 	dict_rect[(int)Tile::COLUMN_TOP_LEFT] = { 0 * n, 5 * n, -n, n };
@@ -191,6 +212,30 @@ AppStatus TileMap::Initialise()
 	}
 	img_tiles = data.GetTexture(Resource::IMG_TILES);
 
+	fire = new Sprite(img_tiles);
+	if (fire == nullptr)
+	{
+		LOG("Failed to allocate memory for fire sprite");
+		return AppStatus::ERROR;
+	}
+	fire->SetNumberAnimations(1);
+	fire->SetAnimationDelay(0, ANIM_DELAY);
+	fire->AddKeyFrame(0, dict_rect[(int)Tile::FIRE_FRAME1]);
+	fire->AddKeyFrame(0, dict_rect[(int)Tile::FIRE_FRAME2]);
+	fire->SetAnimation(0);
+
+	candle = new Sprite(img_tiles);
+	if (candle == nullptr)
+	{
+		LOG("Failed to allocate memory for candle sprite");
+		return AppStatus::ERROR;
+	}
+	candle->SetNumberAnimations(1);
+	candle->SetAnimationDelay(0, ANIM_DELAY);
+	candle->AddKeyFrame(0, dict_rect[(int)Tile::CANDLE_FRAME1]);
+	candle->AddKeyFrame(0, dict_rect[(int)Tile::CANDLE_FRAME2]);
+	candle->SetAnimation(0);
+
 	return AppStatus::OK;
 }
 AppStatus TileMap::Load(int data[], int dataFront[], int dataBack[], int w, int h)
@@ -233,6 +278,8 @@ AppStatus TileMap::Load(int data[], int dataFront[], int dataBack[], int w, int 
 }
 void TileMap::Update()
 {
+	fire->Update();
+	candle->Update();
 }
 Tile TileMap::GetBackTileIndex(int x, int y) const
 {
@@ -326,7 +373,7 @@ bool TileMap::TestCollisionRight(const AABB& box) const
 	}
 	return false;
 }
-bool TileMap::TestCollisionGround(const AABB& box, int *py) const
+bool TileMap::TestCollisionGround(const AABB& box, int* py) const
 {
 	Point p(box.pos.x, *py);	//control point
 	int tile_y;
@@ -352,7 +399,7 @@ bool TileMap::CollisionX(const Point& p, int distance) const
 	x = (p.x) / TILE_SIZE;
 	y0 = p.y / TILE_SIZE;
 	y1 = (p.y + distance - 1) / TILE_SIZE;
-	
+
 	//Iterate over the tiles within the vertical range
 	for (y = y0; y <= y1; ++y)
 	{
@@ -421,8 +468,17 @@ void TileMap::Render()
 				pos.x = (float)j * TILE_SIZE;
 				pos.y = (float)i * TILE_SIZE;
 
-				rc = dict_rect[(int)tile];
-				DrawTextureRec(*img_tiles, rc, pos, WHITE);
+				if (tile == Tile::FIRE){
+					fire->Draw((int)pos.x, (int)pos.y);
+				}
+				if (tile == Tile::CANDLE){
+					candle->Draw((int)pos.x, (int)pos.y);
+				}
+				else {
+					rc = dict_rect[(int)tile];
+					DrawTextureRec(*img_tiles, rc, pos, WHITE);
+				}
+				
 			}
 		}
 	}
@@ -453,6 +509,9 @@ void TileMap::Release()
 {
 	ResourceManager& data = ResourceManager::Instance(); 
 	data.ReleaseTexture(Resource::IMG_TILES);
+
+	fire->Release();
+	candle->Release();
 
 	dict_rect.clear();
 }
