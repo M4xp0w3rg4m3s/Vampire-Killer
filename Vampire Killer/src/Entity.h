@@ -9,12 +9,13 @@
 class Entity
 {
 public:
+	Entity();
 	Entity(const Point& p, int width, int height);
 	Entity(const Point& p, int width, int height, int frame_width, int frame_height);
 	virtual ~Entity();
 
 	void SetPos(const Point& p);
-	void Update();
+	virtual void Update();
 	AABB GetHitbox() const;
 	Point GetPos() const;
 

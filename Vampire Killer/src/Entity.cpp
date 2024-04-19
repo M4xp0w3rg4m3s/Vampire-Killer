@@ -3,6 +3,9 @@
 #include <cmath>
 #include "Globals.h"
 
+Entity::Entity()
+{
+}
 Entity::Entity(const Point& p, int w, int h) : pos(p), dir({ 0,0 }), width(w), height(h), frame_width(w), frame_height(h), render(nullptr)
 {
 }

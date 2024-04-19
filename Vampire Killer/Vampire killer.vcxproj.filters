@@ -43,6 +43,9 @@
     <ClCompile Include="src\Weapon.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\AudioPlayer.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Globals.h">
@@ -88,6 +91,9 @@
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="src\Weapon.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\AudioPlayer.h">
       <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
