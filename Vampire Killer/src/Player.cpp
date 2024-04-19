@@ -78,24 +78,24 @@ AppStatus Player::Initialise()
 	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_TOP, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_TOP, { n, 2 * n, n, n });
 
-	sprite->SetAnimationDelay((int)PlayerAnim::THROWING_RIGHT, ANIM_DELAY);
+	sprite->SetAnimationDelay((int)PlayerAnim::ATTACKING_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::THROWING_RIGHT, { (float)i * n, 5 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::THROWING_LEFT, ANIM_DELAY);
+		sprite->AddKeyFrame((int)PlayerAnim::ATTACKING_RIGHT, { (float)i * n, 5 * n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::ATTACKING_LEFT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::THROWING_LEFT, { (float)i * n, 5 * n, -n, n });
+		sprite->AddKeyFrame((int)PlayerAnim::ATTACKING_LEFT, { (float)i * n, 5 * n, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::CROUCHING_RIGHT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_RIGHT, { 0, n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::CROUCHING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_LEFT, { 0, n, -n, n });
 
-	sprite->SetAnimationDelay((int)PlayerAnim::CROUCH_THROW_RIGHT, ANIM_DELAY);
+	sprite->SetAnimationDelay((int)PlayerAnim::CROUCH_ATTACK_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::CROUCH_THROW_RIGHT, { (float)i * n, 6 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::CROUCH_THROW_LEFT, ANIM_DELAY);
+		sprite->AddKeyFrame((int)PlayerAnim::CROUCH_ATTACK_RIGHT, { (float)i * n, 6 * n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::CROUCH_ATTACK_LEFT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::CROUCH_THROW_LEFT, { (float)i * n, 6 * n, -n, n });
+		sprite->AddKeyFrame((int)PlayerAnim::CROUCH_ATTACK_LEFT, { (float)i * n, 6 * n, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::DYING_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
@@ -105,20 +105,6 @@ AppStatus Player::Initialise()
 		sprite->AddKeyFrame((int)PlayerAnim::DYING_LEFT, { (float)i * n, 4 * n, -n, n });
 
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
-
-	//sprite->SetAnimationDelay((int)PlayerAnim::WHIP_RIGHT, ANIM_DELAY);
-	//for (i = 0; i < 3; ++i)
-	//	sprite->AddKeyFrame((int)PlayerAnim::WHIP_RIGHT, { (float)i * n, 8 * n, n, n });
-	//sprite->SetAnimationDelay((int)PlayerAnim::WHIP_LEFT, ANIM_DELAY);
-	//for (i = 0; i < 3; ++i)
-	//	sprite->AddKeyFrame((int)PlayerAnim::WHIP_LEFT, { (float)i * n, 8 * n, -n, n });
-
-	//sprite->SetAnimationDelay((int)PlayerAnim::CROUCH_WHIP_RIGHT, ANIM_DELAY);
-	//for (i = 0; i < 3; ++i)
-	//	sprite->AddKeyFrame((int)PlayerAnim::CROUCH_WHIP_RIGHT, { (float)i * n, 9 * n, n, n });
-	//sprite->SetAnimationDelay((int)PlayerAnim::CROUCH_WHIP_LEFT, ANIM_DELAY);
-	//for (i = 0; i < 3; ++i)
-	//	sprite->AddKeyFrame((int)PlayerAnim::CROUCH_WHIP_LEFT, { (float)i * n, 9 * n, -n, n });
 
 	return AppStatus::OK;
 }
@@ -216,8 +202,8 @@ void Player::StartJumping()
 }
 void Player::StartWhip() {
 	state = State::WHIP;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::WHIP_RIGHT);
-	else					SetAnimation((int)PlayerAnim::WHIP_LEFT);
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::ATTACKING_RIGHT);
+	else					SetAnimation((int)PlayerAnim::ATTACKING_LEFT);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 	attack_delay = PLAYER_ATTACK_DELAY;
@@ -225,8 +211,8 @@ void Player::StartWhip() {
 void Player::StartThrowing()
 {
 	state = State::THROWING;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::THROWING_RIGHT);
-	else					SetAnimation((int)PlayerAnim::THROWING_LEFT);
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::ATTACKING_RIGHT);
+	else					SetAnimation((int)PlayerAnim::ATTACKING_LEFT);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 	attack_delay = PLAYER_ATTACK_DELAY;
@@ -239,8 +225,8 @@ void Player::StartCrouching()
 }
 void Player::StartCrouchWhip() {
 	state = State::CROUCH_WHIP;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCH_WHIP_RIGHT);
-	else					SetAnimation((int)PlayerAnim::CROUCH_WHIP_LEFT);
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCH_ATTACK_RIGHT);
+	else					SetAnimation((int)PlayerAnim::CROUCH_ATTACK_LEFT);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 	attack_delay = PLAYER_ATTACK_DELAY;
@@ -248,8 +234,8 @@ void Player::StartCrouchWhip() {
 void Player::StartCrouchThrowing()
 {
 	state = State::CROUCH_THROWING;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCH_THROW_RIGHT);
-	else					SetAnimation((int)PlayerAnim::CROUCH_THROW_LEFT);
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCH_ATTACK_RIGHT);
+	else					SetAnimation((int)PlayerAnim::CROUCH_ATTACK_LEFT);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 	attack_delay = PLAYER_ATTACK_DELAY;
@@ -282,15 +268,15 @@ void Player::ChangeAnimRight()
 	look = Look::RIGHT;
 	switch (state)
 	{
-		case State::IDLE:	 SetAnimation((int)PlayerAnim::IDLE_RIGHT);						break; 
-		case State::WALKING: SetAnimation((int)PlayerAnim::WALKING_RIGHT);					break;
-		case State::JUMPING: SetAnimation((int)PlayerAnim::JUMPING_RIGHT);					break;
-		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_RIGHT);					break;
-		case State::CROUCHING:	 SetAnimation((int)PlayerAnim::CROUCHING_RIGHT);			break;
-		case State::WHIP:	 SetAnimation((int)PlayerAnim::WHIP_RIGHT);						break;
-		case State::CROUCH_WHIP:	 SetAnimation((int)PlayerAnim::CROUCH_WHIP_RIGHT);		break;
-		case State::THROWING:	 SetAnimation((int)PlayerAnim::THROWING_RIGHT);				break;
-		case State::CROUCH_THROWING:	 SetAnimation((int)PlayerAnim::CROUCH_THROW_RIGHT); break;
+		case State::IDLE:			SetAnimation((int)PlayerAnim::IDLE_RIGHT);			break; 
+		case State::WALKING:		SetAnimation((int)PlayerAnim::WALKING_RIGHT);		break;
+		case State::JUMPING:		SetAnimation((int)PlayerAnim::JUMPING_RIGHT);		break;
+		case State::FALLING:		SetAnimation((int)PlayerAnim::FALLING_RIGHT);		break;
+		case State::CROUCHING:		SetAnimation((int)PlayerAnim::CROUCHING_RIGHT);		break;
+		case State::WHIP:			SetAnimation((int)PlayerAnim::ATTACKING_RIGHT);		break;
+		case State::CROUCH_WHIP:	SetAnimation((int)PlayerAnim::CROUCH_ATTACK_RIGHT);	break;
+		case State::THROWING:		SetAnimation((int)PlayerAnim::ATTACKING_RIGHT);		break;
+		case State::CROUCH_THROWING:SetAnimation((int)PlayerAnim::CROUCH_ATTACK_RIGHT);	break;
 	}
 }
 void Player::ChangeAnimLeft()
@@ -298,15 +284,15 @@ void Player::ChangeAnimLeft()
 	look = Look::LEFT;
 	switch (state)
 	{
-		case State::IDLE:	 SetAnimation((int)PlayerAnim::IDLE_LEFT);						break;
-		case State::WALKING: SetAnimation((int)PlayerAnim::WALKING_LEFT);					break;
-		case State::JUMPING: SetAnimation((int)PlayerAnim::JUMPING_LEFT);					break;
-		case State::FALLING: SetAnimation((int)PlayerAnim::FALLING_LEFT);					break;
-		case State::CROUCHING:	 SetAnimation((int)PlayerAnim::CROUCHING_LEFT);				break;
-		case State::WHIP:	 SetAnimation((int)PlayerAnim::WHIP_LEFT);						break;
-		case State::CROUCH_WHIP:	 SetAnimation((int)PlayerAnim::CROUCH_WHIP_LEFT);		break;
-		case State::THROWING:	 SetAnimation((int)PlayerAnim::THROWING_LEFT);				break;
-		case State::CROUCH_THROWING:	 SetAnimation((int)PlayerAnim::CROUCH_THROW_LEFT);	break;
+		case State::IDLE:			SetAnimation((int)PlayerAnim::IDLE_LEFT);			break; 
+		case State::WALKING:		SetAnimation((int)PlayerAnim::WALKING_LEFT);		break;
+		case State::JUMPING:		SetAnimation((int)PlayerAnim::JUMPING_LEFT);		break;
+		case State::FALLING:		SetAnimation((int)PlayerAnim::FALLING_LEFT);		break;
+		case State::CROUCHING:		SetAnimation((int)PlayerAnim::CROUCHING_LEFT);		break;
+		case State::WHIP:			SetAnimation((int)PlayerAnim::ATTACKING_LEFT);		break;
+		case State::CROUCH_WHIP:	SetAnimation((int)PlayerAnim::CROUCH_ATTACK_LEFT);	break;
+		case State::THROWING:		SetAnimation((int)PlayerAnim::ATTACKING_LEFT);		break;
+		case State::CROUCH_THROWING:SetAnimation((int)PlayerAnim::CROUCH_ATTACK_LEFT);	break;
 	}
 }
 void Player::Update()
