@@ -341,7 +341,9 @@ AppStatus Scene::LoadLevel(int stage)
 	}
 	//Tile map
 	level->Load(map, mapFront, mapBack,LEVEL_WIDTH, LEVEL_HEIGHT);
-
+	delete[] map;
+	delete[] mapFront;
+	delete[] mapBack;
 	return AppStatus::OK;
 }
 void Scene::Update()
