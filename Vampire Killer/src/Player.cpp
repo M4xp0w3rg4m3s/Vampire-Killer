@@ -440,11 +440,11 @@ void Player::Static()
 	}
 	else if (state == State::THROWING)
 	{
-		LogicAttack();
+		LogicThrow();
 	}
 	else if (state == State::CROUCH_THROWING)
 	{
-		LogicAttack();
+		LogicThrow();
 	}
 	else if (state == State::DYING)
 	{
@@ -584,7 +584,7 @@ void Player::LogicCrouching()
 		height = PLAYER_PHYSICAL_HEIGHT;
 	}
 }
-void Player::LogicAttack()
+void Player::LogicThrow()
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 
@@ -600,7 +600,32 @@ void Player::LogicAttack()
 			if (state == State::CROUCH_THROWING) {
 				StartCrouching();
 			}
-			else if (state == State::CROUCH_WHIP) {
+			else {
+				Stop();
+			}
+
+			sprite->SetAutomaticMode();
+			AnimationFrame = 0;
+		}
+		else {
+			sprite->NextFrame();
+		}
+	}
+}
+void Player::LogicAttack()
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+
+	attack_delay--;
+	if (attack_delay == 0)
+	{
+		AnimationFrame++;
+		sprite->NextFrame();
+		attack_delay = PLAYER_ATTACK_DELAY;
+
+		if (AnimationFrame == 3) {
+
+			if (state == State::CROUCH_WHIP) {
 				StartCrouching();
 			}
 			else {
