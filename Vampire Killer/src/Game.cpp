@@ -5,9 +5,13 @@
 
 Game::Game()
 {
-    state = GameState::MAIN_MENU;
+    state = GameState::INTRO_UPC;
     scene = nullptr;
     img_menu = nullptr;
+    img_menu_play = nullptr;
+    img_menu_empty = nullptr;
+    img_intro_upc = nullptr;
+    img_intro_background = nullptr;
 
     target = {};
     src = {};
@@ -65,6 +69,26 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_menu = data.GetTexture(Resource::IMG_MENU);
+    if (data.LoadTexture(Resource::IMG_MENU_PLAY, "images/Spritesheets/Introduction/IntroPlay.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_menu_play = data.GetTexture(Resource::IMG_MENU_PLAY);
+    if (data.LoadTexture(Resource::IMG_MENU_EMPTY, "images/Spritesheets/Introduction/Intro Empty.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_menu_empty = data.GetTexture(Resource::IMG_MENU_EMPTY);
+    if (data.LoadTexture(Resource::IMG_INTRO_UPC, "images/Spritesheets/Introduction/IntroUPC.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro_upc = data.GetTexture(Resource::IMG_INTRO_UPC);
+    if (data.LoadTexture(Resource::IMG_INTRO_BACKGROUND, "images/Spritesheets/Introduction/IntroBackground.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro_background = data.GetTexture(Resource::IMG_INTRO_BACKGROUND);
     
     return AppStatus::OK;
 }
@@ -97,6 +121,28 @@ AppStatus Game::Update()
 
     switch (state)
     {
+        case GameState::INTRO_UPC:
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            if (IsKeyPressed(KEY_SPACE))
+            {
+                state = GameState::TRANSITION_1;
+            }
+            break;
+        case GameState::TRANSITION_1:
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            WaitTime(0.5);
+            state = GameState::INTRO_BACKGROUND;
+            break;
+        case GameState::INTRO_BACKGROUND:
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            WaitTime(2.5);
+            state = GameState::TRANSITION_2;
+            break;
+        case GameState::TRANSITION_2:
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            WaitTime(0.5);
+            state = GameState::MAIN_MENU;
+            break;
         case GameState::MAIN_MENU: 
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (IsKeyPressed(KEY_SPACE))
@@ -139,6 +185,19 @@ void Game::Render()
             DrawTexture(*img_menu, 0, 0, WHITE);
             break;
 
+        case GameState::INTRO_UPC:
+            DrawTexture(*img_intro_upc, 0, 0, WHITE);
+            break;
+
+        case GameState::INTRO_BACKGROUND:
+            DrawTexture(*img_intro_background, 0, 0, WHITE);
+            
+            break;
+
+        case GameState::MENU_PLAY:
+            DrawTexture(*img_menu_play, 0, 0, WHITE);
+            break;
+
         case GameState::PLAYING:
             scene->Render();
             break;
@@ -160,6 +219,10 @@ void Game::UnloadResources()
 {
     ResourceManager& data = ResourceManager::Instance();
     data.ReleaseTexture(Resource::IMG_MENU);
+    data.ReleaseTexture(Resource::IMG_MENU_PLAY);
+    data.ReleaseTexture(Resource::IMG_MENU_EMPTY);
+    data.ReleaseTexture(Resource::IMG_INTRO_UPC);
+    data.ReleaseTexture(Resource::IMG_INTRO_BACKGROUND);
 
     UnloadRenderTexture(target);
 }
