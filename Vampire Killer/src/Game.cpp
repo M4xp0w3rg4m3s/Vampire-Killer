@@ -14,6 +14,11 @@ Game::Game()
     img_intro_background = nullptr;
     img_game_win = nullptr;
 
+    timerWin = 1800;
+    timerLose = 300;
+    timerPlay = 420;
+    panAnimation = 200;
+
     target = {};
     src = {};
     dst = {};
@@ -62,6 +67,14 @@ AppStatus Game::Initialise(float scale)
 
     //Disable the escape key to quit functionality
     SetExitKey(0);
+
+    AudioPlayer::Instance().CreateMusic("audio/Music/15 Unused.ogg", "Unused");
+    AudioPlayer::Instance().SetMusicLoopStatus("Unused", false);
+    AudioPlayer::Instance().CreateMusic("audio/Music/10 Game Over.ogg", "GameOver");
+    AudioPlayer::Instance().SetMusicLoopStatus("GameOver", false);
+    AudioPlayer::Instance().CreateMusic("audio/Music/01 Prologue.ogg", "Prologue");
+    AudioPlayer::Instance().SetMusicLoopStatus("Prologue", false);
+
 
     return AppStatus::OK;
 }
@@ -129,6 +142,8 @@ AppStatus Game::Update()
     //Check if user attempts to close the window, either by clicking the close button or by pressing Alt+F4
     if(WindowShouldClose()) return AppStatus::QUIT;
 
+    AudioPlayer::Instance().Update();
+
     switch (state)
     {
         case GameState::INTRO_UPC:
@@ -157,14 +172,30 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
             if (IsKeyPressed(KEY_SPACE))
             {
-                if(BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
+                    state = GameState::MENU_PLAY;
+            }
+            break;
+        case GameState::MENU_PLAY:
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            AudioPlayer::Instance().PlayMusicByName("Prologue");
+            timerPlay--;
+            if (timerPlay == 0) {
+                AudioPlayer::Instance().StopMusicByName("Prologue");
+                if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;
+                timerPlay = 420;
             }
             break;
         case GameState::GAME_WIN:
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            WaitTime(5);
-            state = GameState::MAIN_MENU;
+            AudioPlayer::Instance().PlayMusicByName("Unused");
+            timerWin--;
+            if (timerWin == 0) {
+                AudioPlayer::Instance().StopMusicByName("Unused");
+                state = GameState::MAIN_MENU;
+                panAnimation = 200;
+                timerWin = 1800;
+            }
             break;
 
         case GameState::PLAYING:  
@@ -175,9 +206,15 @@ AppStatus Game::Update()
             }
             else if (scene->PlayerIsDead())
             {
-                FinishPlay();
-                WaitTime(5);
-                state = GameState::MAIN_MENU;
+                AudioPlayer::Instance().StopMusicByName("VampireKiller");
+                AudioPlayer::Instance().PlayMusicByName("GameOver");
+                timerLose--;
+                if (timerLose == 0) {
+                    FinishPlay();
+                    AudioPlayer::Instance().StopMusicByName("GameOver");
+                    state = GameState::MAIN_MENU;
+                    timerLose = 300;
+                }
             }
             else if (scene->PlayerHasWon())
             {
@@ -217,10 +254,16 @@ void Game::Render()
 
         case GameState::MENU_PLAY:
             DrawTexture(*img_menu_play, 0, 0, WHITE);
+            if (timerPlay % 4 == 0 || timerPlay % 4 == 1) {
+                DrawTexture(*img_menu_empty, 0, 0, WHITE);
+            }
             break;
 
         case GameState::GAME_WIN:
-            DrawTexture(*img_game_win, 0, 0, WHITE);
+            if (timerWin % 4 == 0) {
+                panAnimation--;
+            }
+                DrawTexture(*img_game_win, 0, panAnimation, WHITE);
             break;
 
         case GameState::PLAYING:
@@ -238,6 +281,7 @@ void Game::Render()
 void Game::Cleanup()
 {
     UnloadResources();
+    CloseAudioDevice();
     CloseWindow();
 }
 void Game::UnloadResources()
