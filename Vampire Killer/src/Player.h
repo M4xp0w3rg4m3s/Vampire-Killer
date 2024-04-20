@@ -141,8 +141,6 @@ private:
 
 	TileMap *map;
 
-	//Weapon
-
 	int score;
 };
 
