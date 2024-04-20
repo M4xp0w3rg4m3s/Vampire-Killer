@@ -356,7 +356,7 @@ void Scene::Update()
 	Point right_position(256-3, player->GetPos().y);
 
 	//Switch between the different debug modes: off, on (sprites & hitboxes), on (hitboxes) 
-	if (IsKeyPressed(KEY_F1))
+	if (IsKeyPressed(KEY_F2))
 	{
 		debug = (DebugMode)(((int)debug + 1) % (int)DebugMode::SIZE);
 	}
@@ -368,6 +368,7 @@ void Scene::Update()
 	else if (IsKeyPressed(KEY_THREE))	LoadLevel(3);
 	else if (IsKeyPressed(KEY_FOUR))	LoadLevel(4);
 	else if (IsKeyPressed(KEY_F3))	    player->Win();
+	else if (IsKeyPressed(KEY_F1))	    player->GodModeSwitch();
 
 	box = player->GetHitbox();
 

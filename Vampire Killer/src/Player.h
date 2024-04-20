@@ -84,9 +84,11 @@ public:
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void Release();
-
+	
+	bool IsGodMode() const;
 	bool IsDead() const;
 	bool HasWon() const;
+	void GodModeSwitch();
 
 	void Win();
 
@@ -137,6 +139,7 @@ private:
 	bool IsInFirstHalfTile() const;
 	bool IsInSecondHalfTile() const;
 
+	bool GodMode;
 	State state;
 	Look look;
 	int jump_delay;
