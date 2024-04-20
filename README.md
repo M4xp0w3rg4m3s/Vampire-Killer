@@ -63,6 +63,7 @@ F4 - Die.
 - Whip Attack
 - Throwing
 - Dying
+- Winning
 - Game over Screen
 - Change Level by crossing the screen
 - Level 2
