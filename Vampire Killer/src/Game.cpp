@@ -135,7 +135,7 @@ AppStatus Game::Update()
             break;
         case GameState::INTRO_BACKGROUND:
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
-            WaitTime(2.5);
+            WaitTime(2);
             state = GameState::TRANSITION_2;
             break;
         case GameState::TRANSITION_2:
@@ -162,6 +162,12 @@ AppStatus Game::Update()
             {
                 FinishPlay();
                 WaitTime(5);
+                state = GameState::MAIN_MENU;
+            }
+            else if (scene->PlayerHasWon())
+            {
+                FinishPlay();
+                WaitTime(1);
                 state = GameState::MAIN_MENU;
             }
             else

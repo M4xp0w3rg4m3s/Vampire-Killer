@@ -373,6 +373,30 @@ bool TileMap::TestCollisionRight(const AABB& box) const
 	}
 	return false;
 }
+bool TileMap::TestCollisionWin(const AABB& box) const {
+	const Point& p = box.pos;
+	int distance = box.height;
+	Tile tile;
+
+	int x, y, y0, y1;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	x = (p.x + 14) / TILE_SIZE;
+	y0 = p.y / TILE_SIZE;
+	y1 = (p.y + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the vertical range
+	for (y = y0; y <= y1; ++y)
+	{
+		tile = GetTileIndex(x, y);
+
+		//One solid tile is sufficient
+		if (tile == Tile::WIN) {
+			return true;
+		}
+	}
+	return false;
+}
 bool TileMap::TestCollisionGround(const AABB& box, int* py) const
 {
 	Point p(box.pos.x, *py);	//control point

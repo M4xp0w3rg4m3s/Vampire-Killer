@@ -110,6 +110,7 @@ enum class Tile {
 
 	// 500 =< id: end invisible teletransportating walls
 	LEFT = 500, RIGHT,
+	WIN = 505,
 
 	// 550 = solid invisible tile
 	INVISIBLE = 550,
@@ -140,7 +141,7 @@ public:
 	bool TestCollisionWallRight(const AABB& box) const;
 	bool TestCollisionLeft(const AABB& box) const;
 	bool TestCollisionRight(const AABB& box) const;
-
+	bool TestCollisionWin(const AABB& box) const;
 
 	
 	//Test collision with the ground and update 'py' with the maximum y-position to prevent

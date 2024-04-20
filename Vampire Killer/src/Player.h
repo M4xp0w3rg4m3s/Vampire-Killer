@@ -46,7 +46,8 @@ enum class State {
 	THROWING, CROUCH_THROWING,
 	CLIMBING, 
 	CROUCHING, 
-	DYING, DEAD 
+	DYING, DEAD,
+	WIN
 };
 enum class Look { RIGHT, LEFT };
 
@@ -85,6 +86,9 @@ public:
 	void Release();
 
 	bool IsDead() const;
+	bool HasWon() const;
+
+	void Win();
 
 	Weapon* weapon;
 
@@ -102,6 +106,7 @@ private:
 	void LogicThrow();
 	void LogicAttack();
 	void Die();
+	
 
 	//Animation management
 	void SetAnimation(int id);
@@ -140,8 +145,6 @@ private:
 	int AnimationFrame;
 
 	TileMap *map;
-
-	//Weapon
 
 	int score;
 };
