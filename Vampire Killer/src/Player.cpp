@@ -19,6 +19,7 @@ Player::Player(const Point& p, State s, Look view) :
 	weapon->SetWeapon(WeaponType::WHIP);
 	score = 0;
 	AnimationFrame = 0;
+	GodMode = false;
 }
 Player::~Player()
 {
@@ -155,6 +156,9 @@ bool Player::IsInSecondHalfTile() const
 {
 	return pos.y % TILE_SIZE >= TILE_SIZE/2;
 }
+bool Player::IsGodMode() const {
+	return GodMode;
+}
 bool Player::IsDead() const
 {
 	return state == State::DEAD;
@@ -165,6 +169,14 @@ bool Player::HasWon() const
 }
 void Player::Win() {
 	state = State::WIN;
+}
+void Player::GodModeSwitch() {
+	if (GodMode == true) {
+		GodMode = false;
+	}
+	else {
+		GodMode = true;
+	}
 }
 void Player::SetAnimation(int id)
 {
@@ -490,8 +502,11 @@ void Player::Static()
 			}
 			else if (IsKeyPressed(KEY_F4))
 			{
-				StartDying();
+				if (!GodMode) {
+					StartDying();
+				}
 			}
+			
 		}
 	}
 }
