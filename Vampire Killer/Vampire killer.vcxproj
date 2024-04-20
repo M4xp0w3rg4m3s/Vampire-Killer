@@ -118,8 +118,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Usuario\Documents\Uni\2n Quatri\Project 1\raylib\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Usuario\Documents\Uni\2n Quatri\Project 1\raylib\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

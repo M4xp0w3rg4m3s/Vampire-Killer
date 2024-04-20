@@ -18,6 +18,7 @@ public:
 	virtual void Update();
 	AABB GetHitbox() const;
 	Point GetPos() const;
+	void SetHitbox(const Point& p, int w, int h);
 
 	//Draw representation model
 	void Draw() const;

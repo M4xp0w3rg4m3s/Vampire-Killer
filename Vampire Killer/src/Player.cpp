@@ -15,7 +15,7 @@ Player::Player(const Point& p, State s, Look view) :
 	attack_delay = PLAYER_ATTACK_DELAY;
 	die_delay = PLAYER_DYING_DELAY;
 	map = nullptr;
-	weapon = new Weapon({20,144});
+	weapon = new Weapon(p);
 	weapon->SetWeapon(WeaponType::WHIP);
 	score = 0;
 	AnimationFrame = 0;
@@ -644,12 +644,6 @@ void Player::LogicAttack()
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 
-	if (IsLookingRight()) {
-		weapon->Attack(AnimationFrame, (LookAt)Look::RIGHT);
-	}
-	else if (IsLookingLeft()) {
-		weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
-	}
 	attack_delay--;
 	if (attack_delay == 0)
 	{
