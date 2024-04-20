@@ -159,6 +159,13 @@ bool Player::IsDead() const
 {
 	return state == State::DEAD;
 }
+bool Player::HasWon() const
+{
+	return state == State::WIN;
+}
+void Player::Win() {
+	state = State::WIN;
+}
 void Player::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -481,7 +488,7 @@ void Player::Static()
 			{
 				StartCrouchThrowing();
 			}
-			else if (IsKeyPressed(KEY_E))
+			else if (IsKeyPressed(KEY_F4))
 			{
 				StartDying();
 			}
@@ -683,6 +690,7 @@ void Player::Die()
 		}
 	}
 }
+
 void Player::DrawDebug(const Color& col) const
 {	
 	Entity::DrawHitbox(pos.x, pos.y, width, height, col);

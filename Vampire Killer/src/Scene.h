@@ -18,6 +18,7 @@ public:
     void Render();
     void Release();
     bool PlayerIsDead() const;
+    bool PlayerHasWon() const;
 
 private:
     AppStatus LoadLevel(int stage);

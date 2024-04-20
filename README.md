@@ -48,7 +48,8 @@ Z - Throw
 3 - Go to Level 3.
 4 - Go to Level 4.
 F1 - Debug Mode.
-F3 - Die.
+F3 - Win
+F4 - Die.
 
 -----Features-----
 
@@ -62,6 +63,7 @@ F3 - Die.
 - Whip Attack
 - Throwing
 - Dying
+- Winning
 - Game over Screen
 - Change Level by crossing the screen
 - Level 2
