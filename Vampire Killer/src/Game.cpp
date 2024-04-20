@@ -12,6 +12,7 @@ Game::Game()
     img_menu_empty = nullptr;
     img_intro_upc = nullptr;
     img_intro_background = nullptr;
+    img_game_win = nullptr;
 
     target = {};
     src = {};
@@ -89,6 +90,11 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_intro_background = data.GetTexture(Resource::IMG_INTRO_BACKGROUND);
+    if (data.LoadTexture(Resource::IMG_GAME_WIN, "images/Spritesheets/Introduction/GameWin.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_game_win = data.GetTexture(Resource::IMG_GAME_WIN);
     
     return AppStatus::OK;
 }
@@ -151,6 +157,11 @@ AppStatus Game::Update()
                 state = GameState::PLAYING;
             }
             break;
+        case GameState::GAME_WIN:
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            WaitTime(5);
+            state = GameState::MAIN_MENU;
+            break;
 
         case GameState::PLAYING:  
             if (IsKeyPressed(KEY_ESCAPE))
@@ -168,7 +179,7 @@ AppStatus Game::Update()
             {
                 FinishPlay();
                 WaitTime(1);
-                state = GameState::MAIN_MENU;
+                state = GameState::GAME_WIN;
             }
             else
             {
@@ -204,6 +215,10 @@ void Game::Render()
             DrawTexture(*img_menu_play, 0, 0, WHITE);
             break;
 
+        case GameState::GAME_WIN:
+            DrawTexture(*img_game_win, 0, 0, WHITE);
+            break;
+
         case GameState::PLAYING:
             scene->Render();
             break;
@@ -229,6 +244,7 @@ void Game::UnloadResources()
     data.ReleaseTexture(Resource::IMG_MENU_EMPTY);
     data.ReleaseTexture(Resource::IMG_INTRO_UPC);
     data.ReleaseTexture(Resource::IMG_INTRO_BACKGROUND);
+    data.ReleaseTexture(Resource::IMG_GAME_WIN);
 
     UnloadRenderTexture(target);
 }
