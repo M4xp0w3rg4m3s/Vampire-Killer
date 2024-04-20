@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "Weapon.h"
 #include "TileMap.h"
+#include "AudioPlayer.h"
 
 //Representation model size: 32x32
 #define PLAYER_FRAME_SIZE	32

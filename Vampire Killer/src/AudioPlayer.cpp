@@ -79,6 +79,16 @@ void AudioPlayer::SetMusicLoopStatus(const char* musicName, bool isLoop)
 	musicsData[musicName].looping = isLoop;
 }
 
+bool AudioPlayer::IsMusicPlaying(const char* musicName)
+{
+	if (!IsMusicLoaded(musicName))
+	{
+		printf("Music File Not Loaded");
+		return false;
+	}
+	return IsMusicStreamPlaying(musicsData[musicName]);
+}
+
 void AudioPlayer::CreateSound(const char* path, const char* soundName)
 {
 	if (IsSoundLoaded(soundName))

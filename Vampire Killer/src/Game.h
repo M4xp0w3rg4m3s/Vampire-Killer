@@ -30,6 +30,12 @@ private:
     const Texture2D* img_intro_upc;
     const Texture2D* img_intro_background;
     const Texture2D* img_game_win;
+
+    int timerWin;
+    int timerLose;
+    int timerPlay;
+
+    int panAnimation;
     
 
     //To work with original game units and then scale the result
