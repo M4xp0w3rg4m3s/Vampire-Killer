@@ -488,7 +488,7 @@ void Player::Static()
 			{
 				StartCrouchThrowing();
 			}
-			else if (IsKeyPressed(KEY_E))
+			else if (IsKeyPressed(KEY_F4))
 			{
 				StartDying();
 			}

@@ -367,6 +367,7 @@ void Scene::Update()
 	else if (IsKeyPressed(KEY_TWO))		LoadLevel(2);
 	else if (IsKeyPressed(KEY_THREE))	LoadLevel(3);
 	else if (IsKeyPressed(KEY_FOUR))	LoadLevel(4);
+	else if (IsKeyPressed(KEY_F3))	    player->Win();
 
 	box = player->GetHitbox();
 
