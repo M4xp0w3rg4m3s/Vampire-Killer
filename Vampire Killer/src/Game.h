@@ -29,6 +29,7 @@ private:
     const Texture2D* img_menu_empty;
     const Texture2D* img_intro_upc;
     const Texture2D* img_intro_background;
+    
 
     //To work with original game units and then scale the result
     RenderTexture2D target;
