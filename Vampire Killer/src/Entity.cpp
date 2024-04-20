@@ -63,6 +63,12 @@ void Entity::DrawHitbox(const Color& col) const
 	render->DrawBox(pos.x, pos.y-(height-1), width, height, c);
 	render->DrawCorners(pos.x, pos.y-(height-1), width, height);
 }
+void Entity::SetHitbox(const Point& p, int w, int h)
+{
+	pos = p;
+	width = w;
+	height = h;
+}
 void Entity::DrawHitbox(int x, int y, int w, int h, const Color& col) const
 {
 	Color c = col;

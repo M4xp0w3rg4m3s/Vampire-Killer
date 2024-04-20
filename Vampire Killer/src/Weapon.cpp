@@ -10,6 +10,7 @@ Weapon::Weapon(const Point& p) :
 {
 	Initialise();
 	currentWeapon = WeaponType::WHIP;
+	SetHitbox({ pos.x + 15, pos.y - 63 }, width, height);
 }
 Weapon::~Weapon()
 {
@@ -115,13 +116,16 @@ void Weapon::Attack(int frame, LookAt looking) {
 
 void Weapon::AttackRight(int frame) {
 	if (frame == 0) {
-		if (currentWeapon == WeaponType::WHIP)
+		currentFrame = 1;
+		if (currentWeapon == WeaponType::WHIP) {
 			SetAnimation((int)WeaponAnim::WHIP_1_RIGHT);
+		}
 		else if (currentWeapon == WeaponType::CHAIN) {
 			SetAnimation((int)WeaponAnim::CHAIN_1_RIGHT);
 		}
 	}
 	else if (frame == 1) {
+		currentFrame = 1;
 		if (currentWeapon == WeaponType::WHIP) {
 				SetAnimation((int)WeaponAnim::WHIP_2_RIGHT);
 		}
@@ -130,18 +134,23 @@ void Weapon::AttackRight(int frame) {
 		}
 	}
 	else if (frame == 2) {
-		if (currentWeapon == WeaponType::WHIP)
+		currentFrame = 2;
+		if (currentWeapon == WeaponType::WHIP) {
 			SetAnimation((int)WeaponAnim::WHIP_3_RIGHT);
+		}
 		else if (currentWeapon == WeaponType::CHAIN) {
 			SetAnimation((int)WeaponAnim::CHAIN_3_RIGHT);
 		}
 	}
 	else {
+		currentFrame = -1;
 		SetAnimation((int)WeaponAnim::NOTHING_AT_ALL);
 	}
+
 }
 void Weapon::AttackLeft(int frame) {
 	if (frame == 0) {
+		currentFrame = 0;
 		if (currentWeapon == WeaponType::WHIP)
 			SetAnimation((int)WeaponAnim::WHIP_1_LEFT);
 		else if (currentWeapon == WeaponType::CHAIN) {
@@ -149,6 +158,7 @@ void Weapon::AttackLeft(int frame) {
 		}
 	}
 	else if (frame == 1) {
+		currentFrame = 1;
 		if (currentWeapon == WeaponType::WHIP)
 			SetAnimation((int)WeaponAnim::WHIP_2_LEFT);
 		else if (currentWeapon == WeaponType::CHAIN) {
@@ -156,6 +166,7 @@ void Weapon::AttackLeft(int frame) {
 		}
 	}
 	else if (frame == 2) {
+		currentFrame = 2;
 		if (currentWeapon == WeaponType::WHIP)
 			SetAnimation((int)WeaponAnim::WHIP_3_LEFT);
 		else if (currentWeapon == WeaponType::CHAIN) {
@@ -163,13 +174,31 @@ void Weapon::AttackLeft(int frame) {
 		}
 	}
 	else {
+		currentFrame = -1;
 		SetAnimation((int)WeaponAnim::NOTHING_AT_ALL);
 	}
 }
 
 void Weapon::DrawDebug(const Color& col) const
 {
-	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
+	if (currentFrame == 2) {
+		if (currentWeapon == WeaponType::WHIP) {
+			if (currentLooking == LookAt::RIGHT) {
+				Entity::DrawHitbox(pos.x + 15, pos.y - 63, width, height, col);
+			}
+			else {
+				Entity::DrawHitbox(pos.x - 15, pos.y - 63, width, height, col);
+			}
+		}
+		else {
+			if (currentLooking == LookAt::RIGHT) {
+				Entity::DrawHitbox(pos.x + 15, pos.y - 63, width + 7, height, col);
+			}
+			else {
+				Entity::DrawHitbox(pos.x - 15, pos.y - 63, width - 7, height, col);
+			}
+		}
+	}
 }
 void Weapon::Release()
 {

@@ -4,14 +4,14 @@
 
 //Representation model size: 32x32
 #define ATTACK_FRAME_WIDTH	80
-#define ATTACK_FRAME_HEIGHT	64
+#define ATTACK_FRAME_HEIGHT	32
 
 //Logical model size: 12x28
-#define WHIP_WIDTH	12
-#define WHIP_HEIGHT	28
+#define WHIP_WIDTH		20
+#define WHIP_HEIGHT		8
 
-#define CHAIN_WIDTH	12
-#define CHAIN_HEIGHT	28
+#define CHAIN_WIDTH		20
+#define CHAIN_HEIGHT	8
 
 //Frame delay for updating the attack velocity
 #define PLAYER_ATTACK_DELAY		6
@@ -59,10 +59,11 @@ private:
 
 	WeaponType currentWeapon;
 	LookAt currentLooking;
+	int currentFrame;
 
-	const Point attackOffsetRight = {8, 48};
-	const Point attackOffsetLeft = {-8, 48 };
+	const Point attackOffsetRight = {4, 48};
+	const Point attackOffsetLeft = {-12, 48 };
 
-	const Point attackOffsetRightCrouch = { 8, 54 };
-	const Point attackOffsetLeftCrouch = { -8, 54 };
+	const Point attackOffsetRightCrouch = { 4, 54 };
+	const Point attackOffsetLeftCrouch = { -12, 54 };
 };
