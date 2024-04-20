@@ -16,7 +16,6 @@ Max Mateo :
 
 https://github.com/M4xp0w3rg4m3s
 
-Guillem Martínez :
 
 https://github.com/GuillemDev
 
@@ -47,14 +46,14 @@ Z - Throw
 2 - Go to Level 2.
 3 - Go to Level 3.
 4 - Go to Level 4.
-F1 - Debug Mode.
-F3 - Win
-F4 - Die.
+F1 - Activate / Deactivate God Mode.
+F2 - Activate / Deactivate Debug Mode.
+F3 - Instant Win.
+F4 - Instant Death.
 
 -----Features-----
 
 - Intro Screen
-- Intro Animation  ???
 - Level 1
 - Movement in X axis
 - Collisions
