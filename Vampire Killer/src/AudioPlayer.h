@@ -20,6 +20,7 @@ public:
     void DeleteSound(const char* soundName);
     void DeleteMusic(const char* musicName);
     void SetMusicLoopStatus(const char* musicName, bool isLoop);
+    bool IsMusicPlaying(const char* musicName);
 private:
 
     //Private constructor to prevent instantiation

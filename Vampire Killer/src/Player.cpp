@@ -110,6 +110,8 @@ AppStatus Player::Initialise()
 
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
+	AudioPlayer::Instance().CreateSound("audio/SFX/27.wav", "Attack");
+
 	return AppStatus::OK;
 }
 void Player::InitScore()
@@ -237,6 +239,7 @@ void Player::StartWhip() {
 	else if (IsLookingLeft()) {
 		weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
 	}
+	AudioPlayer::Instance().PlaySoundByName("Attack");
 }
 void Player::StartThrowing()
 {
@@ -268,6 +271,7 @@ void Player::StartCrouchWhip() {
 	else if (IsLookingLeft()) {
 		weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
 	}
+	AudioPlayer::Instance().PlaySoundByName("Attack");
 }
 void Player::StartCrouchThrowing()
 {

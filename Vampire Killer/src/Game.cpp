@@ -36,6 +36,8 @@ AppStatus Game::Initialise(float scale)
     //Initialise window
     InitWindow((int)w, (int)h, "Vampire killer");
 
+    InitAudioDevice();
+
     //Render texture initialisation, used to hold the rendering result so we can easily resize it
     target = LoadRenderTexture(WINDOW_WIDTH, WINDOW_HEIGHT);
     if (target.id == 0)
@@ -56,6 +58,8 @@ AppStatus Game::Initialise(float scale)
 
     //Set the target frame rate for the application
     SetTargetFPS(60);
+    SetMasterVolume(0.6);
+
     //Disable the escape key to quit functionality
     SetExitKey(0);
 

@@ -33,7 +33,6 @@ private:
 
     Player *player;
     TileMap *level;
-    AudioPlayer* audio;
     std::vector<Object*> objects;
     int currentLevel;
     const Texture2D* game_over;

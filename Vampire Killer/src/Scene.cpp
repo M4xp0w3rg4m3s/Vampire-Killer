@@ -7,7 +7,6 @@ Scene::Scene()
 	player = nullptr;
     level = nullptr;
 	game_over = nullptr;
-	audio = nullptr;
 	currentLevel = 0;
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { SIDE_MARGINS, TOP_MARGIN };	//Offset from the target (center of the screen)
@@ -82,6 +81,9 @@ AppStatus Scene::Init()
 		return AppStatus::ERROR;
 	}
 	game_over = data.GetTexture(Resource::IMG_GAME_OVER);
+
+	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
+	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
 
     return AppStatus::OK;
 }
@@ -362,6 +364,7 @@ void Scene::Update()
 	}
 	//Debug levels instantly
 
+	AudioPlayer::Instance().PlayMusicByName("VampireKiller");
 
 	if (IsKeyPressed(KEY_ONE))			LoadLevel(1);
 	else if (IsKeyPressed(KEY_TWO))		LoadLevel(2);
@@ -371,6 +374,8 @@ void Scene::Update()
 	else if (IsKeyPressed(KEY_F1))	    player->GodModeSwitch();
 
 	box = player->GetHitbox();
+
+	AudioPlayer::Instance().Update();
 
 	if (level->TestCollisionRight(box)) {
 		if (currentLevel < 4) {
