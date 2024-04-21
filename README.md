@@ -42,7 +42,8 @@ Downwards Arrow - Crouch.
 Rightwards Arrow - Move to the right.
 Leftwards Arrow - Move to the left.
 Space - Whip Attack.
-Z - Throw
+Z - Throw.
+C - Set weapon to Chain.
 1 - Go to Level 1.
 2 - Go to Level 2.
 3 - Go to Level 3.
@@ -55,18 +56,29 @@ F4 - Instant Death.
 -----Features-----
 
 - Intro Screen
+- Intro Music
 - Level 1
+- Level 1 Music
 - Movement in X axis
 - Collisions
 - Jump
 - Crouch
 - Whip Attack
+- Whip SFX
+- Chain Attack
+- Item Chain
+- Enemy Zombie
+- Enemy Panther
 - Throwing
 - Dying
 - Winning
 - Game over Screen
+- Win Screen
 - Change Level by crossing the screen
+- Debug Mode
+- God Mode
 - Level 2
 - Level 3
 - Level 4
+- Animated Tiles
 
