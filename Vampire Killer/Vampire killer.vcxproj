@@ -23,6 +23,7 @@
     <ClCompile Include="src\AudioPlayer.cpp" />
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\EnemyManager.cpp" />
+    <ClCompile Include="src\EnemyPanther.cpp" />
     <ClCompile Include="src\EnemyZombie.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\Game.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="src\AudioPlayer.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\EnemyManager.h" />
+    <ClInclude Include="src\EnemyPanther.h" />
     <ClInclude Include="src\EnemyZombie.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Game.h" />

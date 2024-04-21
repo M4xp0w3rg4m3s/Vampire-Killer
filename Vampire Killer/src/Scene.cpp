@@ -44,6 +44,7 @@ AppStatus Scene::Init()
 
 	//Create player
 	player = new Player({ 20,144 }, State::IDLE, Look::RIGHT);
+	EnemyManager::Instance().target = player;
 	if (player == nullptr)
 	{
 		LOG("Failed to allocate memory for Player");
@@ -77,6 +78,7 @@ AppStatus Scene::Init()
 	}
 	//Assign the tile map reference to the player to check collisions while navigating
 	player->SetTileMap(level);
+	EnemyManager::Instance().SetTilemap(level);
 
 	//Add the Game Over image for the end
 	if (data.LoadTexture(Resource::IMG_GAME_OVER, "images/Spritesheets/HUD Spritesheet/GameOver.png") != AppStatus::OK)
@@ -148,6 +150,8 @@ AppStatus Scene::LoadLevel(int stage)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
+		EnemyManager::Instance().DestroyEnemies();
+		EnemyManager::Instance().SpawnZombie({ 236,143 });
 		if (player->isGUIinit == false) {
 			player->InitGUI();
 		}
@@ -194,6 +198,8 @@ AppStatus Scene::LoadLevel(int stage)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
+		EnemyManager::Instance().DestroyEnemies();
+		EnemyManager::Instance().SpawnPanther({ 16,143 });
 	}
 	else if (stage == 3)
 	{
@@ -363,6 +369,8 @@ void Scene::Update()
 	Point left_position(16+3, player->GetPos().y);
 	Point right_position(256-3, player->GetPos().y);
 
+	EnemyManager::Instance().SetTilemap(level);
+
 	//Switch between the different debug modes: off, on (sprites & hitboxes), on (hitboxes) 
 	if (IsKeyPressed(KEY_F2))
 	{
@@ -416,6 +424,7 @@ void Scene::Update()
 	}
 
 	level->Update();
+	EnemyManager::Instance().Update();
 	player->Update();
 	CheckCollisions();
 }
@@ -430,11 +439,13 @@ void Scene::Render()
 		{
 			RenderObjects(); 
 			player->Draw();
+			EnemyManager::Instance().Render();
 			player->weapon->Draw();
 		}
 		if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
 		{
 			RenderObjectsDebug(YELLOW);
+			EnemyManager::Instance().RenderDebug();
 			player->DrawDebug(GREEN);
 			player->weapon->DrawDebug(RED);
 
