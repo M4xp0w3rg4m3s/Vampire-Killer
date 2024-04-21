@@ -17,6 +17,8 @@ public:
     void DrawDebug(const Color& col) const;
     int Points() const;
 
+    ObjectType GetType()const;
+
 private:
     ObjectType type;
 };

@@ -126,7 +126,7 @@ void EnemyZombie::MoveX()
 	else if (state == EnemyState::DEAD) {
 		SetAnimation((int)EnemyAnim::EMPTY);
 	}
-	printf("position: %d \n", pos.x);
+
 }
 void EnemyZombie::DrawDebug(const Color& col) const
 {

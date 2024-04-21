@@ -37,6 +37,7 @@ Scene::~Scene()
 		delete obj;
 	}
 	objects.clear();
+
 }
 AppStatus Scene::Init()
 {
@@ -103,7 +104,8 @@ AppStatus Scene::LoadLevel(int stage)
 	int *mapBack = nullptr;
 	int *map = nullptr;
 	int *mapFront = nullptr;
-	Object *obj = nullptr;
+	//Object *obj = nullptr;
+	Object* obj;
 	
 	ClearLevel();
 
@@ -226,7 +228,7 @@ AppStatus Scene::LoadLevel(int stage)
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,505,  0,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,505,  0,
 			500,  0,  0,  0,  0,124,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,505,  0,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,505,  0,
+			500,  0,  0,  0,  0, 129,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,505,  0,
 			500, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39,  0,
 			  0, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,  0
 		};
@@ -312,6 +314,8 @@ AppStatus Scene::LoadLevel(int stage)
 				player->SetPos(pos);
 				mapBack[i] = 0;
 			}
+			
+
 			++i;
 		}
 	}
@@ -330,6 +334,14 @@ AppStatus Scene::LoadLevel(int stage)
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				player->SetPos(pos);
+				map[i] = 0;
+			}
+			else if (tile == Tile::CHAIN)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::CHAIN);
+				objects.push_back(obj);
 				map[i] = 0;
 			}
 			++i;
@@ -519,8 +531,10 @@ void Scene::CheckCollisions()
 		obj_box = (*it)->GetHitbox();
 		if(player_box.TestAABB(obj_box))
 		{
-			player->IncrScore((*it)->Points());
-			
+			if ((*it)->GetType() == ObjectType::CHAIN) {
+
+				player->weapon->SetWeapon(WeaponType::CHAIN);
+			}
 			//Delete the object
 			delete* it; 
 			//Erase the object from the vector and get the iterator to the next valid element

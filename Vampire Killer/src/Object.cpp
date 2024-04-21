@@ -9,7 +9,7 @@ Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, O
     const int n = TILE_SIZE;
     switch (type)
     {
-    case ObjectType::CHAIN: rc = { 15 * n, 4 * n, n, n }; break;
+    case ObjectType::CHAIN: rc = { 15 * n,  4 * n, n, n }; break;
 
     default: LOG("Internal error: object creation of invalid type");
     }
@@ -26,5 +26,10 @@ void Object::DrawDebug(const Color& col) const
 }
 int Object::Points() const
 {
+    return 0;
+}
 
+ObjectType Object::GetType() const
+{
+    return ObjectType();
 }
