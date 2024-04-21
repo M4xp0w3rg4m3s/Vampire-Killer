@@ -91,6 +91,8 @@ AppStatus Scene::Init()
 	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
 
+	AudioPlayer::Instance().CreateSound("audio/SFX/1.wav", "Collect");
+
 	player->weapon->SetWeapon(WeaponType::WHIP);
 
     return AppStatus::OK;
@@ -195,7 +197,7 @@ AppStatus Scene::LoadLevel(int stage)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-			  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
@@ -245,6 +247,7 @@ AppStatus Scene::LoadLevel(int stage)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
+		EnemyManager::Instance().DestroyEnemies();
 	}
 	else if (stage == 4)
 	{
@@ -531,6 +534,8 @@ void Scene::CheckCollisions()
 		obj_box = (*it)->GetHitbox();
 		if(player_box.TestAABB(obj_box))
 		{
+			AudioPlayer::Instance().PlaySoundByName("Collect");
+
 			if ((*it)->GetType() == ObjectType::CHAIN) {
 
 				player->weapon->SetWeapon(WeaponType::CHAIN);

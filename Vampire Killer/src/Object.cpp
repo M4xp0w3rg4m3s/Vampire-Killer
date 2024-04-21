@@ -19,6 +19,7 @@ Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, O
 }
 Object::~Object()
 {
+    render->Release();
 }
 void Object::DrawDebug(const Color& col) const
 {

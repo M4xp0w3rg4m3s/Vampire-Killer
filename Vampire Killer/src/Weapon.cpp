@@ -14,6 +14,7 @@ Weapon::Weapon(const Point& p) :
 }
 Weapon::~Weapon()
 {
+	Release();
 }
 AppStatus Weapon::Initialise()
 {

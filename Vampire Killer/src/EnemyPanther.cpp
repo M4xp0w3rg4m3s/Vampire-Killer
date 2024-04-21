@@ -77,8 +77,14 @@ void EnemyPanther::SetAnimation(int id)
 }
 void EnemyPanther::Render()
 {
-	Point p = GetRenderingPosition();
-	render->Draw(p.x, p.y);
+	if (pos.x > 16 && pos.x < 256)
+	{
+		Point p = GetRenderingPosition();
+		render->Draw(p.x, p.y);
+	}
+	else {
+		EnemyManager::Instance().DestroyEnemies();
+	}
 }
 void EnemyPanther::Reset()
 {
