@@ -1,8 +1,8 @@
 
-#include "EnemyZombie.h"
+#include "EnemyPanther.h"
 #include "EnemyManager.h"
 
-EnemyZombie::EnemyZombie(Point pos) : Enemy(pos, ZOMBIE_HITBOX_HEIGHT, ZOMBIE_HITBOX_WIDTH, ZOMBIE_SPRITE_HEIGHT, ZOMBIE_SPRITE_WIDTH)
+EnemyPanther::EnemyPanther(Point pos) : Enemy(pos, PANTHER_HITBOX_HEIGHT, PANTHER_HITBOX_WIDTH, PANTHER_SPRITE_HEIGHT, PANTHER_SPRITE_WIDTH)
 {
 	state = EnemyState::ADVANCING;
 	look = EnemyLook::LEFT;
@@ -10,10 +10,10 @@ EnemyZombie::EnemyZombie(Point pos) : Enemy(pos, ZOMBIE_HITBOX_HEIGHT, ZOMBIE_HI
 
 	Initialise();
 }
-EnemyZombie::~EnemyZombie()
+EnemyPanther::~EnemyPanther()
 {
 }
-AppStatus EnemyZombie::Initialise()
+AppStatus EnemyPanther::Initialise()
 {
 	if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
 		SetPos({ 255, 176 });
@@ -23,17 +23,17 @@ AppStatus EnemyZombie::Initialise()
 	}
 
 	int i;
-	const float n = (float)ZOMBIE_SPRITE_HEIGHT;
-	const float n2 = (float)ZOMBIE_SPRITE_WIDTH;
+	const float n = (float)PANTHER_SPRITE_HEIGHT;
+	const float n2 = (float)PANTHER_SPRITE_WIDTH;
 	AnimationFrame = 0;
 
 	ResourceManager& data = ResourceManager::Instance();
-	if (data.LoadTexture(Resource::IMG_ZOMBIE, "images/Spritesheets/Enemies & Characters/Enemy 1 Sprite Sheet.png") != AppStatus::OK)
+	if (data.LoadTexture(Resource::IMG_PANTHER, "images/Spritesheets/Enemies & Characters/Enemy 4 Sprite Sheet.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
 	}
 
-	render = new Sprite(data.GetTexture(Resource::IMG_ZOMBIE));
+	render = new Sprite(data.GetTexture(Resource::IMG_PANTHER));
 	if (render == nullptr)
 	{
 		LOG("Failed to allocate memory for player sprite");
@@ -44,67 +44,66 @@ AppStatus EnemyZombie::Initialise()
 	sprite->SetNumberAnimations((int)EnemyAnim::NUM_ANIMATIONS);
 
 	sprite->SetAnimationDelay((int)EnemyAnim::ADVANCING_RIGHT, ANIM_DELAY);
-	for (i = 0; i < 2; ++i)
-		sprite->AddKeyFrame((int)EnemyAnim::ADVANCING_RIGHT, { (float)i * n, 0, -n, n });
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)EnemyAnim::ADVANCING_RIGHT, { (float)i * n, n, -n, n });
 	sprite->SetAnimationDelay((int)EnemyAnim::ADVANCING_LEFT, ANIM_DELAY);
-	for (i = 0; i < 2; ++i)
-		sprite->AddKeyFrame((int)EnemyAnim::ADVANCING_LEFT, { (float)i * n, 0, n, n });
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)EnemyAnim::ADVANCING_LEFT, { (float)i * n, n, n, n });
+
+	sprite->SetAnimationDelay((int)EnemyAnim::IDLE_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)EnemyAnim::IDLE_LEFT, { 0, 0, n, n });
+	sprite->SetAnimationDelay((int)EnemyAnim::IDLE_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)EnemyAnim::IDLE_RIGHT, { 0, 0, -n, n });
 
 	sprite->SetAnimationDelay((int)EnemyAnim::EMPTY, ANIM_DELAY);
 	sprite->AddKeyFrame((int)EnemyAnim::EMPTY, { 0, 0, 0, 0 });
 
 	state = EnemyState::IDLE;
-	look = EnemyLook::LEFT;
-	SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
+	look = EnemyLook::RIGHT;
+	SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
 
 	return AppStatus::OK;
 }
-void EnemyZombie::Update()
+void EnemyPanther::Update()
 {
 	Brain();
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 }
-void EnemyZombie::SetAnimation(int id)
+void EnemyPanther::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetAnimation(id);
 }
-void EnemyZombie::Render()
+void EnemyPanther::Render()
 {
-	if (pos.x > 16 && pos.x < 256)
-	{
-		Point p = GetRenderingPosition();
-		render->Draw(p.x, p.y);
-	}
-	else {
-		EnemyManager::Instance().DestroyEnemies();
-	}
+	Point p = GetRenderingPosition();
+	render->Draw(p.x, p.y);
 }
-void EnemyZombie::Reset()
+void EnemyPanther::Reset()
 {
 }
-void EnemyZombie::Brain()
+void EnemyPanther::Brain()
 {
 	MoveX();
 }
-void EnemyZombie::SetTileMap(TileMap* tilemap)
+void EnemyPanther::SetTileMap(TileMap* tilemap)
 {
 	map = tilemap;
 }
-void EnemyZombie::AdvanceRight()
+void EnemyPanther::AdvanceRight()
 {
 	state = EnemyState::ADVANCING;
 	look = EnemyLook::RIGHT;
 	SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
 }
-void EnemyZombie::AdvanceLeft()
+void EnemyPanther::AdvanceLeft()
 {
 	state = EnemyState::ADVANCING;
 	look = EnemyLook::LEFT;
 	SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
 }
-void EnemyZombie::MoveX()
+void EnemyPanther::MoveX()
 {
 	if (state == EnemyState::IDLE) {
 		if (look == EnemyLook::RIGHT) {
@@ -114,25 +113,28 @@ void EnemyZombie::MoveX()
 			AdvanceLeft();
 		}
 	}
-	else if(state == EnemyState::ADVANCING){
+	else if (state == EnemyState::ADVANCING) {
 		if (look == EnemyLook::RIGHT) {
-			pos.x += ZOMBIE_SPEED;
+			pos.x += PANTHER_SPEED;
 		}
 		else {
 
-			pos.x -= ZOMBIE_SPEED;
+			pos.x -= PANTHER_SPEED;
 		}
 	}
 	else if (state == EnemyState::DEAD) {
 		SetAnimation((int)EnemyAnim::EMPTY);
 	}
-	printf("position: %d \n", pos.x);
+	if (pos.x > 256 || pos.x < 16)
+	{
+		state == EnemyState::DEAD;
+	}
 }
-void EnemyZombie::DrawDebug(const Color& col) const
+void EnemyPanther::DrawDebug(const Color& col) const
 {
 	DrawHitbox(BLUE);
 }
-void EnemyZombie::Release()
+void EnemyPanther::Release()
 {
 	ResourceManager& data = ResourceManager::Instance();
 	data.ReleaseTexture(Resource::IMG_PLAYER);

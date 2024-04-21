@@ -202,6 +202,7 @@ AppStatus Game::Update()
             if (IsKeyPressed(KEY_ESCAPE))
             {
                 FinishPlay();
+                AudioPlayer::Instance().StopMusicByName("VampireKiller");
                 state = GameState::MAIN_MENU;
             }
             else if (scene->PlayerIsDead())

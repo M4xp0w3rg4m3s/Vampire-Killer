@@ -55,6 +55,9 @@
     <ClCompile Include="src\EnemyZombie.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="src\EnemyPanther.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Globals.h">
@@ -112,6 +115,9 @@
       <Filter>Entities\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="src\EnemyZombie.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyPanther.h">
       <Filter>Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
