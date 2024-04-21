@@ -13,6 +13,9 @@
 
 #define PLAYER_PHYSICAL_CROUCHING_HEIGHT	22
 
+//The maximum amount of lives a player can have and the initial lives
+#define PLAYER_MAX_LIVES		2
+
 //Horizontal speed and vertical speed while falling down
 #define PLAYER_SPEED			1
 
@@ -78,9 +81,17 @@ public:
 	AppStatus Initialise();
 	void SetTileMap(TileMap* tilemap);
 
+	void InitGUI();
+	bool isGUIinit;
+
 	void InitScore();
 	void IncrScore(int n);
 	int GetScore() const;
+
+	void InitLives();
+	void IncrLives(int n);
+	void DecrLives(int n);
+	int GetLives() const;
 
 	void Update();
 	void DrawDebug(const Color& col) const;
@@ -91,9 +102,14 @@ public:
 	bool HasWon() const;
 	void GodModeSwitch();
 
+	void SetState(State givenState);
+	void SetLook(Look givenLook);
+
 	void Win();
 
 	Weapon* weapon;
+
+	void StartDying();
 
 private:
 	bool IsLookingRight() const;
@@ -122,7 +138,6 @@ private:
 	void StartWhip();
 	void StartThrowing();
 	void StartCrouching();
-	void StartDying();
 	void StartCrouchWhip();
 	void StartCrouchThrowing();
 	void StartClimbingUp();
@@ -151,5 +166,6 @@ private:
 	TileMap *map;
 
 	int score;
+	int lives;
 };
 

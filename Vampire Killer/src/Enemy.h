@@ -1,62 +1,63 @@
-#pragma once
-#include "Entity.h"
-#include "Weapon.h"
-#include "TileMap.h"
-
-//Representation model size: 32x32
-#define ENEMY_FRAME_SIZE	32
-
-//Logical model size: 12x28
-#define ENEMY_PHYSICAL_WIDTH	12
-#define ENEMY_PHYSICAL_HEIGHT	28
-
-//Horizontal speed and vertical speed while falling down
-#define ENEMY_SPEED			1
-
-//Logic states
-enum class EnemyState {
-	IDLE, WALKING, JUMPING, FALLING,
-	DYING, DEAD
-};
-enum class EnemyLook { RIGHT, LEFT };
-
-//Rendering states
-enum class EnemyAnim {
-	IDLE_LEFT, IDLE_RIGHT,
-	WALKING_LEFT, WALKING_RIGHT,
-	DYING,
-	NUM_ANIMATIONS
-};
-
-// Types of enemies
-enum class EnemyType {
-	ZOMBIE, PANTHER
-};
-
-class Enemy : public Entity
-{
-public:
-	Enemy(const Point& p, EnemyState s, EnemyLook view);
-	~Enemy();
-
-	AppStatus Initialise();
-
-	void Update();
-	void DrawDebug(const Color& col) const;
-	void Release();
-
-private:
-
-	void SpawnEnemy(Point pos, EnemyType type);
-
-	void SpawnZombieRight();
-	void SpawnZombieLeft();
-
-	void SpawnPantherRight();
-	void SpawnPantherLeft();
-
-	EnemyState state;
-	EnemyLook look;
-	int AnimationFrame;
-};
-
+//#pragma once
+//#include "Entity.h"
+//#include "Weapon.h"
+//#include "TileMap.h"
+//#include "Player.h"
+//#include "EnemyZombie.h"
+//#include "EnemyManager.h"
+//
+////Logic states
+//enum class EnemyState {
+//	IDLE, ADVANCING, DEAD
+//};
+//enum class EnemyLook { RIGHT, LEFT };
+//
+////Rendering states
+//enum class EnemyAnim {
+//	IDLE_LEFT, IDLE_RIGHT,
+//	ADVANCING_LEFT, ADVANCING_RIGHT,
+//	NUM_ANIMATIONS
+//};
+//
+//class Enemy : public Entity
+//{
+//public:
+//	Enemy();
+//	virtual ~Enemy();
+//
+//	AppStatus Initialise();
+//
+//	void Update();
+//	void Render();
+//
+//	void SetType(EnemyType type);
+//	EnemyType GetType() const;
+//
+//	void Spawn();
+//	void Spawn(const Point& position);
+//
+//	void DrawDebug(const Color& col) const;
+//	void Release();
+//
+//protected:
+//
+//	Enemy* thisEnemy;
+//	EnemyType thisType;
+//
+//	EnemyState state;
+//	EnemyLook look;
+//	TileMap* map;
+//	Player* player;
+//
+//	int AnimationFrame;
+//	int EnemySpeed;
+//
+//	int EnemyFrameHeight;
+//	int EnemyFrameWidth;
+//
+//	int EnemyHitboxHeight;
+//	int EnemyHitboxWidth;
+//
+//
+//};
+//

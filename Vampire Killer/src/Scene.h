@@ -37,6 +37,9 @@ private:
     int currentLevel;
     const Texture2D* game_over;
 
+    bool deathExecuted;
+    bool renderingGameOver;
+
     Camera2D camera;
     DebugMode debug;
 };

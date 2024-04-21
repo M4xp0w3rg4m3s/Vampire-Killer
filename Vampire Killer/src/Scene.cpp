@@ -1,6 +1,7 @@
 #include "Scene.h"
 #include <stdio.h>
 #include "Globals.h"
+#include "EnemyManager.h"
 
 Scene::Scene()
 {
@@ -12,6 +13,8 @@ Scene::Scene()
 	camera.offset = { SIDE_MARGINS, TOP_MARGIN };	//Offset from the target (center of the screen)
 	camera.rotation = 0.0f;					//No rotation
 	camera.zoom = 1.0f;						//Default zoom
+	deathExecuted = false;
+	renderingGameOver = false;
 
 	debug = DebugMode::OFF;
 }
@@ -85,6 +88,8 @@ AppStatus Scene::Init()
 	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
 
+	player->weapon->SetWeapon(WeaponType::WHIP);
+
     return AppStatus::OK;
 }
 AppStatus Scene::LoadLevel(int stage)
@@ -143,8 +148,9 @@ AppStatus Scene::LoadLevel(int stage)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
-
-		player->InitScore();
+		if (player->isGUIinit == false) {
+			player->InitGUI();
+		}
 	}
 	else if (stage == 2)
 	{
@@ -369,8 +375,18 @@ void Scene::Update()
 	if (IsKeyPressed(KEY_ONE))			LoadLevel(1);
 	else if (IsKeyPressed(KEY_TWO))		LoadLevel(2);
 	else if (IsKeyPressed(KEY_THREE))	LoadLevel(3);
-	else if (IsKeyPressed(KEY_F3))	    player->Win();
+	else if (IsKeyPressed(KEY_C))		player->weapon->SetWeapon(WeaponType::CHAIN);
+	else if (IsKeyPressed(KEY_F3)) {
+		AudioPlayer::Instance().StopMusicByName("VampireKiller");
+		player->Win();
+	}
 	else if (IsKeyPressed(KEY_F1))	    player->GodModeSwitch();
+	else if (IsKeyPressed(KEY_F4))
+	{
+		if (!player->IsGodMode()) {
+			player->StartDying();
+		}
+	}
 
 	box = player->GetHitbox();
 
@@ -421,14 +437,46 @@ void Scene::Render()
 			RenderObjectsDebug(YELLOW);
 			player->DrawDebug(GREEN);
 			player->weapon->DrawDebug(RED);
+
 		}
 		level->RenderLate();
+
+		deathExecuted = false;
 	}
-	else {
+	else if(player->IsDead() && deathExecuted == false){
+		if (player->GetLives() <= 0) {
+			AudioPlayer::Instance().StopMusicByName("VampireKiller");
+			renderingGameOver = true;
+			deathExecuted = true;
+		}
+		else {
+			player->DecrLives(1);
+			deathExecuted = true;
+			AudioPlayer::Instance().StopMusicByName("VampireKiller");
+			
+			player->SetPos({ 20,140 });
+			player->SetState(State::IDLE);
+			player->weapon->SetWeapon(WeaponType::WHIP);
+			player->SetLook(Look::RIGHT);
+
+			LoadLevel(1);
+		}
+	}
+
+	if (renderingGameOver) {
 		RenderGameOver();
 	}
 
 	EndMode2D();
+
+	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES) {
+		if (player->IsGodMode()) {
+			DrawText("GOD MODE : ON", 10, 30, 8, LIGHTGRAY);
+		}
+		else {
+			DrawText("GOD MODE : OFF", 10, 30, 8, LIGHTGRAY);
+		}
+	}
 
 	RenderGUI();
 }
@@ -439,7 +487,12 @@ void Scene::Release()
 	ClearLevel();
 }
 bool Scene::PlayerIsDead() const {
-	return player->IsDead();
+	if (player->GetLives() <= 0) {
+		return player->IsDead();
+	}
+	else {
+		return false;
+	}
 }
 bool Scene::PlayerHasWon() const {
 	return player->HasWon();
@@ -493,7 +546,14 @@ void Scene::RenderObjectsDebug(const Color& col) const
 }
 void Scene::RenderGUI() const
 {
-
+	int currentLives = player->GetLives();
+	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 10, 8, LIGHTGRAY);
+	if (currentLives >= 0) {
+		DrawText(TextFormat("LIVES : %d", player->GetLives()), 10, 20, 8, LIGHTGRAY);
+	}
+	else {
+		DrawText("LIVES : 0", 10, 20, 8, LIGHTGRAY);
+	}
 }
 void Scene::RenderGameOver() const
 {

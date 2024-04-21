@@ -59,7 +59,7 @@ AppStatus Weapon::Initialise()
 	sprite->AddKeyFrame((int)WeaponAnim::CHAIN_3_RIGHT, { 2 * n, n2, n, n2 });
 
 	sprite->SetAnimationDelay((int)WeaponAnim::CHAIN_1_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)WeaponAnim::CHAIN_1_LEFT, { n, 0, -n, n2 });
+	sprite->AddKeyFrame((int)WeaponAnim::CHAIN_1_LEFT, { 0, n2, -n, n2 });
 	sprite->SetAnimationDelay((int)WeaponAnim::CHAIN_2_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)WeaponAnim::CHAIN_2_LEFT, { n, n2, -n, n2 });
 	sprite->SetAnimationDelay((int)WeaponAnim::CHAIN_3_LEFT, ANIM_DELAY);
@@ -195,7 +195,7 @@ void Weapon::DrawDebug(const Color& col) const
 				Entity::DrawHitbox(pos.x + 15, pos.y - 63, width + 7, height, col);
 			}
 			else {
-				Entity::DrawHitbox(pos.x - 15, pos.y - 63, width - 7, height, col);
+				Entity::DrawHitbox(pos.x - 22, pos.y - 63, width + 7, height, col);
 			}
 		}
 	}

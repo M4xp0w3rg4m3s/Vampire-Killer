@@ -16,10 +16,11 @@ Player::Player(const Point& p, State s, Look view) :
 	die_delay = PLAYER_DYING_DELAY;
 	map = nullptr;
 	weapon = new Weapon(p);
-	weapon->SetWeapon(WeaponType::WHIP);
 	score = 0;
+	lives = PLAYER_MAX_LIVES;
 	AnimationFrame = 0;
 	GodMode = false;
+	isGUIinit = false;
 }
 Player::~Player()
 {
@@ -114,6 +115,11 @@ AppStatus Player::Initialise()
 
 	return AppStatus::OK;
 }
+void Player::InitGUI() {
+	InitScore();
+	InitLives();
+	isGUIinit = true;
+}
 void Player::InitScore()
 {
 	score = 0;
@@ -125,6 +131,22 @@ void Player::IncrScore(int n)
 int Player::GetScore() const
 {
 	return score;
+}
+void Player::InitLives()
+{
+	lives = PLAYER_MAX_LIVES;
+}
+void Player::IncrLives(int n)
+{
+	lives += n;
+}
+void Player::DecrLives(int n)
+{
+	lives -= n;
+}
+int Player::GetLives() const
+{
+	return lives;
 }
 void Player::SetTileMap(TileMap* tilemap)
 {
@@ -180,6 +202,14 @@ void Player::GodModeSwitch() {
 		GodMode = true;
 	}
 }
+void Player::SetState(State givenState)
+{
+	state = givenState;
+}
+void Player::SetLook(Look givenLook)
+{
+	look = givenLook;
+}
 void Player::SetAnimation(int id)
 {
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -226,7 +256,6 @@ void Player::StartJumping()
 }
 void Player::StartWhip() {
 	state = State::WHIP;
-	weapon->SetWeapon(WeaponType::WHIP);
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::ATTACKING_RIGHT);
 	else					SetAnimation((int)PlayerAnim::ATTACKING_LEFT);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -258,7 +287,6 @@ void Player::StartCrouching()
 }
 void Player::StartCrouchWhip() {
 	state = State::CROUCH_WHIP;
-	weapon->SetWeapon(WeaponType::WHIP);
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCH_ATTACK_RIGHT);
 	else					SetAnimation((int)PlayerAnim::CROUCH_ATTACK_LEFT);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
@@ -504,13 +532,6 @@ void Player::Static()
 			{
 				StartCrouchThrowing();
 			}
-			else if (IsKeyPressed(KEY_F4))
-			{
-				if (!GodMode) {
-					StartDying();
-				}
-			}
-			
 		}
 	}
 }
@@ -706,7 +727,12 @@ void Player::Die()
 
 void Player::DrawDebug(const Color& col) const
 {	
-	Entity::DrawHitbox(pos.x, pos.y, width, height, col);
+	if (!IsGodMode()) {
+		Entity::DrawHitbox(pos.x, pos.y, width, height, col);
+	}
+	else {
+		Entity::DrawHitbox(pos.x, pos.y, width, height, PINK);
+	}
 	
 	DrawText(TextFormat("Position: (%d,%d)\nSize: %dx%d\nFrame: %dx%d", pos.x, pos.y, width, height, frame_width, frame_height), 170, 0, 8, LIGHTGRAY);
 	DrawPixel(pos.x, pos.y, WHITE);
