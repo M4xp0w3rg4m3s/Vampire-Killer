@@ -2,61 +2,53 @@
 #include "Entity.h"
 #include "Weapon.h"
 #include "TileMap.h"
-
-//Representation model size: 32x32
-#define ENEMY_FRAME_SIZE	32
-
-//Logical model size: 12x28
-#define ENEMY_PHYSICAL_WIDTH	12
-#define ENEMY_PHYSICAL_HEIGHT	28
-
-//Horizontal speed and vertical speed while falling down
-#define ENEMY_SPEED			1
+#include "Player.h"
 
 //Logic states
 enum class EnemyState {
-	IDLE, WALKING, JUMPING, FALLING,
-	DYING, DEAD
+	IDLE, ADVANCING, DEAD
 };
 enum class EnemyLook { RIGHT, LEFT };
 
 //Rendering states
 enum class EnemyAnim {
 	IDLE_LEFT, IDLE_RIGHT,
-	WALKING_LEFT, WALKING_RIGHT,
-	DYING,
+	ADVANCING_LEFT, ADVANCING_RIGHT,
 	NUM_ANIMATIONS
-};
-
-// Types of enemies
-enum class EnemyType {
-	ZOMBIE, PANTHER
 };
 
 class Enemy : public Entity
 {
 public:
-	Enemy(const Point& p, EnemyState s, EnemyLook view);
-	~Enemy();
+	Enemy();
+	virtual ~Enemy();
 
 	AppStatus Initialise();
 
 	void Update();
+	void Render();
+
 	void DrawDebug(const Color& col) const;
 	void Release();
 
-private:
+	void SetSpawn(int id);
 
-	void SpawnEnemy(Point pos, EnemyType type);
-
-	void SpawnZombieRight();
-	void SpawnZombieLeft();
-
-	void SpawnPantherRight();
-	void SpawnPantherLeft();
+protected:
 
 	EnemyState state;
 	EnemyLook look;
+	TileMap* map;
+	Player* player;
+
 	int AnimationFrame;
+	int EnemySpeed;
+
+	int EnemyFrameHeight;
+	int EnemyFrameWidth;
+
+	int EnemyHitboxHeight;
+	int EnemyHitboxWidth;
+
+
 };
 

@@ -12,6 +12,8 @@ enum class Resource {
     IMG_MENU_PLAY,
     IMG_MENU_EMPTY,
     IMG_PLAYER, 
+    IMG_ZOMBIE,
+    IMG_PANTHER,
     IMG_WEAPON,
     IMG_TILES,
     IMG_ITEMS,

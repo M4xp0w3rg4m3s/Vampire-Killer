@@ -47,7 +47,13 @@
       <Filter>Entities</Filter>
     </ClCompile>
     <ClCompile Include="src\Enemy.cpp">
-      <Filter>Entities</Filter>
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnemyManager.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnemyZombie.cpp">
+      <Filter>Entities\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +106,13 @@
       <Filter>Entities</Filter>
     </ClInclude>
     <ClInclude Include="src\Enemy.h">
-      <Filter>Entities</Filter>
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyManager.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyZombie.h">
+      <Filter>Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -118,6 +130,9 @@
     </Filter>
     <Filter Include="Geometry">
       <UniqueIdentifier>{781b1539-620c-4c36-8898-bab26c32aca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Enemies">
+      <UniqueIdentifier>{03b14583-bc18-4053-9a21-8df64ef84e9a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
