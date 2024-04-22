@@ -236,7 +236,7 @@ void Game::Render()
 {
     //Draw everything in the render texture, note this will not be rendered on screen, yet
     BeginTextureMode(target);
-    ClearBackground(BLACK);
+    ClearBackground({6,6,6,255});
     
     switch (state)
     {

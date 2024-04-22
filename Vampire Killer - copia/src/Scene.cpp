@@ -36,8 +36,6 @@ Scene::~Scene()
 	{
 		delete obj;
 	}
-	objects.clear();
-
 }
 AppStatus Scene::Init()
 {
@@ -91,7 +89,7 @@ AppStatus Scene::Init()
 	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
 
-	AudioPlayer::Instance().CreateSound("audio/SFX/1.wav", "Collect");
+	AudioPlayer::Instance().CreateSound("audio/SFX/01.wav", "Collect");
 
 	player->weapon->SetWeapon(WeaponType::WHIP);
 

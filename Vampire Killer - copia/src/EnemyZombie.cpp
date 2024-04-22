@@ -12,6 +12,7 @@ EnemyZombie::EnemyZombie(Point pos) : Enemy(pos, ZOMBIE_HITBOX_HEIGHT, ZOMBIE_HI
 }
 EnemyZombie::~EnemyZombie()
 {
+	Release();
 }
 AppStatus EnemyZombie::Initialise()
 {
