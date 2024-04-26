@@ -24,6 +24,7 @@ Player::Player(const Point& p, State s, Look view) :
 }
 Player::~Player()
 {
+	delete weapon;
 }
 AppStatus Player::Initialise()
 {
