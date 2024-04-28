@@ -129,8 +129,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\maxpo\OneDrive\Documents\GitHub\Vampire-Killers\Vampire Killer - copia\raylib\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\maxpo\OneDrive\Documents\GitHub\Vampire-Killers\Vampire Killer - copia\raylib\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Usuario\Documents\Uni\2n Quatri\Project 1\raylib\raylib\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Usuario\Documents\Uni\2n Quatri\Project 1\raylib\raylib\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
