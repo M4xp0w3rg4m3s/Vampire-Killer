@@ -152,6 +152,11 @@ AppStatus Game::Update()
             {
                 state = GameState::TRANSITION_1;
             }
+            if (IsKeyPressed(KEY_ZERO))
+            {
+                if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
+                state = GameState::PLAYING;
+            }
             break;
         case GameState::TRANSITION_1:
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;

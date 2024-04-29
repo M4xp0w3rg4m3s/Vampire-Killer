@@ -8,13 +8,17 @@ Scene::Scene()
 	player = nullptr;
     level = nullptr;
 	game_over = nullptr;
+
 	currentLevel = 0;
 	camera.target = { 0, 0 };				//Center of the screen
 	camera.offset = { SIDE_MARGINS, TOP_MARGIN };	//Offset from the target (center of the screen)
 	camera.rotation = 0.0f;					//No rotation
 	camera.zoom = 1.0f;						//Default zoom
+
 	deathExecuted = false;
 	renderingGameOver = false;
+
+	font = nullptr;
 
 	debug = DebugMode::OFF;
 }
@@ -35,6 +39,11 @@ Scene::~Scene()
 	for (Entity* obj : objects)
 	{
 		delete obj;
+	}
+	if (font != nullptr)
+	{
+		delete font;
+		font = nullptr;
 	}
 }
 AppStatus Scene::Init()
@@ -92,6 +101,20 @@ AppStatus Scene::Init()
 	AudioPlayer::Instance().CreateSound("audio/SFX/01.wav", "Collect");
 
 	player->weapon->SetWeapon(WeaponType::WHIP);
+
+	//Create text font 1
+	font = new Text();
+	if (font == nullptr)
+	{
+		LOG("Failed to allocate memory for font 1");
+		return AppStatus::ERROR;
+	}
+	//Initialise text font 1
+	if (font->Initialise(Resource::IMG_FONT, "images/Spritesheets/HUD Spritesheet/Font.png", ' ', 8) != AppStatus::OK)
+	{
+		LOG("Failed to initialise Level");
+		return AppStatus::ERROR;
+	}
 
     return AppStatus::OK;
 }
@@ -712,13 +735,21 @@ void Scene::RenderObjectsDebug(const Color& col) const
 void Scene::RenderGUI() const
 {
 	int currentLives = player->GetLives();
-	DrawText(TextFormat("SCORE : %d", player->GetScore()), 10, 10, 8, LIGHTGRAY);
+
+	DrawText("SCORE :", 10, 10, 8, WHITE);
+
+	font->Draw(50, 10, "33", WHITE);
+
 	if (currentLives >= 0) {
-		DrawText(TextFormat("LIVES : %d", player->GetLives()), 10, 20, 8, LIGHTGRAY);
+		DrawText("LIVES :", 10, 20, 8, WHITE);
+		font->Draw(50, 20, TextFormat("%d", player->GetLives()), WHITE);
 	}
 	else {
-		DrawText("LIVES : 0", 10, 20, 8, LIGHTGRAY);
+		DrawText("LIVES :", 10, 20, 8, WHITE);
+		font->Draw(50, 20, "0", WHITE);
 	}
+
+
 }
 void Scene::RenderGameOver() const
 {
