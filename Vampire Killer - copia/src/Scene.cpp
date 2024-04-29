@@ -8,6 +8,7 @@ Scene::Scene()
 	player = nullptr;
     level = nullptr;
 	game_over = nullptr;
+	hud = nullptr;
 
 	currentLevel = 0;
 	camera.target = { 0, 0 };				//Center of the screen
@@ -94,6 +95,13 @@ AppStatus Scene::Init()
 		return AppStatus::ERROR;
 	}
 	game_over = data.GetTexture(Resource::IMG_GAME_OVER);
+
+	//Add the Hud image for the top
+	if (data.LoadTexture(Resource::IMG_HUD, "images/Spritesheets/HUD Spritesheet/EmptyHUD.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	hud = data.GetTexture(Resource::IMG_HUD);
 
 	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
@@ -667,12 +675,16 @@ void Scene::Render()
 		}
 	}
 
+	DrawTexture(*hud, 0, 0, WHITE);
+
 	RenderGUI();
 }
 void Scene::Release()
 {
 	ResourceManager& data = ResourceManager::Instance();
 	data.ReleaseTexture(Resource::IMG_GAME_OVER);
+
+	data.ReleaseTexture(Resource::IMG_HUD);
 
     level->Release();
 	player->Release();
@@ -744,17 +756,15 @@ void Scene::RenderGUI() const
 {
 	int currentLives = player->GetLives();
 
-	DrawText("SCORE :", 10, 10, 8, WHITE);
-
-	font->Draw(50, 10, "33", WHITE);
+	font->Draw(64, 14, "33", WHITE);
+	
+	font->Draw(164, 14, TextFormat("%d", currentLevel), WHITE);
 
 	if (currentLives >= 0) {
-		DrawText("LIVES :", 10, 20, 8, WHITE);
-		font->Draw(50, 20, TextFormat("%d", player->GetLives()), WHITE);
+		font->Draw(236, 14, TextFormat("%d", player->GetLives()), WHITE);
 	}
 	else {
-		DrawText("LIVES :", 10, 20, 8, WHITE);
-		font->Draw(50, 20, "0", WHITE);
+		font->Draw(236, 14, "0", WHITE);
 	}
 
 

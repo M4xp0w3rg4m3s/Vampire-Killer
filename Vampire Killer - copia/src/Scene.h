@@ -37,6 +37,7 @@ private:
     std::vector<Object*> objects;
     int currentLevel;
     const Texture2D* game_over;
+    const Texture2D* hud;
 
     bool deathExecuted;
     bool renderingGameOver;
