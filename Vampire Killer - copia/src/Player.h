@@ -15,6 +15,7 @@
 
 //The maximum amount of lives a player can have and the initial lives
 #define PLAYER_MAX_LIVES		2
+#define PLAYER_MAX_LIFE			16
 
 //Horizontal speed and vertical speed while falling down
 #define PLAYER_SPEED			1
@@ -87,6 +88,11 @@ public:
 	void InitScore();
 	void IncrScore(int n);
 	int GetScore() const;
+
+	void InitLife();
+	void IncrLife(int n);
+	void DecrLife(int n);
+	int GetLife() const;
 
 	void InitLives();
 	void IncrLives(int n);
@@ -167,5 +173,6 @@ private:
 
 	int score;
 	int lives;
+	int life;
 };
 
