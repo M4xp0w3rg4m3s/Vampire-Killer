@@ -567,13 +567,13 @@ void Scene::Update()
 		player->Win();
 	}
 	else if (IsKeyPressed(KEY_F1))	    player->GodModeSwitch();
-	else if (IsKeyPressed(KEY_F4))
+	else if (IsKeyPressed(KEY_F4) || player->GetLife() == 0)
 	{
 		if (!player->IsGodMode()) {
 			player->StartDying();
+			player->InitLife();
 		}
 	}
-
 	else if (IsKeyPressed(KEY_F5))
 	{
 		if (!player->IsGodMode()) {

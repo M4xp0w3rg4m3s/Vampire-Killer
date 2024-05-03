@@ -9,6 +9,7 @@
 #define PANTHER_HITBOX_HEIGHT	16
 #define PANTHER_HITBOX_WIDTH	32
 
+#define PANTHER_DAMAGE			3
 
 class EnemyPanther : public Enemy
 {

@@ -9,6 +9,7 @@
 #define ZOMBIE_HITBOX_HEIGHT	32
 #define ZOMBIE_HITBOX_WIDTH		16
 
+#define ZOMBIE_DAMAGE			1
 
 class EnemyZombie : public Enemy
 {

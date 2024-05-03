@@ -157,11 +157,15 @@ void Player::InitLife()
 }
 void Player::IncrLife(int n)
 {
-	life += n;
+	if (life <= 16) {
+		life += n;
+	}
 }
 void Player::DecrLife(int n)
 {
-	life -= n;
+	if (life >= 0) {
+		life -= n;
+	}
 }
 int Player::GetLife() const
 {
