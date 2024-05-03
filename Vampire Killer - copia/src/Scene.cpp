@@ -574,6 +574,14 @@ void Scene::Update()
 		}
 	}
 
+	else if (IsKeyPressed(KEY_F5))
+	{
+		if (!player->IsGodMode()) {
+			player->DecrLife(1);
+		}
+	}
+
+
 	box = player->GetHitbox();
 
 	AudioPlayer::Instance().Update();
@@ -767,6 +775,7 @@ void Scene::RenderGUI() const
 		font->Draw(236, 14, "0", WHITE);
 	}
 
+	DrawRectangle(68, 28, player->GetLife()* 4, 4, {247, 176, 144, 255});
 
 }
 void Scene::RenderGameOver() const
