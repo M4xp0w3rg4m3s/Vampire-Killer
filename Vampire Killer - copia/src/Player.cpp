@@ -18,7 +18,6 @@ Player::Player(const Point& p, State s, Look view) :
 	weapon = new Weapon(p);
 	score = 0;
 	lives = PLAYER_MAX_LIVES;
-	life = PLAYER_MAX_LIFE;
 	AnimationFrame = 0;
 	GodMode = false;
 	isGUIinit = false;
@@ -120,7 +119,6 @@ AppStatus Player::Initialise()
 void Player::InitGUI() {
 	InitScore();
 	InitLives();
-	InitLife();
 	isGUIinit = true;
 }
 void Player::InitScore()
@@ -150,22 +148,6 @@ void Player::DecrLives(int n)
 int Player::GetLives() const
 {
 	return lives;
-}
-void Player::InitLife()
-{
-	life = PLAYER_MAX_LIFE;
-}
-void Player::IncrLife(int n)
-{
-	life += n;
-}
-void Player::DecrLife(int n)
-{
-	life -= n;
-}
-int Player::GetLife() const
-{
-	return life;
 }
 void Player::SetTileMap(TileMap* tilemap)
 {

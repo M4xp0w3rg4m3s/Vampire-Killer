@@ -13,9 +13,8 @@
 
 #define PLAYER_PHYSICAL_CROUCHING_HEIGHT	22
 
-//The initial and maximum amount of lives a player can have and life
+//The maximum amount of lives a player can have and the initial lives
 #define PLAYER_MAX_LIVES		2
-#define PLAYER_MAX_LIFE			16
 
 //Horizontal speed and vertical speed while falling down
 #define PLAYER_SPEED			1
@@ -94,11 +93,6 @@ public:
 	void DecrLives(int n);
 	int GetLives() const;
 
-	void InitLife();
-	void IncrLife(int n);
-	void DecrLife(int n);
-	int GetLife() const;
-
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void Release();
@@ -173,6 +167,5 @@ private:
 
 	int score;
 	int lives;
-	int life;
 };
 
