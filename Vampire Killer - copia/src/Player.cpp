@@ -510,19 +510,11 @@ void Player::Static()
 	{
 		LogicCrouching();
 	}
-	else if (state == State::WHIP)
+	else if (state == State::WHIP || state == State::CROUCH_WHIP)
 	{
 		LogicAttack();
 	}
-	else if (state == State::CROUCH_WHIP)
-	{
-		LogicAttack();
-	}
-	else if (state == State::THROWING)
-	{
-		LogicThrow();
-	}
-	else if (state == State::CROUCH_THROWING)
+	else if (state == State::THROWING || state == State::CROUCH_THROWING)
 	{
 		LogicThrow();
 	}
@@ -767,4 +759,8 @@ void Player::Release()
 
 	weapon->Release();
 	render->Release();
+}
+State Player::GetState() const
+{
+	return state;
 }

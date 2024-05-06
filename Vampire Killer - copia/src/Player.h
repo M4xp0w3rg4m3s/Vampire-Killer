@@ -102,6 +102,7 @@ public:
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void Release();
+	State GetState() const;
 	
 	bool IsGodMode() const;
 	bool IsDead() const;

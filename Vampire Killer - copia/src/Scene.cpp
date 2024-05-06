@@ -569,9 +569,8 @@ void Scene::Update()
 	else if (IsKeyPressed(KEY_F1))	    player->GodModeSwitch();
 	else if (IsKeyPressed(KEY_F4) || player->GetLife() == 0)
 	{
-		if (!player->IsGodMode()) {
+		if (!player->IsGodMode() && player->GetState() != State::DYING) {
 			player->StartDying();
-			player->InitLife();
 		}
 	}
 	else if (IsKeyPressed(KEY_F5))
@@ -663,6 +662,7 @@ void Scene::Render()
 			player->SetState(State::IDLE);
 			player->weapon->SetWeapon(WeaponType::WHIP);
 			player->SetLook(Look::RIGHT);
+			player->InitLife();
 
 			LoadLevel(1);
 		}
@@ -775,7 +775,9 @@ void Scene::RenderGUI() const
 		font->Draw(236, 14, "0", WHITE);
 	}
 
-	DrawRectangle(68, 28, player->GetLife()* 4, 4, {247, 176, 144, 255});
+	if (player->GetLife() > 0) {
+		DrawRectangle(68, 28, player->GetLife() * 4, 4, { 247, 176, 144, 255 });
+	}
 
 }
 void Scene::RenderGameOver() const
