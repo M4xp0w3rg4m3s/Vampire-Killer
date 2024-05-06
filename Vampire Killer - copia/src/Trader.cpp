@@ -25,12 +25,12 @@ AppStatus Trader::Initialise()
 	AnimationFrame = 0;
 
 	ResourceManager& data = ResourceManager::Instance();
-	if (data.LoadTexture(Resource::IMG_ZOMBIE, "images/Spritesheets/Enemies & Characters/Trader Sprite Sheet.png") != AppStatus::OK)
+	if (data.LoadTexture(Resource::IMG_TRADER, "images/Spritesheets/Enemies & Characters/Trader Sprite Sheet.png") != AppStatus::OK)
 	{
 		return AppStatus::ERROR;
 	}
 
-	render = new Sprite(data.GetTexture(Resource::IMG_ZOMBIE));
+	render = new Sprite(data.GetTexture(Resource::IMG_TRADER));
 	if (render == nullptr)
 	{
 		LOG("Failed to allocate memory for player sprite");
@@ -38,20 +38,7 @@ AppStatus Trader::Initialise()
 	}
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetNumberAnimations((int)EnemyAnim::NUM_ANIMATIONS);
-
-	sprite->SetAnimationDelay((int)EnemyAnim::ADVANCING_RIGHT, ANIM_DELAY);
-	for (i = 0; i < 2; ++i)
-		sprite->AddKeyFrame((int)EnemyAnim::ADVANCING_RIGHT, { (float)i * n, 0, -n, n });
-	sprite->SetAnimationDelay((int)EnemyAnim::ADVANCING_LEFT, ANIM_DELAY);
-	for (i = 0; i < 2; ++i)
-		sprite->AddKeyFrame((int)EnemyAnim::ADVANCING_LEFT, { (float)i * n, 0, n, n });
-
-	sprite->SetAnimationDelay((int)EnemyAnim::EMPTY, ANIM_DELAY);
-	sprite->AddKeyFrame((int)EnemyAnim::EMPTY, { 0, 0, 0, 0 });
-
-	state = EnemyState::IDLE;
-	SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
+	sprite->SetNumberAnimations((int)TraderAnim::NUM_ANIMATIONS);
 
 	return AppStatus::OK;
 }
