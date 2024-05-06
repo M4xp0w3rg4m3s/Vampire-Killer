@@ -26,6 +26,10 @@ void EnemyManager::SetTilemap(TileMap* tilemap)
 		}
 	}
 }
+void EnemyManager::SetTarget(Player* player)
+{
+	target = player;
+}
 void EnemyManager::SpawnZombie(Point pos)
 {
 	Enemy* newEnemy = new EnemyZombie(pos);

@@ -7,6 +7,7 @@ EnemyPanther::EnemyPanther(Point pos) : Enemy(pos, PANTHER_HITBOX_HEIGHT, PANTHE
 	state = EnemyState::ADVANCING;
 	look = EnemyLook::RIGHT;
 	int AnimationFrame = 0;
+	Damage = PANTHER_DAMAGE;
 
 	Initialise();
 }

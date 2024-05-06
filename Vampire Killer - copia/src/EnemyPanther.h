@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy.h"
 
-#define PANTHER_SPEED	1
+#define PANTHER_SPEED	2
 
 #define PANTHER_SPRITE_HEIGHT	32
 #define PANTHER_SPRITE_WIDTH	32
