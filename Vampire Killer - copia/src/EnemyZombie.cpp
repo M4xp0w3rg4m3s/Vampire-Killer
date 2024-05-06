@@ -7,6 +7,7 @@ EnemyZombie::EnemyZombie(Point pos) : Enemy(pos, ZOMBIE_HITBOX_HEIGHT, ZOMBIE_HI
 	state = EnemyState::ADVANCING;
 	look = EnemyLook::LEFT;
 	int AnimationFrame = 0;
+	Damage = ZOMBIE_DAMAGE;
 
 	Initialise();
 }

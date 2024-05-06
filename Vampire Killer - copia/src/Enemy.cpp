@@ -8,7 +8,7 @@
 
 Enemy::Enemy(Point pos, int height, int width, int frameheight, int framewidth) : Entity(pos, width, height, framewidth, frameheight)
 {
-
+	Damage = 0;
 }
 Enemy::~Enemy()
 {
@@ -38,6 +38,10 @@ void Enemy::DrawDebug(const Color& col) const
 void Enemy::Release()
 {
 	render->Release();
+}
+int Enemy::GetDamage() const
+{
+	return Damage;
 }
 
 

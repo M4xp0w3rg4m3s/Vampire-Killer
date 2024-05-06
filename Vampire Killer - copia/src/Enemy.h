@@ -37,6 +37,8 @@ public:
 	virtual void DrawDebug(const Color& col) const;
 	virtual void Release();
 
+	int GetDamage() const;
+
 protected:
 
 	bool isActive;
@@ -46,5 +48,6 @@ protected:
 
 	int AnimationFrame;
 	int EnemySpeed;
+	int Damage;
 };
 

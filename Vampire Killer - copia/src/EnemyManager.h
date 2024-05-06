@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "Player.h"
 #include "Enemy.h"
 #include <unordered_map>
 #include "raylib.h"
@@ -18,6 +19,7 @@ public:
 
     void Reset();
     void SetTilemap(TileMap* tilemap);
+    void SetTarget(Player* player);
 
     void SpawnZombie(Point pos);
     void SpawnPanther(Point pos);
@@ -37,4 +39,9 @@ private:
 
     vector<Enemy*> enemies;
     TileMap* map;
+
+    /*
+    Tener un Target al que Enemy acceda a la instance del enemymanager.target y que el enemigo tenga un check colision
+    que si se cumple le quita life al player (enemymanager.target)
+    */
 };
