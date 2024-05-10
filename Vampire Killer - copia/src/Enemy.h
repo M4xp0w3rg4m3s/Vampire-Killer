@@ -37,9 +37,9 @@ public:
 	virtual void DrawDebug(const Color& col) const;
 	virtual void Release();
 
-	int GetDamage() const;
-
 protected:
+
+	void DamagePlayer() const;
 
 	bool isActive;
 

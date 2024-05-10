@@ -14,6 +14,7 @@ Player::Player(const Point& p, State s, Look view) :
 	jump_delay = PLAYER_JUMP_DELAY;
 	attack_delay = PLAYER_ATTACK_DELAY;
 	die_delay = PLAYER_DYING_DELAY;
+	damaged_delay = 0;
 	map = nullptr;
 	weapon = new Weapon(p);
 	score = 0;
@@ -163,8 +164,12 @@ void Player::IncrLife(int n)
 }
 void Player::DecrLife(int n)
 {
+	if (GodMode) return;
+	
+	if (damaged_delay >= 0) return;
 	if (life >= 0) {
 		life -= n;
+		damaged_delay = PLAYER_DAMAGED_DELAY;
 	}
 }
 int Player::GetLife() const
@@ -396,7 +401,7 @@ void Player::Update()
 	MoveY();
 	Static();
 	weapon->Update(pos, (state == State::CROUCH_THROWING || state == State::CROUCH_WHIP));
-
+	damaged_delay--;
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 }

@@ -38,6 +38,9 @@
 //Frame delay for updating the dying velocity
 #define PLAYER_DYING_DELAY		20
 
+//Frame delay for updating the being damaged velocity
+#define PLAYER_DAMAGED_DELAY	5*60
+
 //Player is levitating when abs(speed) <= this value
 #define PLAYER_LEVITATING_SPEED	4
 
@@ -167,6 +170,7 @@ private:
 	Look look;
 	int jump_delay;
 	int attack_delay;
+	int	damaged_delay;
 	int	die_delay;
 	int AnimationFrame;
 

@@ -93,6 +93,9 @@ void EnemyPanther::Reset()
 void EnemyPanther::Brain()
 {
 	MoveX();
+	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
+		DamagePlayer();
+	}
 }
 void EnemyPanther::SetTileMap(TileMap* tilemap)
 {

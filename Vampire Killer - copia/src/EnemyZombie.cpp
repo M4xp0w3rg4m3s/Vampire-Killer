@@ -89,6 +89,9 @@ void EnemyZombie::Reset()
 void EnemyZombie::Brain()
 {
 	MoveX();
+	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
+		DamagePlayer();
+	}
 }
 void EnemyZombie::SetTileMap(TileMap* tilemap)
 {

@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "Weapon.h"
 #include <raymath.h>
+#include "EnemyManager.h"
 
 Enemy::Enemy(Point pos, int height, int width, int frameheight, int framewidth) : Entity(pos, width, height, framewidth, frameheight)
 {
@@ -39,9 +40,9 @@ void Enemy::Release()
 {
 	render->Release();
 }
-int Enemy::GetDamage() const
+void Enemy::DamagePlayer() const
 {
-	return Damage;
+	EnemyManager::Instance().target->DecrLife(Damage);
 }
 
 
