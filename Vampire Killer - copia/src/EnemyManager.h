@@ -40,8 +40,4 @@ private:
     vector<Enemy*> enemies;
     TileMap* map;
 
-    /*
-    Tener un Target al que Enemy acceda a la instance del enemymanager.target y que el enemigo tenga un check colision
-    que si se cumple le quita life al player (enemymanager.target)
-    */
 };

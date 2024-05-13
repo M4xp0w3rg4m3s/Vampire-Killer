@@ -14,9 +14,15 @@ Game::Game()
     img_intro_background = nullptr;
     img_game_win = nullptr;
 
+    img_introduction = nullptr;
+    img_intro_bat = nullptr;
+    img_intro_cloud = nullptr;
+
     timerWin = 1800;
     timerLose = 300;
-    timerPlay = 420;
+    timerPlay = 120;
+    timerIntroduction = 360;
+
     panAnimation = 200;
 
     target = {};
@@ -112,6 +118,23 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_game_win = data.GetTexture(Resource::IMG_GAME_WIN);
+
+
+    if (data.LoadTexture(Resource::IMG_INTRODUCTION, "images/Spritesheets/Introduction/IntroOutside.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_introduction = data.GetTexture(Resource::IMG_INTRODUCTION);
+    if (data.LoadTexture(Resource::IMG_INTRO_BAT, "images/Spritesheets/Introduction/IntroBat.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro_bat = data.GetTexture(Resource::IMG_INTRO_BAT);
+    if (data.LoadTexture(Resource::IMG_INTRO_CLOUD, "images/Spritesheets/Introduction/IntroCloud.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro_cloud = data.GetTexture(Resource::IMG_INTRO_CLOUD);
     
     return AppStatus::OK;
 }
@@ -185,14 +208,24 @@ AppStatus Game::Update()
             AudioPlayer::Instance().PlayMusicByName("Prologue");
             timerPlay--;
             if (timerPlay == 0) {
+                timerPlay = 120;
+                state = GameState::INTRODUCTION;
+            }
+            break;
+        case GameState::INTRODUCTION:
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            timerIntroduction--;
+            if (timerIntroduction == 0) {
                 AudioPlayer::Instance().StopMusicByName("Prologue");
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;
-                timerPlay = 420;
+                timerIntroduction = 300;
+                panAnimation = 200;
             }
             break;
         case GameState::GAME_WIN:
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            if (AudioPlayer::Instance().IsMusicPlaying("Prologue")) AudioPlayer::Instance().StopMusicByName("Prologue");
             AudioPlayer::Instance().PlayMusicByName("Unused");
             timerWin--;
             if (timerWin == 0) {
@@ -260,16 +293,25 @@ void Game::Render()
 
         case GameState::MENU_PLAY:
             DrawTexture(*img_menu_play, 0, 0, WHITE);
-            if (timerPlay % 4 == 0 || timerPlay % 4 == 1) {
+            if (timerPlay % 6 == 0 || timerPlay % 6 == 1 || timerPlay % 6 == 2) {
                 DrawTexture(*img_menu_empty, 0, 0, WHITE);
             }
+            break;
+
+        case GameState::INTRODUCTION:
+            DrawTexture(*img_introduction, 0, 0, WHITE);
+            if (timerIntroduction % 8 == 0) {
+                panAnimation--;
+            }
+            DrawTexture(*img_intro_cloud, panAnimation, 72, WHITE);
+
             break;
 
         case GameState::GAME_WIN:
             if (timerWin % 4 == 0) {
                 panAnimation--;
             }
-                DrawTexture(*img_game_win, 0, panAnimation, WHITE);
+            DrawTexture(*img_game_win, 0, panAnimation, WHITE);
             break;
 
         case GameState::PLAYING:

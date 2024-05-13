@@ -9,6 +9,9 @@ enum class Resource {
     IMG_MENU,
     IMG_INTRO_UPC,
     IMG_INTRO_BACKGROUND,
+    IMG_INTRODUCTION,
+    IMG_INTRO_BAT,
+    IMG_INTRO_CLOUD,
     IMG_MENU_PLAY,
     IMG_MENU_EMPTY,
     IMG_PLAYER, 
@@ -20,7 +23,7 @@ enum class Resource {
     IMG_GAME_WIN,
     IMG_FONT,
     IMG_HUD,
-    IMG_TRADER
+    IMG_TRADER,
 };
 
 class ResourceManager {
