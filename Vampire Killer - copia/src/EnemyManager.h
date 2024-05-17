@@ -23,6 +23,7 @@ public:
 
     void SpawnZombie(Point pos);
     void SpawnPanther(Point pos);
+    
 
     void Render();
     void RenderDebug();

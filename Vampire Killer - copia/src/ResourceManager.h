@@ -24,6 +24,7 @@ enum class Resource {
     IMG_FONT,
     IMG_HUD,
     IMG_TRADER,
+    IMG_BAT
 };
 
 class ResourceManager {
