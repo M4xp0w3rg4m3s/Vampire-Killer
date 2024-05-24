@@ -46,6 +46,7 @@ public:
 private:
 
 	TileMap* map;
+	int Init_pos_y;
 
 };
 

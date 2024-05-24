@@ -233,6 +233,7 @@ AppStatus Scene::LoadLevel(int stage)
 		};
 		EnemyManager::Instance().DestroyEnemies();
 		EnemyManager::Instance().SpawnPanther({ 40,143 });
+		EnemyManager::Instance().SpawnBat({ 40,120 });
 	}
 	else if (stage == 3)
 	{

@@ -20,6 +20,7 @@ AppStatus EnemyBat::Initialise()
 {
 	if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
 		SetPos({ 255, 176 });
+		Init_pos_y = pos.y;
 	}
 	else if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
 		SetPos({ 20, 176 });
@@ -48,10 +49,10 @@ AppStatus EnemyBat::Initialise()
 
 	sprite->SetAnimationDelay((int)EnemyAnim::ADVANCING_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
-		sprite->AddKeyFrame((int)EnemyAnim::ADVANCING_RIGHT, { (float)i * n, 2 * n, -n, n });
+		sprite->AddKeyFrame((int)EnemyAnim::ADVANCING_RIGHT, { (float)i * n, n, -n, n });
 	sprite->SetAnimationDelay((int)EnemyAnim::ADVANCING_LEFT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
-		sprite->AddKeyFrame((int)EnemyAnim::ADVANCING_LEFT, { (float)i * n, 2 * n, n, n });
+		sprite->AddKeyFrame((int)EnemyAnim::ADVANCING_LEFT, { (float)i * n, n, n, n });
 
 	sprite->SetAnimationDelay((int)EnemyAnim::IDLE_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)EnemyAnim::IDLE_LEFT, { 0, 0, n, n });
@@ -117,7 +118,7 @@ void EnemyBat::AdvanceLeft()
 }
 void EnemyBat::Move()
 {
-	Wave w{0,5,30,4};
+	Wave w{ Init_pos_y,40,60,20};
 	if (state == EnemyState::IDLE) {
 		if (look == EnemyLook::RIGHT) {
 			AdvanceRight();
@@ -128,13 +129,16 @@ void EnemyBat::Move()
 	}
 	else if (state == EnemyState::ADVANCING) {
 		if (look == EnemyLook::RIGHT) {
-			w.alpha += w.delta;
-			pos.y = w.y0 + w.amplitude * sin(w.alpha);
+			w.alpha -= w.delta;
+			pos.y += w.y0 + w.amplitude * sin(pos.y * w.alpha );
+		/*	w.alpha -= w.delta;
+			pos.y += w.y0 + w.amplitude * sin(w.alpha * pos.y);*/
 			
 			pos.x += BAT_SPEED;
 		}
 		else {
-
+			w.alpha -= w.delta;
+			pos.y += w.y0 + w.amplitude * sin(w.alpha );
 			pos.x -= BAT_SPEED;
 		}
 	}

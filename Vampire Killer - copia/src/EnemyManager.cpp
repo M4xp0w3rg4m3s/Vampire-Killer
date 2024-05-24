@@ -1,5 +1,6 @@
 #include "EnemyZombie.h"
 #include "EnemyPanther.h"
+#include "EnemyBat.h"
 #include "EnemyManager.h"
 
 EnemyManager::EnemyManager() {
@@ -38,6 +39,11 @@ void EnemyManager::SpawnZombie(Point pos)
 void EnemyManager::SpawnPanther(Point pos)
 {
 	Enemy* newEnemy = new EnemyPanther(pos);
+	enemies.push_back(newEnemy);
+}
+void EnemyManager::SpawnBat(Point pos)
+{
+	Enemy* newEnemy = new EnemyBat(pos);
 	enemies.push_back(newEnemy);
 }
 void EnemyManager::Render()
