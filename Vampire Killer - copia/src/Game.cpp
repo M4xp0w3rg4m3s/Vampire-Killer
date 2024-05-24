@@ -17,6 +17,8 @@ Game::Game()
     img_introduction = nullptr;
     img_intro_bat = nullptr;
     img_intro_cloud = nullptr;
+    img_intro_simon = nullptr;
+    img_intro_gui = nullptr;
 
     timerWin = 1800;
     timerLose = 300;
@@ -24,6 +26,8 @@ Game::Game()
     timerIntroduction = 360;
 
     panAnimation = 200;
+
+    playerAnim = 240;
 
     target = {};
     src = {};
@@ -135,6 +139,16 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_intro_cloud = data.GetTexture(Resource::IMG_INTRO_CLOUD);
+    if (data.LoadTexture(Resource::IMG_PLAYER, "images/Spritesheets/Simon/Simon Spritesheet.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro_simon = data.GetTexture(Resource::IMG_PLAYER);
+    if (data.LoadTexture(Resource::IMG_HUD_INTRO, "images/Spritesheets/Introduction/IntroHud.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro_gui = data.GetTexture(Resource::IMG_HUD_INTRO);
     
     return AppStatus::OK;
 }
@@ -221,6 +235,7 @@ AppStatus Game::Update()
                 state = GameState::PLAYING;
                 timerIntroduction = 300;
                 panAnimation = 200;
+                playerAnim = 240;
             }
             break;
         case GameState::GAME_WIN:
@@ -319,6 +334,31 @@ void Game::Render()
                 DrawTextureRec(*img_intro_bat, { 16,16,16,16 }, { -(float)panAnimation + 250, (float)panAnimation - 92 }, WHITE);
             }
 
+            if (timerIntroduction % 2 == 0) {
+                playerAnim--;
+            }
+
+            if (timerIntroduction < 121) {
+                DrawTextureRec(*img_intro_simon, { 0,32 * 7,-32,32 }, { 124, 175 }, WHITE);
+            }
+            else {
+                if (timerIntroduction % 30 < 8) {
+                    DrawTextureRec(*img_intro_simon, { 0,0,-32,32 }, { (float)playerAnim, 175 }, WHITE);
+                }
+                else if (timerIntroduction % 30 < 16) {
+                    DrawTextureRec(*img_intro_simon, { 32*1,0,-32,32 }, { (float)playerAnim, 175 }, WHITE);
+                }
+                else if (timerIntroduction % 30 < 23) {
+                    DrawTextureRec(*img_intro_simon, { 32*2,0,-32,32 }, { (float)playerAnim, 175 }, WHITE);
+                }
+                else if (timerIntroduction % 30 < 30) {
+                    DrawTextureRec(*img_intro_simon, { 32*3,0,-32,32 }, { (float)playerAnim, 175 }, WHITE);
+                }
+            }
+
+            DrawTexture(*img_intro_gui, 0, 0, WHITE);
+
+
             break;
 
         case GameState::GAME_WIN:
@@ -355,6 +395,12 @@ void Game::UnloadResources()
     data.ReleaseTexture(Resource::IMG_INTRO_UPC);
     data.ReleaseTexture(Resource::IMG_INTRO_BACKGROUND);
     data.ReleaseTexture(Resource::IMG_GAME_WIN);
+
+    data.ReleaseTexture(Resource::IMG_INTRODUCTION);
+    data.ReleaseTexture(Resource::IMG_INTRO_BAT);
+    data.ReleaseTexture(Resource::IMG_INTRO_CLOUD);
+    data.ReleaseTexture(Resource::IMG_HUD_INTRO);
+    data.ReleaseTexture(Resource::IMG_PLAYER);
 
     UnloadRenderTexture(target);
 }

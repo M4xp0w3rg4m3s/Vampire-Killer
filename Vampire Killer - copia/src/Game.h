@@ -41,6 +41,8 @@ private:
     const Texture2D* img_introduction;
     const Texture2D* img_intro_bat;
     const Texture2D* img_intro_cloud;
+    const Texture2D* img_intro_gui;
+    const Texture2D* img_intro_simon;
 
     int timerWin;
     int timerLose;
@@ -48,6 +50,8 @@ private:
     int timerIntroduction;
 
     int panAnimation;
+
+    float playerAnim;
     
 
     //To work with original game units and then scale the result

@@ -759,9 +759,6 @@ void Player::DrawDebug(const Color& col) const
 }
 void Player::Release()
 {
-	ResourceManager& data = ResourceManager::Instance();
-	data.ReleaseTexture(Resource::IMG_PLAYER);
-
 	weapon->Release();
 	render->Release();
 }
