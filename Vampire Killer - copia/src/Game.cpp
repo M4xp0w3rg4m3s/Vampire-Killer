@@ -300,10 +300,24 @@ void Game::Render()
 
         case GameState::INTRODUCTION:
             DrawTexture(*img_introduction, 0, 0, WHITE);
-            if (timerIntroduction % 8 == 0) {
+            if (timerIntroduction % 12 == 0) {
                 panAnimation--;
             }
             DrawTexture(*img_intro_cloud, panAnimation, 72, WHITE);
+
+            if (timerIntroduction % 6 == 0 || timerIntroduction % 6 == 1 || timerIntroduction % 6 == 2) {
+                DrawTextureRec(*img_intro_bat, { 0,0,16,16 }, { (float)panAnimation - 80, 60 }, WHITE);
+            }
+            else {
+                DrawTextureRec(*img_intro_bat, { 16,16,16,16 }, { (float)panAnimation - 80, 60 }, WHITE);
+            }
+            
+            if (timerIntroduction % 6 == 0 || timerIntroduction % 6 == 1 || timerIntroduction % 6 == 2) {
+                DrawTextureRec(*img_intro_bat, { 0,0,16,16 }, { -(float)panAnimation + 250, (float)panAnimation - 92}, WHITE);
+            }
+            else {
+                DrawTextureRec(*img_intro_bat, { 16,16,16,16 }, { -(float)panAnimation + 250, (float)panAnimation - 92 }, WHITE);
+            }
 
             break;
 
