@@ -23,6 +23,7 @@ enum class Resource {
     IMG_GAME_WIN,
     IMG_FONT,
     IMG_HUD,
+    IMG_HUD_INTRO,
     IMG_TRADER,
     IMG_BAT
 };
