@@ -39,9 +39,16 @@ private:
     int currentFloor;
     const Texture2D* game_over;
     const Texture2D* hud;
+    const Texture2D* chest_animation;
+    int chest_time;
 
     bool deathExecuted;
     bool renderingGameOver;
+    bool chestOpening;
+    
+    float currentChestX;
+    float currentChestY;
+    ObjectType currentChestType;
 
     Camera2D camera;
     DebugMode debug;

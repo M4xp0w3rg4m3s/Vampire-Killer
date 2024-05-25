@@ -19,13 +19,6 @@ public:
 
     ObjectType GetType()const;
 
-    void OpenChest(ObjectType chestType);
-    int GetChestTime() const;
-
 private:
     ObjectType type;
-
-    const Texture2D* chest_animation;
-
-    int chest_time = 180;
 };

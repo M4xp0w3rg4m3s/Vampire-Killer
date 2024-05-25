@@ -9,6 +9,7 @@ Scene::Scene()
     level = nullptr;
 	game_over = nullptr;
 	hud = nullptr;
+	chest_animation = nullptr;
 
 	currentLevel = 0;
 	camera.target = { 0, 0 };				//Center of the screen
@@ -22,6 +23,8 @@ Scene::Scene()
 	font = nullptr;
 
 	debug = DebugMode::OFF;
+
+	chest_time = 180;
 }
 Scene::~Scene()
 {
@@ -102,6 +105,13 @@ AppStatus Scene::Init()
 		return AppStatus::ERROR;
 	}
 	hud = data.GetTexture(Resource::IMG_HUD);
+
+	//Add the chest animation
+	if (data.LoadTexture(Resource::IMG_OPEN_CHEST, "images/Spritesheets/FX/OpenChest.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	chest_animation = data.GetTexture(Resource::IMG_OPEN_CHEST);
 
 	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
@@ -685,6 +695,22 @@ void Scene::Update()
 		player->Win();
 	}
 
+	if (chestOpening) {
+		Object* obj;
+		chest_time--;
+
+		// PLAY ANIMATION
+		if (chest_time == 0) {
+			if (currentChestType == ObjectType::CHEST_CHAIN) {
+
+				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::CHAIN);
+				objects.push_back(obj);
+				chest_time = 180;
+				chestOpening = false;
+			}
+		}
+	}
+
 	level->Update();
 	EnemyManager::Instance().Update();
 	player->Update();
@@ -713,6 +739,21 @@ void Scene::Render()
 
 		}
 		level->RenderLate();
+
+		if (chestOpening) {
+			if (chest_time % 30 < 8) {
+				DrawTextureRec(*chest_animation, { 0,0,16,16 }, { currentChestX, currentChestY-16 }, WHITE);
+			}
+			else if (chest_time % 30 < 16) {
+				DrawTextureRec(*chest_animation, { 16 * 1,0,16,16 }, { currentChestX, currentChestY-16  }, WHITE);
+			}
+			else if (chest_time % 30 < 23) {
+				DrawTextureRec(*chest_animation, { 16 * 2,0,16,16 }, { currentChestX, currentChestY-16  }, WHITE);
+			}
+			else if (chest_time % 30 < 30) {
+				DrawTextureRec(*chest_animation, { 16 * 3,0,16,16 }, { currentChestX, currentChestY-16  }, WHITE);
+			}
+		}
 
 		deathExecuted = false;
 	}
@@ -763,6 +804,8 @@ void Scene::Release()
 
 	data.ReleaseTexture(Resource::IMG_HUD);
 
+	data.ReleaseTexture(Resource::IMG_OPEN_CHEST);
+
     level->Release();
 	player->Release();
 	ClearLevel();
@@ -797,19 +840,16 @@ void Scene::CheckCollisions()
 			}
 			if ((*it)->GetType() == ObjectType::CHEST_CHAIN) {
 				if (player->HasChestKey()) {
-					(*it)->OpenChest(ObjectType::CHEST_CHAIN);
-				}
-				if ((*it)->GetChestTime() == 0) {
-					//Delete the object
-					delete* it;
-					//Erase the object from the vector and get the iterator to the next valid element
-					it = objects.erase(it);
+					chestOpening = true;
+					currentChestType = ObjectType::CHEST_CHAIN;
+					currentChestX = (float)(*it)->GetPos().x;
+					currentChestY = (*it)->GetPos().y;
 				}
 			}
-			////Delete the object
-			//delete* it; 
-			////Erase the object from the vector and get the iterator to the next valid element
-			//it = objects.erase(it); 
+			//Delete the object
+			delete* it; 
+			//Erase the object from the vector and get the iterator to the next valid element
+			it = objects.erase(it); 
 		}
 		else
 		{
