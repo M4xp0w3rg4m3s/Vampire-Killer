@@ -22,6 +22,7 @@ enum class Resource {
     IMG_GAME_OVER,
     IMG_GAME_WIN,
     IMG_FONT,
+    IMG_OPEN_CHEST,
     IMG_HUD,
     IMG_HUD_INTRO,
     IMG_TRADER,

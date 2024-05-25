@@ -222,6 +222,9 @@ bool Player::HasWon() const
 void Player::Win() {
 	state = State::WIN;
 }
+bool Player::HasChestKey() {
+	return true;
+}
 void Player::GodModeSwitch() {
 	if (GodMode == true) {
 		GodMode = false;

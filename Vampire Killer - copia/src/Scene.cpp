@@ -167,7 +167,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			550,  0,  0,  0,  0,124,  0,  0,  0,  0,  0,  0,  0,124,  0,  0,  0,501,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,130,  0,  0,  0,  0,  0,  0,  0,501,
 			550, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39,501,
 			  0, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,  0
 		};
@@ -557,6 +557,14 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				objects.push_back(obj);
 				map[i] = 0;
 			}
+			else if (tile == Tile::CHEST_CHAIN)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::CHEST_CHAIN);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
 			++i;
 		}
 	}
@@ -781,16 +789,27 @@ void Scene::CheckCollisions()
 		obj_box = (*it)->GetHitbox();
 		if(player_box.TestAABB(obj_box))
 		{
-			AudioPlayer::Instance().PlaySoundByName("Collect");
+			//AudioPlayer::Instance().PlaySoundByName("Collect");
 
 			if ((*it)->GetType() == ObjectType::CHAIN) {
-
+				AudioPlayer::Instance().PlaySoundByName("Collect");
 				player->weapon->SetWeapon(WeaponType::CHAIN);
 			}
-			//Delete the object
-			delete* it; 
-			//Erase the object from the vector and get the iterator to the next valid element
-			it = objects.erase(it); 
+			if ((*it)->GetType() == ObjectType::CHEST_CHAIN) {
+				if (player->HasChestKey()) {
+					(*it)->OpenChest(ObjectType::CHEST_CHAIN);
+				}
+				if ((*it)->GetChestTime() == 0) {
+					//Delete the object
+					delete* it;
+					//Erase the object from the vector and get the iterator to the next valid element
+					it = objects.erase(it);
+				}
+			}
+			////Delete the object
+			//delete* it; 
+			////Erase the object from the vector and get the iterator to the next valid element
+			//it = objects.erase(it); 
 		}
 		else
 		{

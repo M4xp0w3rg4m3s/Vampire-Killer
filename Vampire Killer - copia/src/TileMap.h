@@ -104,7 +104,7 @@ enum class Tile {
 	// 124 <= : special tiles
 	FIRE = 124, FIRE_FRAME1, FIRE_FRAME2,
 	CANDLE = 126, CANDLE_FRAME1, CANDLE_FRAME2,
-	CHAIN,
+	CHAIN, CHEST_CHAIN,
 
 	// 200 =< id: entities' initial locations
 	PLAYER = 200,
