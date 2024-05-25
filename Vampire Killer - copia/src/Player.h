@@ -117,6 +117,8 @@ public:
 
 	void Win();
 
+	bool HasChestKey();
+
 	Weapon* weapon;
 
 	void StartDying();
