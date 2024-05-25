@@ -110,7 +110,7 @@ enum class Tile {
 	PLAYER = 200,
 
 	// 500 =< id: end invisible teletransportating walls
-	LEFT = 500, RIGHT,
+	LEFT = 500, RIGHT,TOP,BOTTOM,
 	WIN = 505,
 
 	// 550 = solid invisible tile
@@ -142,6 +142,8 @@ public:
 	bool TestCollisionWallRight(const AABB& box) const;
 	bool TestCollisionLeft(const AABB& box) const;
 	bool TestCollisionRight(const AABB& box) const;
+	bool TestCollisionTop(const AABB& box) const;
+	bool TestCollisionBottom(const AABB& box) const;
 	bool TestCollisionWin(const AABB& box) const;
 
 	

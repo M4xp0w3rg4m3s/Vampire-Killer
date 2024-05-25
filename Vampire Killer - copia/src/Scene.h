@@ -22,7 +22,7 @@ public:
     bool PlayerHasWon() const;
 
 private:
-    AppStatus LoadLevel(int stage);
+    AppStatus LoadLevel(int stage,int floor);
     
     void CheckCollisions(); 
     void ClearLevel();
@@ -36,6 +36,7 @@ private:
     TileMap *level;
     std::vector<Object*> objects;
     int currentLevel;
+    int currentFloor;
     const Texture2D* game_over;
     const Texture2D* hud;
 

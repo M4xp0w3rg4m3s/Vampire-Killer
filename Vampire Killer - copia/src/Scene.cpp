@@ -80,7 +80,7 @@ AppStatus Scene::Init()
 		return AppStatus::ERROR;
 	}
 	//Load level
-	if (LoadLevel(1) != AppStatus::OK)
+	if (LoadLevel(1,currentFloor) != AppStatus::OK)
 	{
 		LOG("Failed to load Level 1");
 		return AppStatus::ERROR;
@@ -126,7 +126,7 @@ AppStatus Scene::Init()
 
     return AppStatus::OK;
 }
-AppStatus Scene::LoadLevel(int stage)
+AppStatus Scene::LoadLevel(int stage,int floor)
 {
 	int size;
 	int x, y, i;
@@ -141,9 +141,10 @@ AppStatus Scene::LoadLevel(int stage)
 	ClearLevel();
 
 	size = LEVEL_WIDTH * LEVEL_HEIGHT;
-	if (stage == 1)
+	if (stage == 1 && floor == 0)
 	{
 		currentLevel = 1;
+		currentFloor = 0;
 		mapBack = new int[size] {
 			  0,  1,  2,  3,  4,  1,  2,  3,  4,  1,  2,  3,  4,  1,  2,  3,  4,  0,
 			  0,  5,  6,  7,  8,  5,  6,  7,  8,  5,  6,  7,  8,  5,  6,  7,  8,  0,
@@ -189,9 +190,10 @@ AppStatus Scene::LoadLevel(int stage)
 			player->InitGUI();
 		}
 	}
-	else if (stage == 2)
+	else if (stage == 2 && floor == 0)
 	{
 		currentLevel = 2;
+		currentFloor = 0;
 		mapBack = new int[size] {
 			  0,  1,  2,  3,  4,  1,  2,  3,  4,  1,  2,  3,  4,  1,  2,  3,  4,  0,
 			  0,  5,  6,  7,  8,  5,  6,  7,  8,  5,  6,  7,  8,  5,  6,  7,  8,  0,
@@ -235,9 +237,10 @@ AppStatus Scene::LoadLevel(int stage)
 		EnemyManager::Instance().SpawnPanther({ 40,143 });
 		EnemyManager::Instance().SpawnBat({ 40,120 });
 	}
-	else if (stage == 3)
+	else if (stage == 3 && floor == 0)
 	{
 		currentLevel = 3;
+		currentFloor = 0;
 		mapBack = new int[size] {
 			  0,  1,  2,  3,  4,  1,  2,  3,  4,  1,  2, 47, 48, 49, 48, 49, 48,  0,
 			  0,  5,  6,  7,  8,  5,  6,  7,  8,  5,  6, 50, 51, 52, 52, 53, 54,  0,
@@ -260,7 +263,7 @@ AppStatus Scene::LoadLevel(int stage)
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
 			500,  0,  0,  0,  0,124,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
-			500,  0,  0,  0,  0, 129,  0,  0,  0,  0,  0,  0,  0,  0,  0, 0,501,  0,
+			500,  0,  0,  0,  0,129,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
 			500, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39,  0,
 			  0, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,  0
 		};
@@ -279,9 +282,10 @@ AppStatus Scene::LoadLevel(int stage)
 		};
 		EnemyManager::Instance().DestroyEnemies();
 	}
-	else if (stage == 4)
+	else if (stage == 4 && floor == 0)
 	{
 		currentLevel = 4;
+		currentFloor = 0;
 		mapBack = new int[size] {
 			  0, 74, 75, 82, 83,110,110, 97, 98, 74, 75, 86, 87,110,110,101,102,  0,
 			  0, 76, 77, 84, 85,110,110, 99,100, 76, 77, 91,110,110,110,110,110,  0,
@@ -322,9 +326,10 @@ AppStatus Scene::LoadLevel(int stage)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 	}
-	else if (stage == 5)
+	else if (stage == 5 && floor == 0)
 	{
 		currentLevel = 5;
+		currentFloor = 0;
 		mapBack = new int[size] {
 			  0, 74, 75, 82, 83,110,110, 97, 98,110, 93,  0,  0,110,110,101,102,  0,
 			  0, 76, 77, 84, 85,103,103,103,103,110,110,110,  0,  0,110,110,110,  0,
@@ -365,9 +370,10 @@ AppStatus Scene::LoadLevel(int stage)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 	}
-	else if (stage == 6)
+	else if (stage == 6 && floor == 0)
 	{
 		currentLevel = 6;
+		currentFloor = 0;
 		mapBack = new int[size] {
 			  0, 97, 98, 76, 77, 86, 87,110,110,110,110,110,110,101,102,110,110,  0,
 			  0, 99,100, 76, 77, 91,110,110,110,103,103,110,110,110,110,110,110,  0,
@@ -408,9 +414,10 @@ AppStatus Scene::LoadLevel(int stage)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 	}
-	else if (stage == 7)
+	else if (stage == 7 && floor == 0)
 	{
 		currentLevel = 7;
+		currentFloor = 0;
 		mapBack = new int[size] {
 			  0,101,102,110,110,  0,  0, 93,110,110,110, 97, 98, 74, 75, 82, 83,  0,
 			  0,110,110,110,  0,  0,110,110,110,110,110, 99,100, 76, 77, 84, 85,  0,
@@ -451,9 +458,10 @@ AppStatus Scene::LoadLevel(int stage)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 	}
-	else if (stage == 8)
+	else if (stage == 4 && floor == 1)
 	{
-		currentLevel = 8;
+		currentLevel = 4;
+		currentFloor = 1;
 		mapBack = new int[size] {
 			  0,  0,  0,110,110, 74, 75,110,110,110,110,110,110,101,102, 74, 75,  0,
 			  0,  0,  0,110,110, 76, 77,110,110,110,110,110,110, 95, 96, 76, 77,  0,
@@ -597,14 +605,14 @@ void Scene::Update()
 
 	AudioPlayer::Instance().PlayMusicByName("VampireKiller");
 
-	if (IsKeyPressed(KEY_ONE))			LoadLevel(1);
-	else if (IsKeyPressed(KEY_TWO))		LoadLevel(2);
-	else if (IsKeyPressed(KEY_THREE))	LoadLevel(3);
-	else if (IsKeyPressed(KEY_FOUR))	LoadLevel(4);
-	else if (IsKeyPressed(KEY_FIVE))	LoadLevel(5);
-	else if (IsKeyPressed(KEY_SIX))		LoadLevel(6);
-	else if (IsKeyPressed(KEY_SEVEN))	LoadLevel(7);
-	else if (IsKeyPressed(KEY_EIGHT))	LoadLevel(8);
+	if (IsKeyPressed(KEY_ONE))			LoadLevel(1,0);
+	else if (IsKeyPressed(KEY_TWO))		LoadLevel(2,0);
+	else if (IsKeyPressed(KEY_THREE))	LoadLevel(3,0);
+	else if (IsKeyPressed(KEY_FOUR))	LoadLevel(4,0);
+	else if (IsKeyPressed(KEY_FIVE))	LoadLevel(5,0);
+	else if (IsKeyPressed(KEY_SIX))		LoadLevel(6,0);
+	else if (IsKeyPressed(KEY_SEVEN))	LoadLevel(7,0);
+	else if (IsKeyPressed(KEY_EIGHT))	LoadLevel(4,1);
 
 	else if (IsKeyPressed(KEY_C))		player->weapon->SetWeapon(WeaponType::CHAIN);
 	else if (IsKeyPressed(KEY_F3)) {
@@ -633,29 +641,37 @@ void Scene::Update()
 	if (level->TestCollisionRight(box))
 	{
 		if (currentLevel == 7) {
-			LoadLevel(4);
+			LoadLevel(4,currentFloor);
 			player->SetPos(left_position);
 		}
 		else {
-			LoadLevel(currentLevel + 1);
+			LoadLevel(currentLevel + 1,currentFloor);
 			player->SetPos(left_position);
 		}
 
 	}
 	else if (level->TestCollisionLeft(box)) {
 		if (currentLevel <= 3) {
-			LoadLevel(currentLevel - 1);
+			LoadLevel(currentLevel - 1,currentFloor);
 			player->SetPos(right_position);
 		}
 		else if (currentLevel == 4) {
-			LoadLevel(7);
+			LoadLevel(7,currentFloor);
 			player->SetPos(right_position);
 		}
 		else if (currentLevel > 4) {
-			LoadLevel(currentLevel - 1);
+			LoadLevel(currentLevel - 1,currentFloor);
 			player->SetPos(right_position);
 		}
 	}
+
+	else if (level->TestCollisionTop(box)) {
+		LoadLevel(currentLevel, currentFloor + 1);
+	}
+	else if (level->TestCollisionBottom(box)) {
+		LoadLevel(currentLevel, currentFloor - 1);
+	}
+
 	if (level->TestCollisionWin(box)) {
 		AudioPlayer::Instance().StopMusicByName("VampireKiller");
 		player->Win();
@@ -709,7 +725,7 @@ void Scene::Render()
 			player->SetLook(Look::RIGHT);
 			player->InitLife();
 
-			LoadLevel(1);
+			LoadLevel(1,currentFloor);
 		}
 	}
 
