@@ -118,7 +118,7 @@ void EnemyBat::AdvanceLeft()
 }
 void EnemyBat::Move()
 {
-	Wave w{ Init_pos_y,40,60,20};
+	Wave w{ Init_pos_y,40,80,20};
 	if (state == EnemyState::IDLE) {
 		if (look == EnemyLook::RIGHT) {
 			AdvanceRight();
