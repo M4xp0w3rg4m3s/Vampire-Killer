@@ -74,11 +74,6 @@ void EnemyBat::Update()
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 }
-void EnemyBat::SetAnimation(int id)
-{
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetAnimation(id);
-}
 void EnemyBat::Render()
 {
 	if (pos.x > 16 && pos.x < 256)

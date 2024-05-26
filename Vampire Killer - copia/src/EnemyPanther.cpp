@@ -77,11 +77,6 @@ void EnemyPanther::Update()
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 }
-void EnemyPanther::SetAnimation(int id)
-{
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetAnimation(id);
-}
 void EnemyPanther::Render()
 {
 	if (pos.x > 16 && pos.x < 256)

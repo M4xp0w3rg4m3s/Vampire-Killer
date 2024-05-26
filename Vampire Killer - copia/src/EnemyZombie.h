@@ -30,13 +30,14 @@ public:
 	void AdvanceRight();
 	void AdvanceLeft();
 	void MoveX();
+	void MoveY();
 
 	void DrawDebug(const Color& col) const override;
 	void Release() override;
 
-	void SetAnimation(int id);
-
 private:
+
+	void StartFalling();
 
 	TileMap* map;
 

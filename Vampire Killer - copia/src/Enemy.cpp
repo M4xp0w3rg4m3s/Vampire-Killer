@@ -40,6 +40,18 @@ void Enemy::Release()
 {
 	render->Release();
 }
+void Enemy::Stop()
+{
+	dir = { 0,0 };
+	state = EnemyState::IDLE;
+	if (look == EnemyLook::RIGHT) SetAnimation((int)EnemyAnim::IDLE_RIGHT);
+	else SetAnimation((int)EnemyAnim::IDLE_LEFT);
+}
+void Enemy::SetAnimation(int id)
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetAnimation(id);
+}
 void Enemy::DamagePlayer() const
 {
 	EnemyManager::Instance().target->DecrLife(Damage);

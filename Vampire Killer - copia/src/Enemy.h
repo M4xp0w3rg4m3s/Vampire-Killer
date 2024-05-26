@@ -6,7 +6,7 @@
 
 //Logic states
 enum class EnemyState {
-	IDLE, ADVANCING, DEAD
+	IDLE, ADVANCING, DEAD, FALLING
 };
 enum class EnemyLook { RIGHT, LEFT };
 
@@ -40,6 +40,9 @@ public:
 	bool isActive = true;
 
 protected:
+
+	void Stop();
+	void SetAnimation(int id);
 
 	void DamagePlayer() const;
 

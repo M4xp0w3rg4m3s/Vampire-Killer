@@ -858,6 +858,8 @@ void Scene::Update()
 		player->Win();
 	}
 
+	EnemyManager::Instance().SetTilemap(level);
+
 	if (chestOpening) {
 		Object* obj;
 		chest_time--;
@@ -891,6 +893,7 @@ void Scene::Update()
 	}
 
 	level->Update();
+	EnemyManager::Instance().SetTilemap(level);
 	EnemyManager::Instance().Update();
 	player->Update();
 	CheckCollisions();

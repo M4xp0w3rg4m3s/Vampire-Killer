@@ -34,8 +34,6 @@ public:
 	void DrawDebug(const Color& col) const override;
 	void Release() override;
 
-	void SetAnimation(int id);
-
 private:
 
 	TileMap* map;

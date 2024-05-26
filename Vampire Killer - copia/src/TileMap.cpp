@@ -8,8 +8,8 @@ TileMap::TileMap()
 	map = nullptr;
 	mapFront = nullptr;
 	mapBack = nullptr;
-	width = 0;
-	height = 0;
+	width = 18;
+	height = 13;
 	candle = nullptr;
 	fire = nullptr;
 	img_tiles = nullptr;

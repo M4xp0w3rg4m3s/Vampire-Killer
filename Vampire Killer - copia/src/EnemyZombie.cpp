@@ -48,6 +48,12 @@ AppStatus EnemyZombie::Initialise()
 	sprite->SetAnimationDelay((int)EnemyAnim::EMPTY, ANIM_DELAY);
 	sprite->AddKeyFrame((int)EnemyAnim::EMPTY, { 0, 0, 0, 0 });
 
+	sprite->SetAnimationDelay((int)EnemyAnim::IDLE_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)EnemyAnim::IDLE_LEFT, { 0, 0, n, n });
+
+	sprite->SetAnimationDelay((int)EnemyAnim::IDLE_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)EnemyAnim::IDLE_RIGHT, { 0, 0, -n, n });
+
 	if (EnemyManager::Instance().target->GetPos().x < 208 && EnemyManager::Instance().target->IsLookingRight()) {
 		SetPos({ 255, pos.y });
 		state = EnemyState::ADVANCING;
@@ -63,6 +69,9 @@ AppStatus EnemyZombie::Initialise()
 	else {
 		isActive = false;
 	}
+	if (EnemyManager::Instance().target->GetPos().y < 100 && EnemyManager::Instance().target->IsLookingRight()) {
+		SetPos({ pos.x, 79 });
+	}
 
 	return AppStatus::OK;
 }
@@ -71,11 +80,6 @@ void EnemyZombie::Update()
 	Brain();
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
-}
-void EnemyZombie::SetAnimation(int id)
-{
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetAnimation(id);
 }
 void EnemyZombie::Render()
 {
@@ -94,6 +98,7 @@ void EnemyZombie::Reset()
 void EnemyZombie::Brain()
 {
 	MoveX();
+	MoveY();
 	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
 		DamagePlayer();
 	}
@@ -139,9 +144,24 @@ void EnemyZombie::MoveX()
 		}
 	}
 	else if (state == EnemyState::DEAD) {
-		SetAnimation((int)EnemyAnim::EMPTY);
+		isActive = false;
+	}
+	else if (state == EnemyState::FALLING) {
+		pos.y += ZOMBIE_SPEED;
 	}
 
+}
+void EnemyZombie::MoveY()
+{
+	pos.y += ZOMBIE_SPEED;
+	if (map->TestCollisionGround(GetHitbox(), &pos.y))
+	{
+		if (state == EnemyState::FALLING) Stop();
+	}
+	else
+	{
+		if (state != EnemyState::FALLING) StartFalling();
+	}
 }
 void EnemyZombie::DrawDebug(const Color& col) const
 {
@@ -153,5 +173,12 @@ void EnemyZombie::Release()
 	data.ReleaseTexture(Resource::IMG_ZOMBIE);
 
 	render->Release();
+}
+void EnemyZombie::StartFalling()
+{
+	dir.y = ZOMBIE_SPEED;
+	state = EnemyState::FALLING;
+	if (look == EnemyLook::RIGHT)	SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
+	else					SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
 }
 
