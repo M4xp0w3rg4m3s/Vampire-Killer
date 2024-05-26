@@ -60,6 +60,9 @@ AppStatus EnemyZombie::Initialise()
 		look = EnemyLook::RIGHT;
 		SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
 	}
+	else {
+		isActive = false;
+	}
 
 	return AppStatus::OK;
 }
@@ -82,7 +85,7 @@ void EnemyZombie::Render()
 		render->Draw(p.x, p.y);
 	}
 	else {
-		EnemyManager::Instance().DestroyEnemies();
+		isActive = false;
 	}
 }
 void EnemyZombie::Reset()

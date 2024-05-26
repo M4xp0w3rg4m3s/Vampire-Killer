@@ -41,6 +41,7 @@ private:
     const Texture2D* hud;
     const Texture2D* chest_animation;
     int chest_time;
+    int enemy_delay_time;
 
     bool deathExecuted;
     bool renderingGameOver;

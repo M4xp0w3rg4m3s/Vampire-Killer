@@ -26,6 +26,7 @@ Scene::Scene()
 	debug = DebugMode::OFF;
 
 	chest_time = 90;
+	enemy_delay_time = 120;
 }
 Scene::~Scene()
 {
@@ -203,7 +204,6 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 		EnemyManager::Instance().DestroyEnemies();
-		EnemyManager::Instance().SpawnZombie({ 236,159 });
 		if (player->isGUIinit == false) {
 			player->InitGUI();
 		}
@@ -362,7 +362,6 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 		EnemyManager::Instance().DestroyEnemies();
-		EnemyManager::Instance().SpawnZombie({ 236,175 });
 	}
 	else if (stage == 5 && floor == 0)
 	{
@@ -769,6 +768,8 @@ void Scene::Update()
 	AABB box;
 	Point left_position(16+3, player->GetPos().y);
 	Point right_position(256-3, player->GetPos().y);
+	Point top_position(player->GetPos().x, 48);
+	Point bottom_position(player->GetPos().x, 100);
 
 	EnemyManager::Instance().SetTilemap(level);
 
@@ -845,9 +846,11 @@ void Scene::Update()
 
 	else if (level->TestCollisionTop(box)) {
 		LoadLevel(currentLevel, currentFloor + 1);
+		player->SetPos(bottom_position);
 	}
 	else if (level->TestCollisionBottom(box)) {
 		LoadLevel(currentLevel, currentFloor - 1);
+		player->SetPos(top_position);
 	}
 
 	if (level->TestCollisionWin(box)) {
@@ -867,6 +870,22 @@ void Scene::Update()
 				objects.push_back(obj);
 				chest_time = 90;
 				chestOpening = false;
+			}
+		}
+	}
+
+	enemy_delay_time--;
+	if (enemy_delay_time < 0) {
+		if (currentFloor == 0) {
+			if (currentLevel == 4 || currentLevel == 5) {
+				EnemyManager::Instance().SpawnZombie({ 236,175 });
+				enemy_delay_time = 120;
+			}
+		}
+		if (currentFloor == 1) {
+			if (currentLevel == 5) {
+				EnemyManager::Instance().SpawnZombie({ 236,175 });
+				enemy_delay_time = 120;
 			}
 		}
 	}
@@ -1045,7 +1064,12 @@ void Scene::RenderGUI() const
 {
 	font->Draw(65, 14, TextFormat("%06d", player->GetScore()), WHITE);
 	
-	font->Draw(165, 14, TextFormat("%02d", currentLevel), WHITE);
+	if (currentLevel <= 3) {
+		font->Draw(165, 14, "00", WHITE);
+	}
+	else if (currentLevel > 3) {
+		font->Draw(165, 14, "01", WHITE);
+	}
 
 	if (player->GetLives() >= 0) {
 		font->Draw(237, 14, TextFormat("%02d", player->GetLives()), WHITE);

@@ -16,12 +16,6 @@ EnemyPanther::~EnemyPanther()
 }
 AppStatus EnemyPanther::Initialise()
 {
-	if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
-		SetPos({ 255, 176 });
-	}
-	else if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
-		SetPos({ 20, 176 });
-	}
 
 	int i;
 	const float n = (float)PANTHER_SPRITE_HEIGHT;
@@ -59,9 +53,21 @@ AppStatus EnemyPanther::Initialise()
 	sprite->SetAnimationDelay((int)EnemyAnim::EMPTY, ANIM_DELAY);
 	sprite->AddKeyFrame((int)EnemyAnim::EMPTY, { 0, 0, 0, 0 });
 
-	state = EnemyState::IDLE;
-	look = EnemyLook::RIGHT;
-	SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
+	if (EnemyManager::Instance().target->GetPos().x < 208 && EnemyManager::Instance().target->IsLookingRight()) {
+		SetPos({ 255, pos.y });
+		state = EnemyState::ADVANCING;
+		look = EnemyLook::LEFT;
+		SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
+	}
+	else if (EnemyManager::Instance().target->GetPos().x > 68 && EnemyManager::Instance().target->IsLookingLeft()) {
+		SetPos({ 20, pos.y });
+		state = EnemyState::ADVANCING;
+		look = EnemyLook::RIGHT;
+		SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
+	}
+	else {
+		isActive = false;
+	}
 
 	return AppStatus::OK;
 }
@@ -84,7 +90,7 @@ void EnemyPanther::Render()
 		render->Draw(p.x, p.y);
 	}
 	else {
-		EnemyManager::Instance().DestroyEnemies();
+		isActive = false;
 	}
 }
 void EnemyPanther::Reset()

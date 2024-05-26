@@ -27,7 +27,7 @@
 #define ANIM_LADDER_DELAY		(2*ANIM_DELAY)
 
 //When jumping, initial jump speed and maximum falling speed
-#define PLAYER_JUMP_FORCE		8
+#define PLAYER_JUMP_FORCE		10
 
 //Frame delay for updating the jump velocity
 #define PLAYER_JUMP_DELAY		2
