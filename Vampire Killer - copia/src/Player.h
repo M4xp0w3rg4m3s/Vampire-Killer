@@ -123,9 +123,9 @@ public:
 
 	void StartDying();
 
-private:
 	bool IsLookingRight() const;
 	bool IsLookingLeft() const;
+private:
 
 	//Player mechanics
 	void MoveX();

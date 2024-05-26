@@ -17,7 +17,7 @@ Player::Player(const Point& p, State s, Look view) :
 	damaged_delay = 0;
 	map = nullptr;
 	weapon = new Weapon(p);
-	score = 0;
+	score = 000000;
 	lives = PLAYER_MAX_LIVES;
 	life = PLAYER_MAX_LIFE;
 	AnimationFrame = 0;
@@ -114,7 +114,7 @@ AppStatus Player::Initialise()
 
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
-	AudioPlayer::Instance().CreateSound("audio/SFX/27.wav", "Attack");
+	AudioPlayer::Instance().CreateSound("audio/SFX/26.wav", "MissAttack");
 
 	return AppStatus::OK;
 }
@@ -299,7 +299,6 @@ void Player::StartWhip() {
 	else if (IsLookingLeft()) {
 		weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
 	}
-	AudioPlayer::Instance().PlaySoundByName("Attack");
 }
 void Player::StartThrowing()
 {
@@ -330,7 +329,6 @@ void Player::StartCrouchWhip() {
 	else if (IsLookingLeft()) {
 		weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
 	}
-	AudioPlayer::Instance().PlaySoundByName("Attack");
 }
 void Player::StartCrouchThrowing()
 {
@@ -713,6 +711,8 @@ void Player::LogicAttack()
 			else {
 				Stop();
 			}
+
+			AudioPlayer::Instance().PlaySoundByName("MissAttack");
 
 			sprite->SetAutomaticMode();
 			AnimationFrame = 0;

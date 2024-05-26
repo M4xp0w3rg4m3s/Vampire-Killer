@@ -115,6 +115,37 @@ void Weapon::Attack(int frame, LookAt looking) {
 	}
 }
 
+AABB Weapon::HitboxOnAttack()
+{
+	if (currentFrame == 2) {
+		if (currentWeapon == WeaponType::WHIP) {
+			if (currentLooking == LookAt::RIGHT) {
+
+				Point p(pos.x + 15, pos.y - 63 - (height - 1));
+				AABB hitbox(p, width, height);
+				return hitbox;
+			}
+			else {
+				Point p(pos.x - 15, pos.y - 63 - (height - 1));
+				AABB hitbox(p, width, height);
+				return hitbox;
+			}
+		}
+		else {
+			if (currentLooking == LookAt::RIGHT) {
+				Point p(pos.x + 15, pos.y - 63 - (height - 1));
+				AABB hitbox(p, width+7, height);
+				return hitbox;
+			}
+			else {
+				Point p(pos.x -22, pos.y - 63 - (height - 1));
+				AABB hitbox(p, width+7, height);
+				return hitbox;
+			}
+		}
+	}
+}
+
 void Weapon::AttackRight(int frame) {
 	if (frame == 0) {
 		currentFrame = 1;

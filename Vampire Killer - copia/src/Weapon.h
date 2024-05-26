@@ -48,6 +48,8 @@ public:
 
 	void Attack(int frame, LookAt looking);
 
+	AABB HitboxOnAttack();
+
 private:
 
 	void AttackRight(int frame);

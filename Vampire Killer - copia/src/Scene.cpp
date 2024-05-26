@@ -25,7 +25,7 @@ Scene::Scene()
 
 	debug = DebugMode::OFF;
 
-	chest_time = 180;
+	chest_time = 90;
 }
 Scene::~Scene()
 {
@@ -118,6 +118,7 @@ AppStatus Scene::Init()
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
 
 	AudioPlayer::Instance().CreateSound("audio/SFX/01.wav", "Collect");
+	AudioPlayer::Instance().CreateSound("audio/SFX/25.wav", "OpenChest");
 
 	player->weapon->SetWeapon(WeaponType::WHIP);
 
@@ -202,7 +203,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 		EnemyManager::Instance().DestroyEnemies();
-		EnemyManager::Instance().SpawnZombie({ 236,143 });
+		EnemyManager::Instance().SpawnZombie({ 236,159 });
 		if (player->isGUIinit == false) {
 			player->InitGUI();
 		}
@@ -361,6 +362,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 		EnemyManager::Instance().DestroyEnemies();
+		EnemyManager::Instance().SpawnZombie({ 236,175 });
 	}
 	else if (stage == 5 && floor == 0)
 	{
@@ -863,7 +865,7 @@ void Scene::Update()
 
 				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::CHAIN);
 				objects.push_back(obj);
-				chest_time = 180;
+				chest_time = 90;
 				chestOpening = false;
 			}
 		}
@@ -1002,6 +1004,7 @@ void Scene::CheckCollisions()
 					currentChestType = ObjectType::CHEST_CHAIN;
 					currentChestX = (float)(*it)->GetPos().x;
 					currentChestY = (*it)->GetPos().y;
+					AudioPlayer::Instance().PlaySoundByName("OpenChest");
 				}
 			}
 			//Delete the object
@@ -1040,22 +1043,22 @@ void Scene::RenderObjectsDebug(const Color& col) const
 }
 void Scene::RenderGUI() const
 {
-	int currentLives = player->GetLives();
-
-	font->Draw(64, 14, "33", WHITE);
+	font->Draw(65, 14, TextFormat("%06d", player->GetScore()), WHITE);
 	
-	font->Draw(164, 14, TextFormat("%d", currentLevel), WHITE);
+	font->Draw(165, 14, TextFormat("%02d", currentLevel), WHITE);
 
-	if (currentLives >= 0) {
-		font->Draw(236, 14, TextFormat("%d", player->GetLives()), WHITE);
+	if (player->GetLives() >= 0) {
+		font->Draw(237, 14, TextFormat("%02d", player->GetLives()), WHITE);
 	}
 	else {
-		font->Draw(236, 14, "0", WHITE);
+		font->Draw(237, 14, "00", WHITE);
 	}
 
 	if (player->GetLife() > 0) {
 		DrawRectangle(68, 28, player->GetLife() * 4, 4, { 247, 176, 144, 255 });
 	}
+
+	DrawRectangle(68, 37, player->GetLife() * 4, 4, { 176, 6, 6, 255 });
 
 }
 void Scene::RenderGameOver() const

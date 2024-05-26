@@ -4,12 +4,15 @@
 #include "EnemyManager.h"
 
 EnemyManager::EnemyManager() {
+	AudioPlayer::Instance().CreateSound("audio/SFX/27.wav", "Attack");
 }
 
 void EnemyManager::Update()
 {
 	for (int i = 0; i < enemies.size(); ++i) {
-		enemies[i]->Update();
+		if (enemies[i]->isActive) {
+			enemies[i]->Update();
+		}
 	}
 }
 void EnemyManager::Reset()
@@ -49,13 +52,17 @@ void EnemyManager::SpawnBat(Point pos)
 void EnemyManager::Render()
 {
 	for (int i = 0; i < enemies.size(); ++i) {
-		enemies[i]->Render();
+		if (enemies[i]->isActive) {
+			enemies[i]->Render();
+		}
 	}
 }
 void EnemyManager::RenderDebug()
 {
 	for (int i = 0; i < enemies.size(); ++i) {
-		enemies[i]->DrawDebug(YELLOW);
+		if (enemies[i]->isActive) {
+			enemies[i]->DrawDebug(YELLOW);
+		}
 	}
 }
 void EnemyManager::DestroyEnemies()

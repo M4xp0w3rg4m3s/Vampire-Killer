@@ -37,11 +37,11 @@ public:
 	virtual void DrawDebug(const Color& col) const;
 	virtual void Release();
 
+	bool isActive = true;
+
 protected:
 
 	void DamagePlayer() const;
-
-	bool isActive;
 
 	EnemyState state;
 	EnemyLook look;

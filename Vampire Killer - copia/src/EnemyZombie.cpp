@@ -17,13 +17,6 @@ EnemyZombie::~EnemyZombie()
 }
 AppStatus EnemyZombie::Initialise()
 {
-	if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
-		SetPos({ 255, 176 });
-	}
-	else if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
-		SetPos({ 20, 176 });
-	}
-
 	int i;
 	const float n = (float)ZOMBIE_SPRITE_HEIGHT;
 	const float n2 = (float)ZOMBIE_SPRITE_WIDTH;
@@ -55,9 +48,18 @@ AppStatus EnemyZombie::Initialise()
 	sprite->SetAnimationDelay((int)EnemyAnim::EMPTY, ANIM_DELAY);
 	sprite->AddKeyFrame((int)EnemyAnim::EMPTY, { 0, 0, 0, 0 });
 
-	state = EnemyState::IDLE;
-	look = EnemyLook::LEFT;
-	SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
+	if (EnemyManager::Instance().target->GetPos().x < 208 && EnemyManager::Instance().target->IsLookingRight()) {
+		SetPos({ 255, pos.y });
+		state = EnemyState::ADVANCING;
+		look = EnemyLook::LEFT;
+		SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
+	}
+	else if (EnemyManager::Instance().target->GetPos().x > 68 && EnemyManager::Instance().target->IsLookingLeft()) {
+		SetPos({ 20, pos.y });
+		state = EnemyState::ADVANCING;
+		look = EnemyLook::RIGHT;
+		SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
+	}
 
 	return AppStatus::OK;
 }
@@ -91,6 +93,11 @@ void EnemyZombie::Brain()
 	MoveX();
 	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
 		DamagePlayer();
+	}
+	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack())) {
+		AudioPlayer::Instance().PlaySoundByName("Attack");
+		isActive = false;
+		EnemyManager::Instance().target->IncrScore(100);
 	}
 }
 void EnemyZombie::SetTileMap(TileMap* tilemap)
