@@ -1154,6 +1154,10 @@ void Scene::CheckCollisions()
 			if ((*it)->GetType() == ObjectType::CHAIN) {
 				AudioPlayer::Instance().PlaySoundByName("Collect");
 				player->weapon->SetWeapon(WeaponType::CHAIN);
+				//Delete the object
+				delete* it;
+				//Erase the object from the vector and get the iterator to the next valid element
+				it = objects.erase(it);
 			}
 			if ((*it)->GetType() == ObjectType::CHEST_CHAIN) {
 				if (player->HasChestKey()) {
@@ -1162,12 +1166,16 @@ void Scene::CheckCollisions()
 					currentChestX = (float)(*it)->GetPos().x;
 					currentChestY = (*it)->GetPos().y;
 					AudioPlayer::Instance().PlaySoundByName("OpenChest");
+					//Delete the object
+					delete* it;
+					//Erase the object from the vector and get the iterator to the next valid element
+					it = objects.erase(it);
+				}
+				else {
+					++it;
 				}
 			}
-			//Delete the object
-			delete* it; 
-			//Erase the object from the vector and get the iterator to the next valid element
-			it = objects.erase(it); 
+
 		}
 		else
 		{
@@ -1214,6 +1222,13 @@ void Scene::RenderGUI() const
 	}
 	else {
 		font->Draw(237, 14, "00", WHITE);
+	}
+
+	if (player->GetHearts() >= 0) {
+		font->Draw(201, 14, TextFormat("%02d", player->GetHearts()), WHITE);
+	}
+	else {
+		font->Draw(201, 14, "00", WHITE);
 	}
 
 	if (player->GetLife() > 0) {
