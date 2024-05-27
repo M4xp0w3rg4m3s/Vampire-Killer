@@ -446,27 +446,46 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,108,109,131,132,  0,  0,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,108,109,131,132,  0,130,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,134,  0,108,109,131,132,  0,130,  0,  0,  0,  0,501,
 				  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
 				  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 			};
 		}
 		else if(level6WallBroken){
-			map = new int[size] {
-				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,  0,126,  0,  0,107,108,  0,
-				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,501,
-				  0,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,107,104,  0,  0,501,
-				500,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,107,104,  0,  0,  0,501,
-				500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
-				  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
-				  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-			};
+			if (player->HasDoorKey()) {
+				map = new int[size] {
+					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,  0,126,  0,  0,107,108,  0,
+					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,501,
+					  0,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,107,104,  0,  0,501,
+					500,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,107,104,  0,  0,  0,501,
+					500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
+					500,  0,  0,  0,  0,  0,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,134,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
+					  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+				};
+			}
+			else {
+					map = new int[size] {
+					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,  0,126,  0,  0,107,108,  0,
+					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,501,
+					  0,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,107,104,  0,  0,501,
+					500,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,107,104,  0,  0,  0,501,
+					500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
+					500,  0,  0,  0,  0,  0,  0,108,109,135,  0,  0,  0,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,134,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
+					  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+				};
+			}
 		}
 		mapFront = new int[size] {
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -562,11 +581,11 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,108,109,108,109,  0,  0,108,109,108,106,  0,126,  0,  0,  0,  0,501,
 			  0,108,109,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,501,
 			  0,108,109,  0,126,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,501,
-			  0,108,109,130,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,501,
+			  0,108,109,136,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,501,
 			  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,108,109,108,109,501,
 			  0,108,109,  0,  0,  0,  0,126,  0,  0,  0,126,  0,  0,  0,  0,  0,501,
 			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			  0,108,109,134,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
@@ -715,7 +734,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,109,108,109,108,109,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,  0,  0,108,109,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,134,107,104,  0,  0,  0,108,109,501,
 			500,108,109,108,109,108,109,108,109,108,109,  0,  0,  0,  0,108,109,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
 			500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,126,  0,  0,  0,108,109,501,
@@ -769,7 +788,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,126,  0,  0,126,  0,119,109,108,109,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,121,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,550,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
@@ -846,11 +865,43 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				objects.push_back(obj);
 				map[i] = 0;
 			}
+			else if (tile == Tile::SHIELD)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::SHIELD);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
 			else if (tile == Tile::CHEST_CHAIN)
 			{
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
 				obj = new Object(pos, ObjectType::CHEST_CHAIN);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
+			else if (tile == Tile::CHEST_SHIELD)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::CHEST_SHIELD);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
+			else if (tile == Tile::KEY_CHEST)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::KEY_CHEST);
+				objects.push_back(obj);
+				map[i] = 0;
+			}
+			else if (tile == Tile::KEY_DOOR)
+			{
+				pos.x = x * TILE_SIZE;
+				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
+				obj = new Object(pos, ObjectType::KEY_DOOR);
 				objects.push_back(obj);
 				map[i] = 0;
 			}
@@ -995,8 +1046,14 @@ void Scene::Update()
 		// PLAY ANIMATION
 		if (chest_time == 0) {
 			if (currentChestType == ObjectType::CHEST_CHAIN) {
-
 				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::CHAIN);
+				objects.push_back(obj);
+				chest_time = 90;
+				chestOpening = false;
+			}
+			if (currentChestType == ObjectType::CHEST_SHIELD) {
+
+				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::SHIELD);
 				objects.push_back(obj);
 				chest_time = 90;
 				chestOpening = false;
@@ -1090,8 +1147,23 @@ void Scene::Render()
 			player->weapon->SetWeapon(WeaponType::WHIP);
 			player->SetLook(Look::RIGHT);
 			player->InitLife();
+			player->InitHearts();
+			if (player->HasShield()) {
+				player->SwitchShield();
+			}
+			if (player->HasDoorKey()) {
+				player->SwitchDoorKey();
+			}
+			if (player->HasChestKey()) {
+				player->SwitchChestKey();
+			}
 
-			LoadLevel(1,currentFloor);
+			if (currentLevel > 3) {
+				LoadLevel(4, 0);
+			}
+			else {
+				LoadLevel(1, 0);
+			}
 		}
 	}
 
@@ -1103,10 +1175,10 @@ void Scene::Render()
 
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES) {
 		if (player->IsGodMode()) {
-			DrawText("GOD MODE : ON", 10, 30, 8, LIGHTGRAY);
+			DrawText("GOD MODE : ON", 10, 50, 8, LIGHTGRAY);
 		}
 		else {
-			DrawText("GOD MODE : OFF", 10, 30, 8, LIGHTGRAY);
+			DrawText("GOD MODE : OFF", 10, 50, 8, LIGHTGRAY);
 		}
 	}
 
@@ -1159,12 +1231,66 @@ void Scene::CheckCollisions()
 				//Erase the object from the vector and get the iterator to the next valid element
 				it = objects.erase(it);
 			}
+			else if ((*it)->GetType() == ObjectType::SHIELD) {
+				AudioPlayer::Instance().PlaySoundByName("Collect");
+				if (!player->HasShield()) {
+					player->SwitchShield();
+				}
+				//Delete the object
+				delete* it;
+				//Erase the object from the vector and get the iterator to the next valid element
+				it = objects.erase(it);
+			}
+			else if ((*it)->GetType() == ObjectType::KEY_CHEST) {
+				if (!player->HasChestKey()) {
+					AudioPlayer::Instance().PlaySoundByName("Collect");
+					player->SwitchChestKey();
+					//Delete the object
+					delete* it;
+					//Erase the object from the vector and get the iterator to the next valid element
+					it = objects.erase(it);
+				}
+				else {
+					++it;
+				}
+			}
+			else if ((*it)->GetType() == ObjectType::KEY_DOOR) {
+				if (!player->HasDoorKey()) {
+					AudioPlayer::Instance().PlaySoundByName("Collect");
+					player->SwitchDoorKey();
+					//Delete the object
+					delete* it;
+					//Erase the object from the vector and get the iterator to the next valid element
+					it = objects.erase(it);
+				}
+				else {
+					++it;
+				}
+			}
 			else if ((*it)->GetType() == ObjectType::CHEST_CHAIN) {
 				if (player->HasChestKey()) {
 					chestOpening = true;
 					currentChestType = ObjectType::CHEST_CHAIN;
 					currentChestX = (float)(*it)->GetPos().x;
 					currentChestY = (*it)->GetPos().y;
+					player->SwitchChestKey();
+					AudioPlayer::Instance().PlaySoundByName("OpenChest");
+					//Delete the object
+					delete* it;
+					//Erase the object from the vector and get the iterator to the next valid element
+					it = objects.erase(it);
+				}
+				else {
+					++it;
+				}
+			}
+			else if ((*it)->GetType() == ObjectType::CHEST_SHIELD) {
+				if (player->HasChestKey()) {
+					chestOpening = true;
+					currentChestType = ObjectType::CHEST_SHIELD;
+					currentChestX = (float)(*it)->GetPos().x;
+					currentChestY = (*it)->GetPos().y;
+					player->SwitchChestKey();
 					AudioPlayer::Instance().PlaySoundByName("OpenChest");
 					//Delete the object
 					delete* it;

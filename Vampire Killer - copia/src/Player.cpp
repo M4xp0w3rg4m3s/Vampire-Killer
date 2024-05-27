@@ -165,6 +165,7 @@ void Player::InitGUI() {
 	InitScore();
 	InitLives();
 	InitLife();
+	InitHearts();
 	isGUIinit = true;
 }
 void Player::InitScore()

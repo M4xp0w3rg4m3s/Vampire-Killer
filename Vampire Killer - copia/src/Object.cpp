@@ -10,7 +10,13 @@ Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, O
     switch (type)
     {
     case ObjectType::CHAIN: rc = { 15 * n,  4 * n, n, n }; break;
+    case ObjectType::SHIELD: rc = { 14 * n,  7 * n, n, n }; break;
+
+    case ObjectType::KEY_CHEST: rc = { 12 * n,  7 * n, n, n }; break;
+    case ObjectType::KEY_DOOR: rc = { 13 * n,  7 * n, n, n }; break;
+
     case ObjectType::CHEST_CHAIN: rc = { 11 * n,  7 * n, n, n }; break;
+    case ObjectType::CHEST_SHIELD: rc = { 11 * n,  7 * n, n, n }; break;
 
     default: LOG("Internal error: object creation of invalid type");
     }

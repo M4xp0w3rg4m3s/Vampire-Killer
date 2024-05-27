@@ -101,7 +101,7 @@ enum class Tile {
 	// 123: boss fence
 	BOSS_FENCE,
 
-	// 124 <= id <= 130: special tiles
+	// 124 <= id <= 130: some special tiles
 	FIRE = 124, FIRE_FRAME1, FIRE_FRAME2,
 	CANDLE = 126, CANDLE_FRAME1, CANDLE_FRAME2,
 	CHAIN, CHEST_CHAIN,
@@ -109,6 +109,8 @@ enum class Tile {
 	// 131 <= id <= 132: breakable tiles
 	BREAKABLE_BRICK_LEFT, BREAKABLE_BRICK_RIGHT,
 
+	// 133 <= id <= ??: breakable tiles
+	SHIELD, KEY_CHEST, KEY_DOOR, CHEST_SHIELD,
 
 	// 200 =< id: entities' initial locations
 	PLAYER = 200,
