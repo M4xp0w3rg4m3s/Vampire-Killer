@@ -113,7 +113,7 @@ void EnemyBat::AdvanceLeft()
 }
 void EnemyBat::Move()
 {
-	Wave w{ Init_pos_y,40,80,20};
+	Wave w{ Init_pos_y,5,45, 5};
 	if (state == EnemyState::IDLE) {
 		if (look == EnemyLook::RIGHT) {
 			AdvanceRight();
@@ -124,8 +124,18 @@ void EnemyBat::Move()
 	}
 	else if (state == EnemyState::ADVANCING) {
 		if (look == EnemyLook::RIGHT) {
-			w.alpha -= w.delta;
-			pos.y += w.y0 + w.amplitude * sin(pos.y * w.alpha );
+			
+			if (w.alpha < 270)
+			{
+				w.alpha -= w.delta;
+			}
+			else 
+			{
+				w.alpha += w.delta;
+			}
+			
+			pos.y += w.y0  + w.amplitude * sin(((w.alpha)* PI )/ 180);
+
 		/*	w.alpha -= w.delta;
 			pos.y += w.y0 + w.amplitude * sin(w.alpha * pos.y);*/
 			
