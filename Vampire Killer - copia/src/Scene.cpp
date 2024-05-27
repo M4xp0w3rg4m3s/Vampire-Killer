@@ -1159,7 +1159,7 @@ void Scene::CheckCollisions()
 				//Erase the object from the vector and get the iterator to the next valid element
 				it = objects.erase(it);
 			}
-			if ((*it)->GetType() == ObjectType::CHEST_CHAIN) {
+			else if ((*it)->GetType() == ObjectType::CHEST_CHAIN) {
 				if (player->HasChestKey()) {
 					chestOpening = true;
 					currentChestType = ObjectType::CHEST_CHAIN;
@@ -1175,7 +1175,12 @@ void Scene::CheckCollisions()
 					++it;
 				}
 			}
-
+			else {
+				//Delete the object
+				delete* it;
+				//Erase the object from the vector and get the iterator to the next valid element
+				it = objects.erase(it);
+			}
 		}
 		else
 		{
