@@ -63,14 +63,21 @@ enum class Look { RIGHT, LEFT };
 //Rendering states
 enum class PlayerAnim {
 	IDLE_LEFT, IDLE_RIGHT,
+	IDLE_LEFT_SHIELD, IDLE_RIGHT_SHIELD,
 	WALKING_LEFT, WALKING_RIGHT,
+	WALKING_LEFT_SHIELD, WALKING_RIGHT_SHIELD,
 	JUMPING_LEFT, JUMPING_RIGHT,
+	JUMPING_LEFT_SHIELD, JUMPING_RIGHT_SHIELD,
 	LEVITATING_LEFT, LEVITATING_RIGHT,
+	LEVITATING_LEFT_SHIELD, LEVITATING_RIGHT_SHIELD,
 	FALLING_LEFT, FALLING_RIGHT,
+	FALLING_LEFT_SHIELD, FALLING_RIGHT_SHIELD,
 	CLIMBING, CLIMBING_PRE_TOP, CLIMBING_TOP,
+	CLIMBING_SHIELD, CLIMBING_PRE_TOP_SHIELD, CLIMBING_TOP_SHIELD,
 	DYING_LEFT, DYING_RIGHT,
 	ATTACKING_LEFT, ATTACKING_RIGHT,
 	CROUCHING_LEFT, CROUCHING_RIGHT,
+	CROUCHING_LEFT_SHIELD, CROUCHING_RIGHT_SHIELD,
 	CROUCH_ATTACK_LEFT, CROUCH_ATTACK_RIGHT,
 	STANDING,
 	NUM_ANIMATIONS
@@ -102,6 +109,10 @@ public:
 	void DecrLives(int n);
 	int GetLives() const;
 
+	void InitHearts();
+	void IncrHearts(int n);
+	int GetHearts() const;
+
 	void Update();
 	void DrawDebug(const Color& col) const;
 	void Release();
@@ -117,7 +128,13 @@ public:
 
 	void Win();
 
-	bool HasChestKey();
+	//Inventory management
+	bool HasChestKey() const;
+	void SwitchChestKey();
+	bool HasDoorKey() const;
+	void SwitchDoorKey();
+	bool HasShield() const;
+	void SwitchShield();
 
 	Weapon* weapon;
 
@@ -176,10 +193,17 @@ private:
 	int	die_delay;
 	int AnimationFrame;
 
+	//Inventory Items
+	bool chestKey;
+	bool doorKey;
+	bool shield;
+
 	TileMap *map;
 
+	//HUD Numbers
 	int score;
 	int lives;
 	int life;
+	int hearts;
 };
 
