@@ -101,10 +101,14 @@ enum class Tile {
 	// 123: boss fence
 	BOSS_FENCE,
 
-	// 124 <= : special tiles
+	// 124 <= id <= 130: special tiles
 	FIRE = 124, FIRE_FRAME1, FIRE_FRAME2,
 	CANDLE = 126, CANDLE_FRAME1, CANDLE_FRAME2,
 	CHAIN, CHEST_CHAIN,
+
+	// 131 <= id <= 132: breakable tiles
+	BREAKABLE_BRICK_LEFT, BREAKABLE_BRICK_RIGHT,
+
 
 	// 200 =< id: entities' initial locations
 	PLAYER = 200,
@@ -146,7 +150,11 @@ public:
 	bool TestCollisionBottom(const AABB& box) const;
 	bool TestCollisionWin(const AABB& box) const;
 
-	
+	//Test for breakeable tiles
+	bool TestCollisionBreakableBrick(const AABB& box) const;
+
+	void TurnIntoAir();
+
 	//Test collision with the ground and update 'py' with the maximum y-position to prevent
 	//penetration of the grounded tile, that is, the pixel y-position above the grounded tile.
 	//Grounded tile = solid tile (blocks) or ladder tops.

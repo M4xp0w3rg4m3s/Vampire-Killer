@@ -141,6 +141,9 @@ void TileMap::InitTileDictionary()
 	dict_rect[(int)Tile::CANDLE_FRAME1] = { 9 * n, 4 * n, n, n };
 	dict_rect[(int)Tile::CANDLE_FRAME2] = { 10 * n, 4 * n, n, n };
 
+	dict_rect[(int)Tile::BREAKABLE_BRICK_LEFT] = { 13 * n, 6 * n, n, n };
+	dict_rect[(int)Tile::BREAKABLE_BRICK_RIGHT] = { 14 * n, 6 * n, n, n };
+
 	/* Level 1 */
 	dict_rect[(int)Tile::COLUMN_TOP_RIGHT] = { 0 * n, 5 * n, n, n };
 	dict_rect[(int)Tile::COLUMN_TOP_LEFT] = { 0 * n, 5 * n, -n, n };
@@ -313,7 +316,8 @@ Tile TileMap::GetFrontTileIndex(int x, int y) const
 }
 bool TileMap::IsTileSolid(Tile tile) const
 {
-	return (tile == Tile::GRASS_FLOOR || tile == Tile::BRICK_FLOOR_1 || tile == Tile::BRICK_FLOOR_2 || tile == Tile::INVISIBLE);
+	return (tile == Tile::GRASS_FLOOR || tile == Tile::BRICK_FLOOR_1 || tile == Tile::BRICK_FLOOR_2
+		|| tile == Tile::INVISIBLE || tile == Tile::BREAKABLE_BRICK_RIGHT || tile == Tile::BREAKABLE_BRICK_LEFT);
 }
 bool TileMap::TestCollisionWallLeft(const AABB& box) const
 {
@@ -446,6 +450,47 @@ bool TileMap::TestCollisionWin(const AABB& box) const {
 		}
 	}
 	return false;
+}
+bool TileMap::TestCollisionBreakableBrick(const AABB& box) const {
+	const Point& p = box.pos;
+	int distance = box.height;
+	Tile tile;
+
+	int x, y, y0, y1;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	x = (p.x) / TILE_SIZE;
+	y0 = p.y / TILE_SIZE;
+	y1 = (p.y + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the vertical range
+	for (y = y0; y <= y1; ++y)
+	{
+		tile = GetTileIndex(x, y);
+
+		//One solid tile is sufficient
+		if (tile == Tile::BREAKABLE_BRICK_RIGHT || tile == Tile::BREAKABLE_BRICK_LEFT) {
+			return true;
+		}
+	}
+	return false;
+}
+void TileMap::TurnIntoAir() {
+	Tile tile;
+	Rectangle rc;
+	Vector2 pos;
+
+	for (int i = 0; i < height; ++i)
+	{
+		for (int j = 0; j < width; ++j)
+		{
+			tile = map[i * width + j];
+			if (tile == Tile::BREAKABLE_BRICK_RIGHT || tile == Tile::BREAKABLE_BRICK_LEFT)
+			{
+				map[i * width + j] = Tile::AIR;
+			}
+		}
+	}
 }
 bool TileMap::TestCollisionGround(const AABB& box, int* py) const
 {

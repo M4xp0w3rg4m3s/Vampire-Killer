@@ -50,6 +50,8 @@ public:
 
 	AABB HitboxOnAttack();
 
+	int GetFrame() const;
+
 private:
 
 	void AttackRight(int frame);

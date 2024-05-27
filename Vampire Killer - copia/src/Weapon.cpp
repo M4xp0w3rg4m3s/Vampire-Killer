@@ -146,6 +146,11 @@ AABB Weapon::HitboxOnAttack()
 	}
 }
 
+int Weapon::GetFrame() const
+{
+	return currentFrame;
+}
+
 void Weapon::AttackRight(int frame) {
 	if (frame == 0) {
 		currentFrame = 1;

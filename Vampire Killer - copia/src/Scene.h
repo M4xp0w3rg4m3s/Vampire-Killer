@@ -46,6 +46,7 @@ private:
     bool deathExecuted;
     bool renderingGameOver;
     bool chestOpening;
+    bool level6WallBroken;
     
     float currentChestX;
     float currentChestY;
