@@ -1,7 +1,7 @@
 #include "Object.h"
 #include "StaticImage.h"
 
-Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
+Object::Object(const Point& p, ObjectType t, Vector2 levelIndex) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
 {
     type = t;
 
@@ -24,6 +24,8 @@ Object::Object(const Point& p, ObjectType t) : Entity(p, OBJECT_PHYSICAL_SIZE, O
     ResourceManager& data = ResourceManager::Instance();
     render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
 
+
+    levelContainer = levelIndex;
 }
 Object::~Object()
 {
@@ -41,4 +43,9 @@ int Object::Points() const
 ObjectType Object::GetType() const
 {
     return type;
+}
+
+Vector2 Object::GetObjectLevel() const
+{
+    return levelContainer;
 }

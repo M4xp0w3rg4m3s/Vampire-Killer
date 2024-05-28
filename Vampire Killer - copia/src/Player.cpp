@@ -156,10 +156,10 @@ AppStatus Player::Initialise()
 		sprite->AddKeyFrame((int)PlayerAnim::DYING_LEFT, { (float)i * n, 4 * n, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::DAMAGED_RIGHT, ANIM_DELAY);
-	for (i = 0; i < 3; ++i)
+	for (i = 0; i < 2; ++i)
 		sprite->AddKeyFrame((int)PlayerAnim::DAMAGED_RIGHT, { (float)i * n, 4 * n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::DAMAGED_LEFT, ANIM_DELAY);
-	for (i = 0; i < 3; ++i)
+	for (i = 0; i < 2; ++i)
 		sprite->AddKeyFrame((int)PlayerAnim::DAMAGED_LEFT, { (float)i * n, 4 * n, -n, n });
 
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
@@ -600,10 +600,6 @@ void Player::Update()
 	Static();
 	weapon->Update(pos, (state == State::CROUCH_THROWING || state == State::CROUCH_WHIP));
 	damaged_delay--;
-	if (damaged_delay > 0) {
-
-	}
-
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
@@ -613,78 +609,81 @@ void Player::MoveX()
 	AABB box;
 	int prev_x = pos.x;
 
-	if (state == State::CLIMBING || state == State::CROUCHING || state == State::WHIP || state == State::CROUCH_WHIP ||
-		state == State::CROUCH_THROWING || state == State::THROWING || state == State::DYING || state == State::DAMAGED)
+	if (state == State::CLIMBING || state == State::CROUCHING || state == State::CROUCH_WHIP ||
+		state == State::CROUCH_THROWING || state == State::DYING)
 		return;
 
-	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
-	{
-		pos.x += -PLAYER_SPEED;
-		if (state == State::IDLE) StartWalkingLeft();
+	if (state != State::DAMAGED && state != State::WHIP && state != State::THROWING) {
+		if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
+		{
+			pos.x += -PLAYER_SPEED;
+			if (state == State::IDLE) StartWalkingLeft();
+			else
+			{
+				if (IsLookingRight()) ChangeAnimLeft();
+			}
+
+			box = GetHitbox();
+			if (map->TestCollisionWallLeft(box))
+			{
+				pos.x = prev_x;
+				if (state == State::WALKING) Stop();
+			}
+		}
+		else if (IsKeyDown(KEY_RIGHT))
+		{
+			pos.x += PLAYER_SPEED;
+			if (state == State::IDLE) StartWalkingRight();
+			else
+			{
+				if (IsLookingLeft()) ChangeAnimRight();
+			}
+
+			box = GetHitbox();
+			if (map->TestCollisionWallRight(box))
+			{
+				pos.x = prev_x;
+				if (state == State::WALKING) Stop();
+			}
+		}
 		else
 		{
-			if (IsLookingRight()) ChangeAnimLeft();
-		}
-
-		box = GetHitbox();
-		if (map->TestCollisionWallLeft(box))
-		{
-			pos.x = prev_x;
 			if (state == State::WALKING) Stop();
 		}
-	}
-	else if (IsKeyDown(KEY_RIGHT))
-	{
-		pos.x += PLAYER_SPEED;
-		if (state == State::IDLE) StartWalkingRight();
-		else
-		{
-			if (IsLookingLeft()) ChangeAnimRight();
-		}
-
-		box = GetHitbox();
-		if (map->TestCollisionWallRight(box))
-		{
-			pos.x = prev_x;
-			if (state == State::WALKING) Stop();
-		}
-	}
-	else
-	{
-		if (state == State::WALKING) Stop();
 	}
 }
 void Player::MoveY()
 {
 	AABB box;
 	
-	if (state == State::CROUCHING || state == State::WHIP || state == State::CROUCH_WHIP || state == State::CROUCH_THROWING ||
-		state == State::THROWING || state == State::DYING || state == State::DAMAGED)	return;
+	if (state == State::CROUCHING || state == State::CROUCH_WHIP || state == State::CROUCH_THROWING || state == State::DYING)	return;
 
-	else if (state == State::JUMPING)
-	{
-		LogicJumping();
-	}
-	else if (state == State::CLIMBING)
-	{
-		LogicClimbing();
-	}
-	else //idle, walking, falling
-	{
-		pos.y += PLAYER_SPEED;
-		box = GetHitbox();
-		if (map->TestCollisionGround(box, &pos.y))
+	if (state != State::DAMAGED && state != State::WHIP && state != State::THROWING) {
+		if (state == State::JUMPING)
 		{
-			if (state == State::FALLING) Stop();
-
-			if (IsKeyDown(KEY_UP))
-			{
-				StartJumping();
-			}
+			LogicJumping();
 		}
-		else
+		else if (state == State::CLIMBING)
 		{
-			if (state != State::FALLING) StartFalling();
+			LogicClimbing();
+		}
+		else //idle, walking, falling
+		{
+			pos.y += PLAYER_SPEED;
+			box = GetHitbox();
+			if (map->TestCollisionGround(box, &pos.y))
+			{
+				if (state == State::FALLING) Stop();
+
+				if (IsKeyDown(KEY_UP))
+				{
+					StartJumping();
+				}
+			}
+			else
+			{
+				if (state != State::FALLING) StartFalling();
+			}
 		}
 	}
 }
@@ -704,9 +703,12 @@ void Player::Static()
 	{
 		LogicThrow();
 	}
-	else if (state == State::DYING || state == State::DAMAGED)
+	else if (state == State::DYING)
 	{
 		Die();
+	}
+	else if (state == State::DAMAGED) {
+		LogicDamaged();
 	}
 	else {
 		pos.y += PLAYER_SPEED;
@@ -740,6 +742,8 @@ void Player::LogicJumping()
 {
 	AABB box, prev_box;
 	int prev_y;
+
+	height = PLAYER_PHYSICAL_CROUCHING_HEIGHT;
 
 	jump_delay--;
 	if (jump_delay == 0)
@@ -808,6 +812,7 @@ void Player::LogicJumping()
 				map->TestCollisionGround(box, &pos.y))
 			{
 				Stop();
+				height = PLAYER_PHYSICAL_HEIGHT;
 			}
 		}
 	}
@@ -949,7 +954,40 @@ void Player::Die()
 		}
 	}
 }
+void Player::LogicDamaged()
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
 
+	die_delay--;
+	if (die_delay > PLAYER_DYING_DELAY / 2) {
+		if (look == Look::RIGHT) {
+			pos.x -= PLAYER_SPEED;
+		}
+		else {
+			pos.x += PLAYER_SPEED;
+		}
+		pos.y -= PLAYER_SPEED;
+	}
+	if (die_delay == 0)
+	{
+		AnimationFrame++;
+		sprite->NextFrame();
+		die_delay = PLAYER_DYING_DELAY;
+
+		if (AnimationFrame == 2) {
+
+			if (state == State::DAMAGED) {
+				Stop();
+			}
+
+			sprite->SetAutomaticMode();
+			AnimationFrame = 0;
+		}
+		else {
+			sprite->NextFrame();
+		}
+	}
+}
 void Player::DrawDebug(const Color& col) const
 {	
 	if (!IsGodMode()) {

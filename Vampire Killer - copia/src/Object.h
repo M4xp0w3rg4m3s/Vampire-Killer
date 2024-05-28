@@ -11,7 +11,7 @@ enum class ObjectType { CHAIN, SHIELD, KEY_CHEST, KEY_DOOR, CHEST_CHAIN, CHEST_S
 class Object : public Entity
 {
 public:
-    Object(const Point& p, ObjectType t);
+    Object(const Point& p, ObjectType t, Vector2 levelIndex);
     ~Object();
 
     void DrawDebug(const Color& col) const;
@@ -19,6 +19,10 @@ public:
 
     ObjectType GetType()const;
 
+    Vector2 GetObjectLevel() const;
+
 private:
     ObjectType type;
+    Vector2 levelContainer;
+
 };

@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "math.h"
 
 #define BAT_SPEED	2
 
@@ -15,12 +16,6 @@ class EnemyBat : public Enemy
 {
 public:
 
-	struct Wave {
-		float y0;
-		float amplitude;
-		float alpha;
-		float delta;
-	};
 	EnemyBat(Point pos);
 	virtual ~EnemyBat();
 
@@ -45,6 +40,11 @@ private:
 
 	TileMap* map;
 	int Init_pos_y;
+
+	float internalTimer = 0;
+	float amplitude = 0.5;
+	float currentAmplitude = 0;
+	float amplitudeChangeSpeed = 5;
 
 };
 

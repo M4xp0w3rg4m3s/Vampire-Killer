@@ -28,7 +28,7 @@ Scene::Scene()
 
 	debug = DebugMode::OFF;
 
-	chest_time = 90;
+	chest_time = 60;
 	enemy_delay_time = 120;
 }
 Scene::~Scene()
@@ -144,6 +144,21 @@ AppStatus Scene::Init()
 		return AppStatus::ERROR;
 	}
 
+	Object* obj;
+	obj = new Object({ 5* TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHAIN, {1,0});
+	objects.push_back(obj);
+
+	obj = new Object({ 5 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 6,0 });
+	objects.push_back(obj);
+
+	obj = new Object({ 12 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 6,0 });
+	objects.push_back(obj);
+
+	obj = new Object({ 4 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 7,0 });
+	objects.push_back(obj);
+
+
+
     return AppStatus::OK;
 }
 AppStatus Scene::LoadLevel(int stage,int floor)
@@ -158,7 +173,6 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 	//Object *obj = nullptr;
 	Object* obj;
 	
-	ClearLevel();
 
 	size = LEVEL_WIDTH * LEVEL_HEIGHT;
 	if (stage == 1 && floor == 0)
@@ -452,46 +466,27 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,108,109,131,132,  0,  0,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,134,  0,108,109,131,132,  0,130,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,108,109,131,132,  0,  0,  0,  0,  0,  0,501,
 				  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
 				  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 			};
 		}
 		else if(level6WallBroken){
-			if (player->HasDoorKey()) {
 				map = new int[size] {
-					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,  0,126,  0,  0,107,108,  0,
-					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,501,
-					  0,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,107,104,  0,  0,501,
-					500,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,107,104,  0,  0,  0,501,
-					500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
-					500,  0,  0,  0,  0,  0,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,134,  0,108,109,  0,  0,  0,130,  0,  0,  0,  0,501,
-					  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
-					  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-				};
-			}
-			else {
-					map = new int[size] {
-					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,  0,126,  0,  0,107,108,  0,
-					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,501,
-					  0,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,107,104,  0,  0,501,
-					500,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,107,104,  0,  0,  0,501,
-					500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
-					500,  0,  0,  0,  0,  0,  0,108,109,135,  0,  0,  0,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,134,  0,108,109,  0,  0,  0,130,  0,  0,  0,  0,501,
-					  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
-					  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-				};
-			}
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,  0,126,  0,  0,107,108,  0,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,501,
+				  0,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,107,104,  0,  0,501,
+				500,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,107,104,  0,  0,  0,501,
+				500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
+				  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+			};
 		}
 		mapFront = new int[size] {
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -882,7 +877,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				player->SetPos(pos);
 				map[i] = 0;
 			}
-			else if (tile == Tile::CHAIN)
+			/*else if (tile == Tile::CHAIN)
 			{
 				pos.x = x * TILE_SIZE;
 				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
@@ -929,7 +924,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				obj = new Object(pos, ObjectType::KEY_DOOR);
 				objects.push_back(obj);
 				map[i] = 0;
-			}
+			}*/
 			++i;
 		}
 	}
@@ -1075,16 +1070,16 @@ void Scene::Update()
 		// PLAY ANIMATION
 		if (chest_time == 0) {
 			if (currentChestType == ObjectType::CHEST_CHAIN) {
-				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::CHAIN);
+				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::CHAIN, { (float)currentLevel, (float)currentFloor });
 				objects.push_back(obj);
-				chest_time = 90;
+				chest_time = 60;
 				chestOpening = false;
 			}
 			if (currentChestType == ObjectType::CHEST_SHIELD) {
 
-				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::SHIELD);
+				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::SHIELD, { (float)currentLevel, (float)currentFloor });
 				objects.push_back(obj);
-				chest_time = 90;
+				chest_time = 60;
 				chestOpening = false;
 			}
 		}
@@ -1110,7 +1105,7 @@ void Scene::Update()
 		if (currentLevel == 6 && currentFloor == 0) {
 			if (level->TestCollisionBreakableBrick(player->weapon->HitboxOnAttack())) {	
 				level->TurnIntoAir();
-				obj = new Object({ 144,160 }, ObjectType::KEY_DOOR);
+				obj = new Object({ 144,160 }, ObjectType::KEY_DOOR, { 6, 0 });
 				objects.push_back(obj);
 				level6WallBroken = true;
 				AudioPlayer::Instance().PlaySoundByName("BreakWalls");
@@ -1267,6 +1262,12 @@ void Scene::CheckCollisions()
 	auto it = objects.begin();
 	while (it != objects.end())
 	{
+		Vector2 currentObjLevel = (*it)->GetObjectLevel();
+		if (currentObjLevel.x != currentLevel || currentObjLevel.y != currentFloor)
+		{
+			++it;
+			continue;
+		}
 		obj_box = (*it)->GetHitbox();
 		if(player_box.TestAABB(obj_box))
 		{
@@ -1376,6 +1377,11 @@ void Scene::RenderObjects() const
 {
 	for (Object* obj : objects)
 	{
+		Vector2 currentObjLevel = obj->GetObjectLevel();
+		if (currentObjLevel.x != currentLevel || currentObjLevel.y != currentFloor)
+		{
+			continue;
+		}
 		obj->Draw();
 	}
 }
@@ -1383,6 +1389,11 @@ void Scene::RenderObjectsDebug(const Color& col) const
 {
 	for (Object* obj : objects)
 	{
+		Vector2 currentObjLevel = obj->GetObjectLevel();
+		if (currentObjLevel.x != currentLevel || currentObjLevel.y != currentFloor)
+		{
+			continue;
+		}
 		obj->DrawDebug(col);
 	}
 }

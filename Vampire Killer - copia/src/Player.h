@@ -39,7 +39,7 @@
 #define PLAYER_DYING_DELAY		20
 
 //Frame delay for updating the being damaged velocity
-#define PLAYER_DAMAGED_DELAY	5*60
+#define PLAYER_DAMAGED_DELAY	3*60
 
 //Player is levitating when abs(speed) <= this value
 #define PLAYER_LEVITATING_SPEED	4
@@ -157,6 +157,7 @@ private:
 	void LogicThrow();
 	void LogicAttack();
 	void Die();
+	void LogicDamaged();
 	
 
 	//Animation management

@@ -4,6 +4,7 @@
 
 
 
+
 EnemyBat::EnemyBat(Point pos) : Enemy(pos, BAT_HITBOX_HEIGHT, BAT_HITBOX_WIDTH, BAT_SPRITE_HEIGHT, BAT_SPRITE_WIDTH)
 {
 	state = EnemyState::ADVANCING;
@@ -18,14 +19,6 @@ EnemyBat::~EnemyBat()
 }
 AppStatus EnemyBat::Initialise()
 {
-	if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
-		SetPos({ 255, 176 });
-		Init_pos_y = pos.y;
-	}
-	else if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
-		SetPos({ 20, 176 });
-	}
-
 	int i;
 	const float n = (float)BAT_SPRITE_HEIGHT;
 	const float n2 = (float)BAT_SPRITE_WIDTH;
@@ -62,9 +55,23 @@ AppStatus EnemyBat::Initialise()
 	sprite->SetAnimationDelay((int)EnemyAnim::EMPTY, ANIM_DELAY);
 	sprite->AddKeyFrame((int)EnemyAnim::EMPTY, { 0, 0, 0, 0 });
 
-	state = EnemyState::IDLE;
-	look = EnemyLook::RIGHT;
-	SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
+	if (EnemyManager::Instance().target->GetPos().x < 208 && EnemyManager::Instance().target->IsLookingRight()) {
+		SetPos({ 255, pos.y });
+		state = EnemyState::ADVANCING;
+		look = EnemyLook::LEFT;
+		SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
+		Init_pos_y = pos.y;
+	}
+	else if (EnemyManager::Instance().target->GetPos().x > 68 && EnemyManager::Instance().target->IsLookingLeft()) {
+		SetPos({ 20, pos.y });
+		state = EnemyState::ADVANCING;
+		look = EnemyLook::RIGHT;
+		SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
+		Init_pos_y = pos.y;
+	}
+	else {
+		isActive = false;
+	}
 
 	return AppStatus::OK;
 }
@@ -90,6 +97,7 @@ void EnemyBat::Reset()
 }
 void EnemyBat::Brain()
 {
+	internalTimer += GetFrameTime();
 	Move();
 	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
 		DamagePlayer();
@@ -113,7 +121,6 @@ void EnemyBat::AdvanceLeft()
 }
 void EnemyBat::Move()
 {
-	Wave w{ Init_pos_y,5,45, 5};
 	if (state == EnemyState::IDLE) {
 		if (look == EnemyLook::RIGHT) {
 			AdvanceRight();
@@ -123,27 +130,15 @@ void EnemyBat::Move()
 		}
 	}
 	else if (state == EnemyState::ADVANCING) {
-		if (look == EnemyLook::RIGHT) {
-			
-			if (w.alpha < 270)
-			{
-				w.alpha -= w.delta;
-			}
-			else 
-			{
-				w.alpha += w.delta;
-			}
-			
-			pos.y += w.y0  + w.amplitude * sin(((w.alpha)* PI )/ 180);
 
-		/*	w.alpha -= w.delta;
-			pos.y += w.y0 + w.amplitude * sin(w.alpha * pos.y);*/
-			
+		currentAmplitude = amplitude * sin(internalTimer * amplitudeChangeSpeed);
+
+		pos.y = Init_pos_y + currentAmplitude * TILE_SIZE;
+
+		if (look == EnemyLook::RIGHT) {
 			pos.x += BAT_SPEED;
 		}
 		else {
-			w.alpha -= w.delta;
-			pos.y += w.y0 + w.amplitude * sin(w.alpha );
 			pos.x -= BAT_SPEED;
 		}
 	}
