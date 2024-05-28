@@ -1,0 +1,8 @@
+01 - Collect Door Key (---)
+02 - Break walls (---)
+03 - Enter to castle (---)
+12 - Collect hearts (wip)
+17 - Collect item (---)
+25 - Open chest (---)
+26 - Miss Attack (---)
+27 - Hit Attack (---)

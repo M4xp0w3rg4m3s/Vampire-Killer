@@ -69,7 +69,7 @@ AppStatus EnemyZombie::Initialise()
 	else {
 		isActive = false;
 	}
-	if (EnemyManager::Instance().target->GetPos().y < 100 && EnemyManager::Instance().target->IsLookingRight()) {
+	if (EnemyManager::Instance().target->GetPos().y < 130 && EnemyManager::Instance().target->IsLookingRight()) {
 		SetPos({ pos.x, 79 });
 	}
 
