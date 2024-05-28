@@ -54,6 +54,7 @@ enum class State {
 	THROWING, CROUCH_THROWING,
 	CLIMBING, 
 	CROUCHING, 
+	DAMAGED,
 	DYING, DEAD,
 	WIN
 };
@@ -74,6 +75,7 @@ enum class PlayerAnim {
 	FALLING_LEFT_SHIELD, FALLING_RIGHT_SHIELD,
 	CLIMBING, CLIMBING_PRE_TOP, CLIMBING_TOP,
 	CLIMBING_SHIELD, CLIMBING_PRE_TOP_SHIELD, CLIMBING_TOP_SHIELD,
+	DAMAGED_LEFT, DAMAGED_RIGHT,
 	DYING_LEFT, DYING_RIGHT,
 	ATTACKING_LEFT, ATTACKING_RIGHT,
 	CROUCHING_LEFT, CROUCHING_RIGHT,
@@ -103,6 +105,7 @@ public:
 	void IncrLife(int n);
 	void DecrLife(int n);
 	int GetLife() const;
+	int GetDamagedDelay() const;
 
 	void InitLives();
 	void IncrLives(int n);
@@ -171,6 +174,7 @@ private:
 	void StartCrouchThrowing();
 	void StartClimbingUp();
 	void StartClimbingDown();
+	void StartDamaged();
 	void ChangeAnimRight();
 	void ChangeAnimLeft();
 

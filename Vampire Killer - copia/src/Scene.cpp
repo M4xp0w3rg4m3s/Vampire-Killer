@@ -1006,7 +1006,7 @@ void Scene::Update()
 	else if (IsKeyPressed(KEY_F5))
 	{
 		if (!player->IsGodMode()) {
-			player->DecrLife(1);
+			player->DecrLife(8);
 		}
 	}
 
@@ -1142,7 +1142,15 @@ void Scene::Render()
 		{
 			RenderObjects(); 
 			EnemyManager::Instance().Render();
-			player->Draw();
+			if(player->GetDamagedDelay() > 0){
+				if (player->GetDamagedDelay() % 12 == 0 || player->GetDamagedDelay() % 12 == 1 || player->GetDamagedDelay() % 12 == 2 ||
+					player->GetDamagedDelay() % 12 == 3 || player->GetDamagedDelay() % 12 == 4 || player->GetDamagedDelay() % 12 == 5) {
+					player->Draw();
+				}
+			}
+			else {
+				player->Draw();
+			}
 			player->weapon->Draw();
 		}
 		if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)

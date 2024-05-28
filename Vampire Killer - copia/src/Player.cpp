@@ -155,6 +155,13 @@ AppStatus Player::Initialise()
 	for (i = 0; i < 3; ++i)
 		sprite->AddKeyFrame((int)PlayerAnim::DYING_LEFT, { (float)i * n, 4 * n, -n, n });
 
+	sprite->SetAnimationDelay((int)PlayerAnim::DAMAGED_RIGHT, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::DAMAGED_RIGHT, { (float)i * n, 4 * n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::DAMAGED_LEFT, ANIM_DELAY);
+	for (i = 0; i < 3; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::DAMAGED_LEFT, { (float)i * n, 4 * n, -n, n });
+
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
 	AudioPlayer::Instance().CreateSound("audio/SFX/26.wav", "MissAttack");
@@ -230,11 +237,19 @@ void Player::DecrLife(int n)
 	if (life >= 0) {
 		life -= n;
 		damaged_delay = PLAYER_DAMAGED_DELAY;
+		StartDamaged();
+	}
+	else {
+		DecrLives(1);
 	}
 }
 int Player::GetLife() const
 {
 	return life;
+}
+int Player::GetDamagedDelay() const
+{
+	return damaged_delay;
 }
 void Player::SetTileMap(TileMap* tilemap)
 {
@@ -489,6 +504,15 @@ void Player::StartDying()
 	sprite->SetManualMode();
 	die_delay = PLAYER_DYING_DELAY;
 }
+void Player::StartDamaged()
+{
+	state = State::DAMAGED;
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::DAMAGED_RIGHT);
+	else					SetAnimation((int)PlayerAnim::DAMAGED_LEFT);
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetManualMode();
+	die_delay = PLAYER_DYING_DELAY;
+}
 void Player::StartClimbingUp()
 {
 	state = State::CLIMBING;
@@ -576,6 +600,11 @@ void Player::Update()
 	Static();
 	weapon->Update(pos, (state == State::CROUCH_THROWING || state == State::CROUCH_WHIP));
 	damaged_delay--;
+	if (damaged_delay > 0) {
+
+	}
+
+
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 }
@@ -584,21 +613,9 @@ void Player::MoveX()
 	AABB box;
 	int prev_x = pos.x;
 
-	//We can only go up and down while climbing
-	if (state == State::CLIMBING)		return;
-
-	//Same with crouching
-	else if (state == State::CROUCHING)	return;
-
-	else if (state == State::WHIP)	return;
-
-	else if (state == State::CROUCH_WHIP) return;
-
-	else if (state == State::CROUCH_THROWING) return;
-
-	else if (state == State::THROWING)	return;
-
-	else if (state == State::DYING)	return;
+	if (state == State::CLIMBING || state == State::CROUCHING || state == State::WHIP || state == State::CROUCH_WHIP ||
+		state == State::CROUCH_THROWING || state == State::THROWING || state == State::DYING || state == State::DAMAGED)
+		return;
 
 	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 	{
@@ -641,18 +658,8 @@ void Player::MoveY()
 {
 	AABB box;
 	
-	// you can't move while crouching
-	if (state == State::CROUCHING)	return;
-
-	else if (state == State::WHIP)	return;
-
-	else if (state == State::CROUCH_WHIP) return;
-
-	else if (state == State::THROWING)	return;
-
-	else if (state == State::CROUCH_THROWING)	return;
-
-	else if (state == State::DYING)	return;
+	if (state == State::CROUCHING || state == State::WHIP || state == State::CROUCH_WHIP || state == State::CROUCH_THROWING ||
+		state == State::THROWING || state == State::DYING || state == State::DAMAGED)	return;
 
 	else if (state == State::JUMPING)
 	{
@@ -697,7 +704,7 @@ void Player::Static()
 	{
 		LogicThrow();
 	}
-	else if (state == State::DYING)
+	else if (state == State::DYING || state == State::DAMAGED)
 	{
 		Die();
 	}
@@ -929,6 +936,9 @@ void Player::Die()
 
 			if (state == State::DYING) {
 				state = State::DEAD;
+			}
+			else {
+				Stop();
 			}
 
 			sprite->SetAutomaticMode();
