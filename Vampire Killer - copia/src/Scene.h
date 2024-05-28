@@ -46,8 +46,9 @@ private:
     bool deathExecuted;
     bool renderingGameOver;
     bool chestOpening;
-    bool level6WallBroken;
-    
+    bool level_6_0_WallBroken;
+    bool level_7_1_WallBroken;
+
     float currentChestX;
     float currentChestY;
     ObjectType currentChestType;

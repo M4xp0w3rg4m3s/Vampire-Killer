@@ -283,6 +283,7 @@ void TileMap::Update()
 {
 	fire->Update();
 	candle->Update();
+	
 }
 Tile TileMap::GetBackTileIndex(int x, int y) const
 {
@@ -475,6 +476,30 @@ bool TileMap::TestCollisionBreakableBrick(const AABB& box) const {
 	}
 	return false;
 }
+bool TileMap::TestCollisionCandleFire(const AABB& box) const {
+	const Point& p = box.pos;
+	int distance = box.height;
+	Tile tile;
+
+	int x, y, y0, y1;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	x = (p.x) / TILE_SIZE;
+	y0 = p.y / TILE_SIZE;
+	y1 = (p.y + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the vertical range
+	for (y = y0; y <= y1; ++y)
+	{
+		tile = GetTileIndex(x, y);
+
+		//One solid tile is sufficient
+		if (tile == Tile::CANDLE || tile == Tile::FIRE) {
+			return true;
+		}
+	}
+	return false;
+}
 void TileMap::TurnIntoAir() {
 	Tile tile;
 	Rectangle rc;
@@ -486,6 +511,23 @@ void TileMap::TurnIntoAir() {
 		{
 			tile = map[i * width + j];
 			if (tile == Tile::BREAKABLE_BRICK_RIGHT || tile == Tile::BREAKABLE_BRICK_LEFT)
+			{
+				map[i * width + j] = Tile::AIR;
+			}
+		}
+	}
+}
+void TileMap::TurnIntoAirCandleFire() {
+	Tile tile;
+	Rectangle rc;
+	Vector2 pos;
+
+	for (int i = 0; i < height; ++i)
+	{
+		for (int j = 0; j < width; ++j)
+		{
+			tile = map[i * width + j];
+			if (tile == Tile::CANDLE || tile == Tile::FIRE)
 			{
 				map[i * width + j] = Tile::AIR;
 			}

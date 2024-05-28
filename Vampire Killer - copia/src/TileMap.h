@@ -151,11 +151,13 @@ public:
 	bool TestCollisionTop(const AABB& box) const;
 	bool TestCollisionBottom(const AABB& box) const;
 	bool TestCollisionWin(const AABB& box) const;
+	bool TestCollisionCandleFire(const AABB& box) const;
 
 	//Test for breakeable tiles
 	bool TestCollisionBreakableBrick(const AABB& box) const;
 
 	void TurnIntoAir();
+	void TurnIntoAirCandleFire();
 
 	//Test collision with the ground and update 'py' with the maximum y-position to prevent
 	//penetration of the grounded tile, that is, the pixel y-position above the grounded tile.

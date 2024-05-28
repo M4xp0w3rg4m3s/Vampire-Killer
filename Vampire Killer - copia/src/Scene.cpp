@@ -20,7 +20,8 @@ Scene::Scene()
 
 	deathExecuted = false;
 	renderingGameOver = false;
-	level6WallBroken = false;
+	level_6_0_WallBroken = false;
+	level_7_1_WallBroken = false;
 
 	font = nullptr;
 
@@ -434,7 +435,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
-		if (!level6WallBroken) {
+		if (!level_6_0_WallBroken) {
 			map = new int[size] {
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
@@ -451,7 +452,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 			};
 		}
-		else if(level6WallBroken){
+		else if(level_6_0_WallBroken){
 			if (player->HasDoorKey()) {
 				map = new int[size] {
 					500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
@@ -727,7 +728,27 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,108,109,108,109,  0,109,108,109,108,109,108,109,108,109,108,109,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
-		map = new int[size] {
+		if (!level_7_1_WallBroken) 
+		{
+			map = new int[size] {
+			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,109,108,109,108,109,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,134,107,104,  0,  0,  0,108,109,501,
+			500,108,109,108,109,108,109,108,109,108,109,  0,  0,  0,  0,108,109,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
+			500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,126,  0,131,132,108,109,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,131,132,108,109,501,
+			500,108,109,108,109,107,109,108,109,108,109,108,109,108,109,108,109,  0,
+			  0,  0,  0,  0,503,503,503,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+			};
+		}
+		else if (level_7_1_WallBroken) 
+		{
+			map = new int[size] {
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
@@ -741,7 +762,9 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
 			500,108,109,108,109,107,109,108,109,108,109,108,109,108,109,108,109,  0,
 			  0,  0,  0,  0,503,503,503,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		};
+			};
+		}
+		
 		mapFront = new int[size] {
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -987,7 +1010,7 @@ void Scene::Update()
 
 
 	box = player->GetHitbox();
-
+	
 	AudioPlayer::Instance().Update();
 
 	if (level->TestCollisionRight(box))
@@ -1080,7 +1103,21 @@ void Scene::Update()
 	if (player->weapon->GetFrame() == 2) {
 		if (level->TestCollisionBreakableBrick(player->weapon->HitboxOnAttack())) {	
 			level->TurnIntoAir();
-			level6WallBroken = true;
+			if (currentLevel == 7 && currentFloor == 1)
+			{
+				level_6_0_WallBroken = true;
+			}
+			if(currentLevel == 7 && currentFloor == 1)
+			{
+				level_7_1_WallBroken = true;
+			}
+		}
+	}
+
+	if (player->weapon->GetFrame() == 2) {
+		if (level->TestCollisionCandleFire(player->weapon->HitboxOnAttack())) {
+			level->TurnIntoAirCandleFire();
+			
 		}
 	}
 
