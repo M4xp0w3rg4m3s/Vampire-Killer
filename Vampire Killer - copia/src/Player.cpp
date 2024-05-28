@@ -613,8 +613,28 @@ void Player::MoveX()
 		state == State::CROUCH_THROWING || state == State::DYING)
 		return;
 
-	if (state != State::DAMAGED && state != State::WHIP && state != State::THROWING) {
-		if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
+	if (state != State::DAMAGED) {
+		if (state == State::WHIP || state == State::THROWING) {
+			box = GetHitbox();
+			if (!map->TestCollisionGround(box, &pos.y))
+			{
+				/*if (look == Look::LEFT) {
+					pos.x += -PLAYER_SPEED;
+				}
+				else {
+					pos.x += PLAYER_SPEED;
+				}*/
+			}
+		}
+		else if (state == State::JUMPING && (state != State::WHIP && state != State::THROWING)) {
+			if (look == Look::LEFT) {
+				pos.x += -PLAYER_SPEED;
+			}
+			else {
+				pos.x += PLAYER_SPEED;
+			}
+		}
+		else if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
 		{
 			pos.x += -PLAYER_SPEED;
 			if (state == State::IDLE) StartWalkingLeft();
@@ -630,7 +650,7 @@ void Player::MoveX()
 				if (state == State::WALKING) Stop();
 			}
 		}
-		else if (IsKeyDown(KEY_RIGHT))
+		else if (IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_LEFT))
 		{
 			pos.x += PLAYER_SPEED;
 			if (state == State::IDLE) StartWalkingRight();
@@ -658,7 +678,7 @@ void Player::MoveY()
 	
 	if (state == State::CROUCHING || state == State::CROUCH_WHIP || state == State::CROUCH_THROWING || state == State::DYING)	return;
 
-	if (state != State::DAMAGED && state != State::WHIP && state != State::THROWING) {
+	if (state != State::DAMAGED) {
 		if (state == State::JUMPING)
 		{
 			LogicJumping();
@@ -675,14 +695,18 @@ void Player::MoveY()
 			{
 				if (state == State::FALLING) Stop();
 
-				if (IsKeyDown(KEY_UP))
-				{
-					StartJumping();
+				if (state != State::WHIP && state != State::THROWING) {
+					if (IsKeyDown(KEY_UP))
+					{
+						StartJumping();
+					}
 				}
 			}
 			else
 			{
-				if (state != State::FALLING) StartFalling();
+				if (state != State::WHIP && state != State::THROWING) {
+					if (state != State::FALLING) StartFalling();
+				}
 			}
 		}
 	}
@@ -713,6 +737,14 @@ void Player::Static()
 	else {
 		pos.y += PLAYER_SPEED;
 		box = GetHitbox();
+		if (IsKeyPressed(KEY_SPACE))
+		{
+			StartWhip();
+		}
+		else if (IsKeyPressed(KEY_Z))
+		{
+			StartThrowing();
+		}
 		if (map->TestCollisionGround(box, &pos.y))
 		{
 			if (IsKeyDown(KEY_DOWN))

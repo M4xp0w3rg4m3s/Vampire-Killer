@@ -145,18 +145,18 @@ AppStatus Scene::Init()
 	}
 
 	Object* obj;
-	obj = new Object({ 5* TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHAIN, {1,0});
-	objects.push_back(obj);
-
 	obj = new Object({ 5 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 6,0 });
 	objects.push_back(obj);
-
 	obj = new Object({ 12 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 6,0 });
 	objects.push_back(obj);
-
 	obj = new Object({ 4 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 7,0 });
 	objects.push_back(obj);
-
+	obj = new Object({ 3 * TILE_SIZE, 2 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 4,1 });
+	objects.push_back(obj);
+	obj = new Object({ 3 * TILE_SIZE, 6 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_SHIELD, { 4,1 });
+	objects.push_back(obj);
+	obj = new Object({ 3 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 4,1 });
+	objects.push_back(obj);
 
 
     return AppStatus::OK;
@@ -531,7 +531,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,108,109,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,126,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,126,  0,  0,  0,105,106,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,130,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,501,
 			500,  0,  0,108,109,108,109,107,108,108,109,108,109,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,126,  0,107,104,  0,  0,126,  0,  0,  0,  0,  0,  0,  0,501,
@@ -578,15 +578,15 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 		map = new int[size] {
 			  0,550,550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,  0,126,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			  0,108,109,130,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,108,109,  0,  0,108,109,108,106,  0,126,  0,  0,  0,  0,501,
 			  0,108,109,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,501,
 			  0,108,109,  0,126,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,501,
-			  0,108,109,136,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,501,
+			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,501,
 			  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,108,109,108,109,501,
 			  0,108,109,  0,  0,  0,  0,126,  0,  0,  0,126,  0,  0,  0,  0,  0,501,
 			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			  0,108,109,134,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
