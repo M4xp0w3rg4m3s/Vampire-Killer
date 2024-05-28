@@ -1035,7 +1035,6 @@ void Scene::Update()
 			LoadLevel(currentLevel + 1,currentFloor);
 			player->SetPos(left_position);
 		}
-
 	}
 	else if (level->TestCollisionLeft(box)) {
 		if (currentLevel <= 3) {
