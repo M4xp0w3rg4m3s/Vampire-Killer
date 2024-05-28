@@ -20,7 +20,9 @@ Scene::Scene()
 
 	deathExecuted = false;
 	renderingGameOver = false;
+
 	level6WallBroken = false;
+	level7_1WallBroken = false;
 
 	font = nullptr;
 
@@ -119,8 +121,12 @@ AppStatus Scene::Init()
 	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
 
-	AudioPlayer::Instance().CreateSound("audio/SFX/01.wav", "Collect");
+	AudioPlayer::Instance().CreateSound("audio/SFX/17.wav", "Collect");
 	AudioPlayer::Instance().CreateSound("audio/SFX/25.wav", "OpenChest");
+	AudioPlayer::Instance().CreateSound("audio/SFX/02.wav", "BreakWalls");
+	AudioPlayer::Instance().CreateSound("audio/SFX/03.wav", "EnterCastle");
+	AudioPlayer::Instance().CreateSound("audio/SFX/01.wav", "GetDoorKey");
+	AudioPlayer::Instance().CreateSound("audio/SFX/12.wav", "GetHeart");
 
 	player->weapon->SetWeapon(WeaponType::WHIP);
 
@@ -464,7 +470,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 					500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
 					500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
 					500,  0,  0,  0,  0,  0,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,134,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,134,  0,108,109,  0,  0,  0,130,  0,  0,  0,  0,501,
 					  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
 					  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 				};
@@ -481,7 +487,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 					500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
 					500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
 					500,  0,  0,  0,  0,  0,  0,108,109,135,  0,  0,  0,  0,  0,  0,  0,501,
-					500,  0,  0,  0,  0,134,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
+					500,  0,  0,  0,  0,134,  0,108,109,  0,  0,  0,130,  0,  0,  0,  0,501,
 					  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
 					  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 				};
@@ -727,21 +733,40 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,108,109,108,109,  0,109,108,109,108,109,108,109,108,109,108,109,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
-		map = new int[size] {
-			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,109,108,109,108,109,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,134,107,104,  0,  0,  0,108,109,501,
-			500,108,109,108,109,108,109,108,109,108,109,  0,  0,  0,  0,108,109,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
-			500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,126,  0,  0,  0,108,109,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
-			500,108,109,108,109,107,109,108,109,108,109,108,109,108,109,108,109,  0,
-			  0,  0,  0,  0,503,503,503,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
-		};
+		if (!level7_1WallBroken) {
+			map = new int[size] {
+				  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,109,108,109,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,134,107,104,  0,  0,  0,108,109,501,
+				500,108,109,108,109,108,109,108,109,108,109,  0,  0,  0,  0,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,126,  0,131,132,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,131,132,108,109,501,
+				500,108,109,108,109,107,109,108,109,108,109,108,109,108,109,108,109,  0,
+				  0,  0,  0,  0,503,503,503,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+			};
+		}
+		else if (level7_1WallBroken) {
+			map = new int[size] {
+				  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,109,108,109,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,134,107,104,  0,  0,  0,108,109,501,
+				500,108,109,108,109,108,109,108,109,108,109,  0,  0,  0,  0,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,126,  0,  0,  0,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
+				500,108,109,108,109,107,109,108,109,108,109,108,109,108,109,108,109,  0,
+				  0,  0,  0,  0,503,503,503,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
+			};
+		}
 		mapFront = new int[size] {
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -1001,6 +1026,11 @@ void Scene::Update()
 			LoadLevel(4,currentFloor);
 			player->SetPos(left_position);
 		}
+		else if (currentLevel == 3) {
+			AudioPlayer::Instance().PlaySoundByName("EnterCastle");
+			LoadLevel(currentLevel + 1, currentFloor);
+			player->SetPos(left_position);
+		}
 		else {
 			LoadLevel(currentLevel + 1,currentFloor);
 			player->SetPos(left_position);
@@ -1038,9 +1068,9 @@ void Scene::Update()
 	}
 
 	EnemyManager::Instance().SetTilemap(level);
-
+	
+	Object* obj;
 	if (chestOpening) {
-		Object* obj;
 		chest_time--;
 
 		// PLAY ANIMATION
@@ -1078,9 +1108,21 @@ void Scene::Update()
 	}
 
 	if (player->weapon->GetFrame() == 2) {
-		if (level->TestCollisionBreakableBrick(player->weapon->HitboxOnAttack())) {	
-			level->TurnIntoAir();
-			level6WallBroken = true;
+		if (currentLevel == 6 && currentFloor == 0) {
+			if (level->TestCollisionBreakableBrick(player->weapon->HitboxOnAttack())) {	
+				level->TurnIntoAir();
+				obj = new Object({ 144,160 }, ObjectType::KEY_DOOR);
+				objects.push_back(obj);
+				level6WallBroken = true;
+				AudioPlayer::Instance().PlaySoundByName("BreakWalls");
+			}
+		}
+		else if (currentLevel == 7 && currentFloor == 1) {
+			if (level->TestCollisionBreakableBrick(player->weapon->HitboxOnAttack())) {
+				level->TurnIntoAir();
+				level7_1WallBroken = true;
+				AudioPlayer::Instance().PlaySoundByName("BreakWalls");
+			}
 		}
 	}
 
@@ -1256,7 +1298,7 @@ void Scene::CheckCollisions()
 			}
 			else if ((*it)->GetType() == ObjectType::KEY_DOOR) {
 				if (!player->HasDoorKey()) {
-					AudioPlayer::Instance().PlaySoundByName("Collect");
+					AudioPlayer::Instance().PlaySoundByName("GetDoorKey");
 					player->SwitchDoorKey();
 					//Delete the object
 					delete* it;
