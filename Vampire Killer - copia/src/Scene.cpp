@@ -1189,14 +1189,18 @@ void Scene::Render()
 			else {
 				player->Draw();
 			}
-			player->weapon->Draw();
+			if (player->GetState() != State::DAMAGED) {
+				player->weapon->Draw();
+			}
 		}
 		if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
 		{
 			RenderObjectsDebug(YELLOW);
 			EnemyManager::Instance().RenderDebug();
 			player->DrawDebug(GREEN);
-			player->weapon->DrawDebug(RED);
+			if (player->GetState() != State::DAMAGED) {
+				player->weapon->DrawDebug(RED);
+			}
 
 		}
 		level->RenderLate();

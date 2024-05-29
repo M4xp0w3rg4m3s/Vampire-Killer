@@ -190,6 +190,7 @@ private:
 	bool IsInSecondHalfTile() const;
 
 	bool staticJump;
+	bool damaged_finished;
 	bool GodMode;
 	State state;
 	Look look;

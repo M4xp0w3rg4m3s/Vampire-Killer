@@ -17,12 +17,13 @@ Player::Player(const Point& p, State s, Look view) :
 	damaged_delay = 0;
 	map = nullptr;
 	weapon = new Weapon(p);
-	score = 000000;
+	score = 0;
 	lives = PLAYER_MAX_LIVES;
 	life = PLAYER_MAX_LIFE;
 	AnimationFrame = 0;
 	GodMode = false;
 	isGUIinit = false;
+	damaged_finished = true;
 
 	shield = false;
 	doorKey = false;
@@ -233,13 +234,13 @@ void Player::DecrLife(int n)
 {
 	if (GodMode) return;
 	
-	if (damaged_delay >= 0) return;
-	if (life >= 0) {
+	if (damaged_delay > 0) return;
+	if (life > 0) {
 		life -= n;
 		damaged_delay = PLAYER_DAMAGED_DELAY;
 		StartDamaged();
 	}
-	else {
+	else if (life <= 0){
 		DecrLives(1);
 	}
 }
@@ -419,6 +420,7 @@ void Player::StartFalling()
 }
 void Player::StartJumping()
 {
+	if (!damaged_finished) return;
 	if (!shield) {
 		dir.y = -PLAYER_JUMP_FORCE;
 		state = State::JUMPING;
@@ -506,12 +508,17 @@ void Player::StartDying()
 }
 void Player::StartDamaged()
 {
+	if (state == State::JUMPING || state == State::FALLING || state == State::WHIP) {
+		Stop();
+		weapon->Attack(-1, LookAt::RIGHT);
+	}
 	state = State::DAMAGED;
 	if (IsLookingRight())	SetAnimation((int)PlayerAnim::DAMAGED_RIGHT);
 	else					SetAnimation((int)PlayerAnim::DAMAGED_LEFT);
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 	die_delay = PLAYER_DYING_DELAY;
+	damaged_finished = false;
 }
 void Player::StartClimbingUp()
 {
@@ -781,8 +788,6 @@ void Player::LogicJumping()
 	AABB box, prev_box;
 	int prev_y;
 
-	height = PLAYER_PHYSICAL_CROUCHING_HEIGHT;
-
 	jump_delay--;
 	if (jump_delay == 0)
 	{
@@ -954,7 +959,6 @@ void Player::LogicAttack()
 			else {
 				Stop();
 				staticJump = false;
-				height = PLAYER_PHYSICAL_HEIGHT;
 			}
 
 			AudioPlayer::Instance().PlaySoundByName("MissAttack");
@@ -1009,17 +1013,16 @@ void Player::LogicDamaged()
 		}
 		pos.y -= PLAYER_SPEED;
 	}
-	if (die_delay == 0)
+	if (die_delay <= 0)
 	{
 		AnimationFrame++;
 		sprite->NextFrame();
 		die_delay = PLAYER_DYING_DELAY;
 
-		if (AnimationFrame == 2) {
-
-			if (state == State::DAMAGED) {
-				Stop();
-			}
+		if (AnimationFrame >= 2) {
+			Stop();
+			staticJump = false;
+			damaged_finished = true;
 
 			sprite->SetAutomaticMode();
 			AnimationFrame = 0;
