@@ -52,6 +52,8 @@ public:
 
 	int GetFrame() const;
 
+	WeaponType GetWeaponType() const;
+
 private:
 
 	void AttackRight(int frame);

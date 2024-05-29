@@ -40,6 +40,7 @@ private:
     const Texture2D* game_over;
     const Texture2D* hud;
     const Texture2D* chest_animation;
+    const Texture2D* hud_items;
     int chest_time;
     int enemy_delay_time;
 

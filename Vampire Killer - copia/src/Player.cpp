@@ -24,6 +24,7 @@ Player::Player(const Point& p, State s, Look view) :
 	GodMode = false;
 	isGUIinit = false;
 	damaged_finished = true;
+	staticJump = false;
 
 	shield = false;
 	doorKey = false;
@@ -241,13 +242,14 @@ void Player::DecrLife(int n)
 	if (GodMode) return;
 	
 	if (damaged_delay > 0) return;
-	if (life > 0) {
+
+	if (life - n > 0) {
 		life -= n;
 		damaged_delay = PLAYER_DAMAGED_DELAY;
 		StartDamaged();
 	}
-	else if (life <= 0){
-		DecrLives(1);
+	else if (life - n <= 0){
+		StartDying();
 	}
 }
 int Player::GetLife() const
@@ -1017,7 +1019,7 @@ void Player::Die()
 		sprite->NextFrame();
 		die_delay = PLAYER_DYING_DELAY;
 
-		if (AnimationFrame == 3) {
+		if (AnimationFrame <= 3) {
 
 			if (state == State::DYING) {
 				state = State::DEAD;

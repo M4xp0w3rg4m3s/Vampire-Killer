@@ -151,6 +151,11 @@ int Weapon::GetFrame() const
 	return currentFrame;
 }
 
+WeaponType Weapon::GetWeaponType() const
+{
+	return currentWeapon;
+}
+
 void Weapon::AttackRight(int frame) {
 	if (frame == 0) {
 		currentFrame = 1;

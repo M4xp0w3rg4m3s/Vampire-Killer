@@ -110,6 +110,12 @@ AppStatus Scene::Init()
 		return AppStatus::ERROR;
 	}
 	hud = data.GetTexture(Resource::IMG_HUD);
+	//Hud items
+	if (data.LoadTexture(Resource::IMG_HUD_ITEMS, "images/Spritesheets/HUD Spritesheet/Items.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	hud_items = data.GetTexture(Resource::IMG_HUD_ITEMS);
 
 	//Add the chest animation
 	if (data.LoadTexture(Resource::IMG_OPEN_CHEST, "images/Spritesheets/FX/OpenChest.png") != AppStatus::OK)
@@ -1472,6 +1478,20 @@ void Scene::RenderGUI() const
 	}
 	else if (currentLevel > 3) {
 		font->Draw(165, 14, "01", WHITE);
+	}
+
+	if (player->HasChestKey()) {
+		DrawTextureRec(*hud_items, { 3 * 16,0,16,16 }, { 156 ,26 }, WHITE);
+	}
+	if (player->HasDoorKey()) {
+		DrawTextureRec(*hud_items, { 4 * 16,0,16,16 }, { 172 ,26 }, WHITE);
+	}
+
+	if (player->weapon->GetWeaponType() == WeaponType::CHAIN) {
+		DrawTextureRec(*hud_items, { 0,0,16,16 }, { 136 ,26 }, WHITE);
+	}	
+	if (player->HasShield()) {
+		DrawTextureRec(*hud_items, { 2 * 16,0,16,16 }, { 208 ,26 }, WHITE);
 	}
 
 	if (player->GetLives() >= 0) {

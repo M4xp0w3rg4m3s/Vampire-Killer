@@ -25,6 +25,7 @@ enum class Resource {
     IMG_OPEN_CHEST,
     IMG_HUD,
     IMG_HUD_INTRO,
+    IMG_HUD_ITEMS,
     IMG_TRADER,
     IMG_BAT
 };
