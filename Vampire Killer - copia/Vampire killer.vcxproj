@@ -39,6 +39,7 @@
     <ClCompile Include="src\StaticImage.cpp" />
     <ClCompile Include="src\Text.cpp" />
     <ClCompile Include="src\TileMap.cpp" />
+    <ClCompile Include="src\Trader.cpp" />
     <ClCompile Include="src\Weapon.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -63,6 +64,7 @@
     <ClInclude Include="src\StaticImage.h" />
     <ClInclude Include="src\Text.h" />
     <ClInclude Include="src\TileMap.h" />
+    <ClInclude Include="src\Trader.h" />
     <ClInclude Include="src\Weapon.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

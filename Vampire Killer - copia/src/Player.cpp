@@ -887,7 +887,7 @@ void Player::LogicClimbing()
 	}
 	if (IsKeyDown(KEY_UP) && IsLookingLeft())
 	{
-		SetState();
+		
 		pos.y -= 3;
 		pos.x -= PLAYER_LADDER_SPEED;
 		sprite->NextFrame();
