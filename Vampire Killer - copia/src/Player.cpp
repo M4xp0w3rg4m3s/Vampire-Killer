@@ -110,21 +110,23 @@ AppStatus Player::Initialise()
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT_SHIELD, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT_SHIELD, { n*5, n, -n, n });
 
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING, ANIM_LADDER_DELAY);
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_RIGHT, ANIM_LADDER_DELAY);
 	for (i = 0; i < 2; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING, { (float)i * n, 2 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_PRE_TOP, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_PRE_TOP, { 0, 2 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_TOP, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_TOP, { n, 2 * n, n, n });
+		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_RIGHT, { (float)i * n, 2 * n, n, n });
 
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_SHIELD, ANIM_LADDER_DELAY);
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_LEFT, ANIM_LADDER_DELAY);
+	for (i = 0; i < 2; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_LEFT, { (float)i * n, 2 * n, -n, n });
+	
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_SHIELD_RIGHT, ANIM_LADDER_DELAY);
 	for (i = 4; i < 6; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_SHIELD, { (float)i * n, 2 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_PRE_TOP_SHIELD, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_PRE_TOP_SHIELD, { 0, 2 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_TOP_SHIELD, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_TOP_SHIELD, { n, 2 * n, n, n });
+		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_SHIELD_RIGHT, { (float)i * n, 2 * n, n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_SHIELD_LEFT, ANIM_LADDER_DELAY);
+	for (i = 4; i < 6; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_SHIELD_LEFT, { (float)i * n, 2 * n, -n, n });
+
+
 
 	sprite->SetAnimationDelay((int)PlayerAnim::ATTACKING_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
@@ -531,14 +533,57 @@ void Player::StartDamaged()
 void Player::StartClimbingUp()
 {
 	state = State::CLIMBING;
-	SetAnimation((int)PlayerAnim::CLIMBING);
+	if (!shield) 
+	{
+		if (IsLookingRight())
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_RIGHT);
+		}
+		else
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_LEFT);
+		}
+	}
+	else 
+	{
+		if (IsLookingRight())
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_RIGHT);
+		}
+		else
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_LEFT);
+		}
+	}
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 }
 void Player::StartClimbingDown()
 {
 	state = State::CLIMBING;
-	SetAnimation((int)PlayerAnim::CLIMBING_TOP);
+
+	if (!shield)
+	{
+		if (IsLookingRight())
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_RIGHT);
+		}
+		else
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_LEFT);
+		}
+	}
+	else
+	{
+		if (IsLookingRight())
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_RIGHT);
+		}
+		else
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_LEFT);
+		}
+	}
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 }
@@ -892,7 +937,6 @@ void Player::LogicClimbing()
 	}
 	if (IsKeyDown(KEY_UP) && IsLookingLeft())
 	{
-		
 		pos.y -= 3;
 		pos.x -= PLAYER_LADDER_SPEED;
 		sprite->NextFrame();
@@ -906,7 +950,6 @@ void Player::LogicClimbing()
 
 	if (IsKeyDown(KEY_UP) && IsLookingRight())
 	{
-		SetLook(Look::RIGHT);
 		pos.y -= 3;
 		pos.x += PLAYER_LADDER_SPEED;
 		sprite->NextFrame();
@@ -929,7 +972,30 @@ void Player::LogicClimbing()
 	}
 	else
 	{
-		if (GetAnimation() != PlayerAnim::CLIMBING)	SetAnimation((int)PlayerAnim::CLIMBING);
+		if (!shield)
+		{
+			if (IsLookingRight())
+			{
+				if (GetAnimation() != PlayerAnim::CLIMBING_RIGHT)	SetAnimation((int)PlayerAnim::CLIMBING_RIGHT);
+			}
+			else
+			{
+				if (GetAnimation() != PlayerAnim::CLIMBING_LEFT)	SetAnimation((int)PlayerAnim::CLIMBING_LEFT);
+			}
+		}
+		else
+		{
+			if (IsLookingRight())
+			{
+				if (GetAnimation() != PlayerAnim::CLIMBING_SHIELD_RIGHT)	SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_RIGHT);
+			}
+			else
+			{
+				if (GetAnimation() != PlayerAnim::CLIMBING_SHIELD_LEFT)	SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_LEFT);
+			}
+		}
+		
+		
 	}
 }
 void Player::LogicCrouching() 
