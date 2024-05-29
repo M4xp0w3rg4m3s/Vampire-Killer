@@ -99,12 +99,15 @@ void EnemyZombie::Brain()
 {
 	MoveX();
 	MoveY();
-	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox()) && (EnemyManager::Instance().target->GetState() == State::JUMPING ||
-		EnemyManager::Instance().target->GetState() == State::FALLING)) {
-		DamagePlayer();
+	if (EnemyManager::Instance().target->GetState() == State::JUMPING || EnemyManager::Instance().target->GetState() == State::FALLING) {
+		AABB PlayerHitbox = EnemyManager::Instance().target->GetHitbox();
+		PlayerHitbox.pos.y = EnemyManager::Instance().target->GetHitbox().pos.y-16;
+		if(this->GetHitbox().TestAABB(PlayerHitbox)) {
+			DamagePlayer();
+		}
 	}
 	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
-
+		DamagePlayer();
 	}
 	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack())) {
 		AudioPlayer::Instance().PlaySoundByName("Attack");
