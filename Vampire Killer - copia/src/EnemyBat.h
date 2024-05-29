@@ -42,9 +42,9 @@ private:
 	int Init_pos_y;
 
 	float internalTimer = 0;
-	float amplitude = 0.5;
+	float amplitude = 0.75;
 	float currentAmplitude = 0;
-	float amplitudeChangeSpeed = 5;
+	float amplitudeChangeSpeed = 3;
 
 };
 

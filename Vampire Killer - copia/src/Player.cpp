@@ -215,6 +215,12 @@ void Player::IncrHearts(int n)
 		hearts = 0;
 	}
 }
+void Player::DecrHearts(int n)
+{
+	if (hearts > 0) {
+		hearts -= n;
+	}
+}
 int Player::GetHearts() const
 {
 	return hearts;

@@ -114,6 +114,7 @@ public:
 
 	void InitHearts();
 	void IncrHearts(int n);
+	void DecrHearts(int n);
 	int GetHearts() const;
 
 	void Update();

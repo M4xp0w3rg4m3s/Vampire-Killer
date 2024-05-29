@@ -311,10 +311,12 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
+
 		EnemyManager::Instance().DestroyEnemies();
 		if (player->isGUIinit == false) {
 			player->InitGUI();
 		}
+		
 	}
 	else if (stage == 2 && floor == 0)
 	{
@@ -368,6 +370,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 		EnemyManager::Instance().DestroyEnemies();
 		EnemyManager::Instance().SpawnPanther({ 40,143 });
 		EnemyManager::Instance().SpawnBat({ 40,120 });
+		EnemyManager::Instance().SpawnTrader({ 20,100 });
 	}
 	else if (stage == 3 && floor == 0)
 	{

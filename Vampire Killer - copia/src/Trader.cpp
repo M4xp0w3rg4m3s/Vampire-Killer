@@ -1,6 +1,7 @@
 #include "Trader.h"
 
-Trader::Trader(Point pos) : Entity(pos, TRADER_HITBOX_HEIGHT, TRADER_HITBOX_WIDTH, TRADER_SPRITE_HEIGHT, TRADER_SPRITE_WIDTH)
+
+Trader::Trader(Point pos) : Enemy(pos, TRADER_HITBOX_HEIGHT, TRADER_HITBOX_WIDTH, TRADER_SPRITE_HEIGHT, TRADER_SPRITE_WIDTH)
 {
 	int AnimationFrame = 0;
 
@@ -12,6 +13,8 @@ Trader::~Trader()
 }
 AppStatus Trader::Initialise()
 {
+	PopUp = false;
+
 	if (Trader::GetPos().x > WINDOW_WIDTH) {
 		SetPos({ 255, 176 });
 	}
@@ -38,8 +41,14 @@ AppStatus Trader::Initialise()
 	}
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetNumberAnimations((int)TraderAnim::NUM_ANIMATIONS);
+	sprite->SetNumberAnimations((int)EnemyAnim::NUM_ANIMATIONS);
 
+	sprite->SetAnimationDelay((int)EnemyAnim::IDLE_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)EnemyAnim::IDLE_LEFT, { 0, 0, n, n });
+
+	sprite->SetAnimationDelay((int)EnemyAnim::RED_TRADER, ANIM_DELAY);
+	sprite->AddKeyFrame((int)EnemyAnim::RED_TRADER, { 0, 0, n * 2, n });
+	
 	return AppStatus::OK;
 }
 void Trader::Update()
@@ -69,7 +78,22 @@ void Trader::Reset()
 }
 void Trader::Brain()
 {
-	
+	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()) && PopUp == false) {
+		AudioPlayer::Instance().PlaySoundByName("Attack");
+		PopUp = true;
+		//Pop up trade (randomize?)
+	}
+	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()) && PopUp == true && EnemyManager::Instance().target->GetHearts() > 90)
+	{
+		SetAnimation((int)EnemyAnim::RED_TRADER);
+		currentAnimation = EnemyAnim::RED_TRADER;
+		EnemyManager::Instance().target->DecrHearts(90);
+		EnemyManager::Instance().target->weapon->SetWeapon(WeaponType::CHAIN); // Put Knives when finished
+	}
+	else if (currentAnimation == EnemyAnim::RED_TRADER && this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()))
+	{
+		isActive == false;
+	}
 }
 void Trader::SetTileMap(TileMap* tilemap)
 {
@@ -86,5 +110,4 @@ void Trader::Release()
 
 	render->Release();
 }
-
 

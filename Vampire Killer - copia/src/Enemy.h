@@ -13,7 +13,8 @@ enum class EnemyLook { RIGHT, LEFT };
 //Rendering states
 enum class EnemyAnim {
 	IDLE_LEFT, IDLE_RIGHT,
-	ADVANCING_LEFT, ADVANCING_RIGHT,
+	ADVANCING_LEFT, ADVANCING_RIGHT, 
+	RED_TRADER,
 	EMPTY,
 	NUM_ANIMATIONS
 };

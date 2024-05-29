@@ -24,6 +24,7 @@ public:
     void SpawnZombie(Point pos);
     void SpawnPanther(Point pos);
     void SpawnBat(Point pos);
+    void SpawnTrader(Point pos);
 
     void Render();
     void RenderDebug();

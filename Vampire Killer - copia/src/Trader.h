@@ -1,8 +1,7 @@
 #pragma once
-#include "Entity.h"
-#include "TileMap.h"
-#include "AudioPlayer.h"
 
+#include "Enemy.h"
+#include "EnemyManager.h"
 
 #define TRADER_SPRITE_HEIGHT	32
 #define TRADER_SPRITE_WIDTH		32
@@ -10,14 +9,8 @@
 #define TRADER_HITBOX_HEIGHT	16
 #define TRADER_HITBOX_WIDTH		32
 
-enum class TraderAnim {
-	WHITE_TRADER, RED_TRADER,
-	PINK_TRADER, PURPLE_TRADER, BLUE_TRADER, GRAY_TRADER, ADVANCING_RIGHT,
-	EMPTY,
-	NUM_ANIMATIONS
-};
 
-class Trader : public Entity
+class Trader : public Enemy
 {
 public:
 	Trader(Point pos);
@@ -38,10 +31,15 @@ public:
 
 	void SetAnimation(int id);
 
+	bool PopUp;
+
+	int AnimationFrame;
+
 private:
 
 	TileMap* map;
-
+	EnemyAnim currentAnimation;
 };
 
-int AnimationFrame;
+
+
