@@ -145,11 +145,73 @@ AppStatus Scene::Init()
 	}
 
 	Object* obj;
+
+	// Level 1 Objects
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 });
+	objects.push_back(obj);
+	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 });
+	objects.push_back(obj);
+	
+	//Level 2 Objects
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 });
+	objects.push_back(obj);
+	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 });
+	objects.push_back(obj);
+	
+	//Level 3 Objects
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 3,0 });
+	objects.push_back(obj);
+	
+	//Level 4 Objects
+	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 });
+	objects.push_back(obj);
+	obj = new Object({ 12 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 });
+	objects.push_back(obj);
+	
+	//Level 5 Objects
+	obj = new Object({ 4 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 });
+	objects.push_back(obj);
+	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 });
+	objects.push_back(obj);
+	obj = new Object({ 12 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 });
+	objects.push_back(obj);
+	obj = new Object({ 10 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 });
+	objects.push_back(obj);
+	
+	//Level 6 Objects
+	obj = new Object({ 7 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 });
+	objects.push_back(obj);
+	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 });
+	objects.push_back(obj);
+	obj = new Object({ 14 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 });
+	objects.push_back(obj);
 	obj = new Object({ 5 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 6,0 });
 	objects.push_back(obj);
 	obj = new Object({ 12 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 6,0 });
 	objects.push_back(obj);
-	obj = new Object({ 4 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 7,0 });
+	
+	//Level 7 Objects
+	obj = new Object({ 12 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 });
+	objects.push_back(obj);
+	obj = new Object({ 5 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 });
+	objects.push_back(obj);
+	obj = new Object({ 3 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 });
+	objects.push_back(obj);
+	obj = new Object({ 9 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 });
+	objects.push_back(obj);
+	obj = new Object({ 4 * TILE_SIZE, 6 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 7,0 });
+	objects.push_back(obj);
+
+	//Level 4, floor 1 Objects
+	obj = new Object({ 4 * TILE_SIZE, 1 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
+	objects.push_back(obj);
+	obj = new Object({ 4 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
+	objects.push_back(obj);
+	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
+	objects.push_back(obj);
+	obj = new Object({ 11 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
+	objects.push_back(obj);
+	obj = new Object({ 7 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
 	objects.push_back(obj);
 	obj = new Object({ 3 * TILE_SIZE, 2 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 4,1 });
 	objects.push_back(obj);
@@ -158,6 +220,31 @@ AppStatus Scene::Init()
 	obj = new Object({ 3 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 4,1 });
 	objects.push_back(obj);
 
+	//Level 5, floor 1 Objects
+	obj = new Object({ 10 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,1 });
+	objects.push_back(obj);
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,1 });
+	objects.push_back(obj);
+
+	//Level 6, floor 1 Objects
+	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,1 });
+	objects.push_back(obj);
+	obj = new Object({ 14 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,1 });
+	objects.push_back(obj);
+
+	//Level 7, floor 1 Objects
+	obj = new Object({ 7 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,1 });
+	objects.push_back(obj);
+	obj = new Object({ 11 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,1 });
+	objects.push_back(obj);
+	obj = new Object({ 9 * TILE_SIZE, 6 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 7,1 });
+	objects.push_back(obj);
+
+	//Level 8, floor 1 Objects
+	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 });
+	objects.push_back(obj);
+	obj = new Object({ 11 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 });
+	objects.push_back(obj);
 
     return AppStatus::OK;
 }
@@ -203,7 +290,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			550,  0,  0,  0,  0,124,  0,  0,  0,  0,  0,  0,  0,124,  0,  0,  0,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			550, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39,501,
 			  0, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,  0,
@@ -257,7 +344,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			 500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			 500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			 500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			 500,  0,  0,  0,  0,124,  0,  0,  0,  0,  0,  0,  0,124,  0,  0,  0,501,
+			 500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			 500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			 500, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39,501,
 			   0, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,  0,
@@ -310,8 +397,8 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
-			500,  0,  0,  0,  0,124,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
-			500,  0,  0,  0,  0,129,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,  0,
 			500, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39, 39,  0,
 			  0, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
@@ -361,7 +448,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,126,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
@@ -407,12 +494,12 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			500,  0,  0,  0,  0,  0,  0,  0,502,502,502,502,502,502,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,126,  0,  0,105,106,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,108,108,109,108,109,  0,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,107,108,108,109,550,126,  0,  0,  0,  0,501,
-			500,  0,  0,  0,126,  0,107,104,126,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,107,108,108,109,550,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
@@ -459,12 +546,12 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,  0,126,  0,  0,107,108,  0,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,108,  0,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,501,
 				  0,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,107,104,  0,  0,501,
 				500,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,107,104,  0,  0,  0,501,
 				500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,108,109,131,132,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,108,109,131,132,  0,  0,  0,  0,  0,  0,501,
 				  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
@@ -476,12 +563,12 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,  0,126,  0,  0,107,108,  0,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,108,  0,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,501,
 				  0,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,107,104,  0,  0,501,
 				500,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,107,104,  0,  0,  0,501,
 				500,  0,  0,  0,  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,501,
-				500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,126,  0,  0,501,
+				500,  0,  0,  0,  0,  0,  0,108,109,108,109,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
@@ -529,12 +616,12 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			500,  0,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,126,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,126,  0,  0,  0,105,106,  0,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,501,
 			500,  0,  0,108,109,108,109,107,108,108,109,108,109,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,126,  0,107,104,  0,  0,126,  0,  0,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
@@ -577,14 +664,14 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 		};
 		map = new int[size] {
 			  0,550,550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			  0,108,109,  0,126,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			  0,108,109,108,109,  0,  0,108,109,108,106,  0,126,  0,  0,  0,  0,501,
+			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			  0,108,109,108,109,  0,  0,108,109,108,106,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,501,
-			  0,108,109,  0,126,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,501,
+			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,501,
 			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,501,
 			  0,108,109,108,109,108,109,108,109,  0,  0,  0,  0,108,109,108,109,501,
-			  0,108,109,  0,  0,  0,  0,126,  0,  0,  0,126,  0,  0,  0,  0,  0,501,
+			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			  0,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
@@ -634,8 +721,8 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,108,109,108,109,108,106,  0,  0,  0,126,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,126,105,106,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			500,108,109,108,109,108,106,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,105,106,  0,  0,  0,  0,  0,  0,  0,501,
 			500,108,109,108,109,108,109,108,109,108,109,108,106,108,109,108,109,  0,
@@ -682,10 +769,10 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,126,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,126,  0,  0,107,109,108,109,108,109,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,109,108,109,108,109,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,107,104,  0,  0,  0,  0,  0,  0,  0,501,
@@ -736,10 +823,10 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,109,108,109,108,109,501,
-				500,  0,  0,  0,  0,  0,  0,  0,  0,134,107,104,  0,  0,  0,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,  0,  0,108,109,501,
 				500,108,109,108,109,108,109,108,109,108,109,  0,  0,  0,  0,108,109,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
-				500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,126,  0,131,132,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,131,132,108,109,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,131,132,108,109,501,
 				500,108,109,108,109,107,109,108,109,108,109,108,109,108,109,108,109,  0,
 				  0,  0,  0,  0,503,503,503,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
@@ -753,10 +840,10 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,109,108,109,108,109,501,
-				500,  0,  0,  0,  0,  0,  0,  0,  0,134,107,104,  0,  0,  0,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,107,104,  0,  0,  0,108,109,501,
 				500,108,109,108,109,108,109,108,109,108,109,  0,  0,  0,  0,108,109,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
-				500,  0,  0,  0,  0,  0,  0,126,  0,  0,  0,126,  0,  0,  0,108,109,501,
+				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
 				500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,501,
 				500,108,109,108,109,107,109,108,109,108,109,108,109,108,109,108,109,  0,
 				  0,  0,  0,  0,503,503,503,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
@@ -806,7 +893,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,126,  0,  0,126,  0,119,109,108,109,501,
+			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,109,108,109,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,121,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,550,  0,  0,  0,501,
 			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
@@ -837,7 +924,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 		return AppStatus::ERROR;	
 	}
 
-	//Entities and objects
+	//Player
 	i = 0;
 	for (y = 0; y < LEVEL_HEIGHT; ++y)
 	{
@@ -877,54 +964,6 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				player->SetPos(pos);
 				map[i] = 0;
 			}
-			/*else if (tile == Tile::CHAIN)
-			{
-				pos.x = x * TILE_SIZE;
-				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				obj = new Object(pos, ObjectType::CHAIN);
-				objects.push_back(obj);
-				map[i] = 0;
-			}
-			else if (tile == Tile::SHIELD)
-			{
-				pos.x = x * TILE_SIZE;
-				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				obj = new Object(pos, ObjectType::SHIELD);
-				objects.push_back(obj);
-				map[i] = 0;
-			}
-			else if (tile == Tile::CHEST_CHAIN)
-			{
-				pos.x = x * TILE_SIZE;
-				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				obj = new Object(pos, ObjectType::CHEST_CHAIN);
-				objects.push_back(obj);
-				map[i] = 0;
-			}
-			else if (tile == Tile::CHEST_SHIELD)
-			{
-				pos.x = x * TILE_SIZE;
-				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				obj = new Object(pos, ObjectType::CHEST_SHIELD);
-				objects.push_back(obj);
-				map[i] = 0;
-			}
-			else if (tile == Tile::KEY_CHEST)
-			{
-				pos.x = x * TILE_SIZE;
-				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				obj = new Object(pos, ObjectType::KEY_CHEST);
-				objects.push_back(obj);
-				map[i] = 0;
-			}
-			else if (tile == Tile::KEY_DOOR)
-			{
-				pos.x = x * TILE_SIZE;
-				pos.y = y * TILE_SIZE + TILE_SIZE - 1;
-				obj = new Object(pos, ObjectType::KEY_DOOR);
-				objects.push_back(obj);
-				map[i] = 0;
-			}*/
 			++i;
 		}
 	}
@@ -1124,6 +1163,10 @@ void Scene::Update()
 	EnemyManager::Instance().SetTilemap(level);
 	EnemyManager::Instance().Update();
 	player->Update();
+	for (Object* obj : objects)
+	{
+		obj->Update();
+	}
 	CheckCollisions();
 }
 void Scene::Render()
@@ -1269,9 +1312,25 @@ void Scene::CheckCollisions()
 			continue;
 		}
 		obj_box = (*it)->GetHitbox();
-		if(player_box.TestAABB(obj_box))
+		if ((*it)->GetType() == ObjectType::FIRE || (*it)->GetType() == ObjectType::CANDLE) {
+			if (player->weapon->GetFrame() == 2) {
+				if (player->weapon->HitboxOnAttack().TestAABB(obj_box)) {
+					AudioPlayer::Instance().PlaySoundByName("Attack");
+					//Delete the object
+					delete* it;
+					//Erase the object from the vector and get the iterator to the next valid element
+					it = objects.erase(it);
+				}
+				else {
+					++it;
+				}
+			}
+			else {
+				++it;
+			}
+		}
+		else if(player_box.TestAABB(obj_box))
 		{
-			//AudioPlayer::Instance().PlaySoundByName("Collect");
 
 			if ((*it)->GetType() == ObjectType::CHAIN) {
 				AudioPlayer::Instance().PlaySoundByName("Collect");
@@ -1378,8 +1437,9 @@ void Scene::RenderObjects() const
 	for (Object* obj : objects)
 	{
 		Vector2 currentObjLevel = obj->GetObjectLevel();
-		if (currentObjLevel.x != currentLevel || currentObjLevel.y != currentFloor)
-		{
+		if (currentObjLevel.x != currentLevel || currentObjLevel.y != currentFloor)	continue;
+		if (obj->GetType() == ObjectType::FIRE || obj->GetType() == ObjectType::CANDLE) {
+			obj->DrawAnimation();
 			continue;
 		}
 		obj->Draw();

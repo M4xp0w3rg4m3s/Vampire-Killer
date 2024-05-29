@@ -6,7 +6,9 @@
 
 #define POINTS_HEART    0
 
-enum class ObjectType { CHAIN, SHIELD, KEY_CHEST, KEY_DOOR, CHEST_CHAIN, CHEST_SHIELD };
+enum class ObjectType { CHAIN, SHIELD, KEY_CHEST, KEY_DOOR, CHEST_CHAIN, CHEST_SHIELD, HEART_SMALL, HEART_BIG, FIRE, CANDLE };
+
+enum class ObjectAnim { FIRE, CANDLE };
 
 class Object : public Entity
 {
@@ -14,7 +16,9 @@ public:
     Object(const Point& p, ObjectType t, Vector2 levelIndex);
     ~Object();
 
+    void Update();
     void DrawDebug(const Color& col) const;
+    void DrawAnimation() const;
     int Points() const;
 
     ObjectType GetType()const;
@@ -24,5 +28,7 @@ public:
 private:
     ObjectType type;
     Vector2 levelContainer;
+
+    RenderComponent* render2;
 
 };

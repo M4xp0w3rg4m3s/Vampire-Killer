@@ -613,6 +613,12 @@ void Player::MoveX()
 		state == State::CROUCH_THROWING || state == State::DYING)
 		return;
 
+	if (staticJump) return;
+
+	if (state == State::IDLE && IsKeyPressed(KEY_UP)) {
+		staticJump = true;
+		return;
+	}
 	if (state != State::DAMAGED) {
 		if (state == State::WHIP || state == State::THROWING) {
 			box = GetHitbox();
@@ -844,6 +850,7 @@ void Player::LogicJumping()
 				map->TestCollisionGround(box, &pos.y))
 			{
 				Stop();
+				staticJump = false;
 				height = PLAYER_PHYSICAL_HEIGHT;
 			}
 		}
@@ -946,6 +953,8 @@ void Player::LogicAttack()
 			}
 			else {
 				Stop();
+				staticJump = false;
+				height = PLAYER_PHYSICAL_HEIGHT;
 			}
 
 			AudioPlayer::Instance().PlaySoundByName("MissAttack");

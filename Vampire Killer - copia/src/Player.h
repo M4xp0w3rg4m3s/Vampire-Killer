@@ -189,6 +189,7 @@ private:
 	bool IsInFirstHalfTile() const;
 	bool IsInSecondHalfTile() const;
 
+	bool staticJump;
 	bool GodMode;
 	State state;
 	Look look;

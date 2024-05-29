@@ -109,8 +109,10 @@ enum class Tile {
 	// 131 <= id <= 132: breakable tiles
 	BREAKABLE_BRICK_LEFT, BREAKABLE_BRICK_RIGHT,
 
-	// 133 <= id <= ??: breakable tiles
+	// 133 <= id <= ??: more special tiles
 	SHIELD, KEY_CHEST, KEY_DOOR, CHEST_SHIELD,
+	HEART_BIG, HEART_SMALL,
+
 
 	// 200 =< id: entities' initial locations
 	PLAYER = 200,
