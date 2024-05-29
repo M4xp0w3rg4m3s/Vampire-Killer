@@ -1010,7 +1010,7 @@ void Scene::Update()
 	Point left_position(16+3, player->GetPos().y);
 	Point right_position(256-3, player->GetPos().y);
 	Point top_position(player->GetPos().x, 48);
-	Point bottom_position(player->GetPos().x, 100);
+	Point bottom_position(player->GetPos().x, 150);
 
 	EnemyManager::Instance().SetTilemap(level);
 

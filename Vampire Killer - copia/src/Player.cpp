@@ -709,10 +709,12 @@ void Player::MoveY()
 		{
 			LogicClimbing();
 		}
+		
 		else //idle, walking, falling
 		{
 			pos.y += PLAYER_SPEED;
 			box = GetHitbox();
+
 			if (map->TestCollisionGround(box, &pos.y))
 			{
 				if (state == State::FALLING) Stop();
@@ -721,15 +723,16 @@ void Player::MoveY()
 					if (IsKeyDown(KEY_UP))
 					{
 						StartJumping();
+
+						if (map->TestCollisionStairs(box) && IsKeyPressed(KEY_UP))
+						{
+							StartClimbingUp();
+						}
+						else if (map->TestCollisionStairs(box) && IsKeyPressed(KEY_DOWN))
+						{
+							StartClimbingDown();
+						}
 					}
-				}
-				if (map->TestCollisionStairs(box) && IsKeyPressed(KEY_UP))
-				{
-					StartClimbingUp();
-				}
-				else if (map->TestCollisionStairs(box) && IsKeyPressed(KEY_DOWN))
-				{
-					StartClimbingDown();
 				}
 			}
 			else
