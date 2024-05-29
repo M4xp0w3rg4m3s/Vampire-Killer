@@ -55,6 +55,18 @@ Object::Object(const Point& p, ObjectType t, Vector2 levelIndex) : Entity(p, OBJ
         rc = { 11 * n,  7 * n, n, n }; 
         render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
         break;
+    case ObjectType::CHEST_BOOTS:
+        rc = { 11 * n,  7 * n, n, n };
+        render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+        break;
+    case ObjectType::CHEST_WINGS:
+        rc = { 11 * n,  7 * n, n, n };
+        render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+        break;
+    case ObjectType::CHEST_HEART:
+        rc = { 11 * n,  7 * n, n, n };
+        render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+        break;
 
     case ObjectType::HEART_BIG:
         rc = { 13 * n,  4 * n, n, n }; 
@@ -62,6 +74,15 @@ Object::Object(const Point& p, ObjectType t, Vector2 levelIndex) : Entity(p, OBJ
         break;
     case ObjectType::HEART_SMALL:
         rc = { 14 * n,  4 * n, n, n }; 
+        render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+        break;
+
+    case ObjectType::BOOTS:
+        rc = { 15 * n,  7 * n, n, n };
+        render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+        break;
+    case ObjectType::WINGS:
+        rc = { 0 * n,  8 * n, n, n };
         render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
         break;
 

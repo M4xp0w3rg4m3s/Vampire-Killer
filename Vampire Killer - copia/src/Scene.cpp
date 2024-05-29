@@ -193,7 +193,7 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 	obj = new Object({ 5 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 6,0 });
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 6,0 });
+	obj = new Object({ 12 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_HEART, { 6,0 });
 	objects.push_back(obj);
 	
 	//Level 7 Objects
@@ -205,7 +205,7 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 	obj = new Object({ 9 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 });
 	objects.push_back(obj);
-	obj = new Object({ 4 * TILE_SIZE, 6 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 7,0 });
+	obj = new Object({ 4 * TILE_SIZE, 6 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_WINGS, { 7,0 });
 	objects.push_back(obj);
 
 	//Level 4, floor 1 Objects
@@ -219,7 +219,7 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 	obj = new Object({ 7 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
 	objects.push_back(obj);
-	obj = new Object({ 3 * TILE_SIZE, 2 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_CHAIN, { 4,1 });
+	obj = new Object({ 3 * TILE_SIZE, 2 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_BOOTS, { 4,1 });
 	objects.push_back(obj);
 	obj = new Object({ 3 * TILE_SIZE, 6 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_SHIELD, { 4,1 });
 	objects.push_back(obj);
@@ -1129,6 +1129,27 @@ void Scene::Update()
 				chest_time = 60;
 				chestOpening = false;
 			}
+			if (currentChestType == ObjectType::CHEST_BOOTS) {
+
+				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::BOOTS, { (float)currentLevel, (float)currentFloor });
+				objects.push_back(obj);
+				chest_time = 60;
+				chestOpening = false;
+			}
+			if (currentChestType == ObjectType::CHEST_WINGS) {
+
+				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::WINGS, { (float)currentLevel, (float)currentFloor });
+				objects.push_back(obj);
+				chest_time = 60;
+				chestOpening = false;
+			}
+			if (currentChestType == ObjectType::CHEST_HEART) {
+
+				obj = new Object({ (int)currentChestX,(int)currentChestY }, ObjectType::HEART_BIG, { (float)currentLevel, (float)currentFloor });
+				objects.push_back(obj);
+				chest_time = 60;
+				chestOpening = false;
+			}
 		}
 	}
 
@@ -1164,6 +1185,35 @@ void Scene::Update()
 				level7_1WallBroken = true;
 				AudioPlayer::Instance().PlaySoundByName("BreakWalls");
 			}
+		}
+	}
+
+	if (gotBoots == true) {
+		boot_time--;
+		if (boot_time <= 0) {
+			gotBoots = false;
+			boot_time = 60;
+		}
+	}
+	if (gotWings == true) {
+		wings_time--;
+		if (wings_time <= 0) {
+			gotWings = false;
+			wings_time = 60;
+		}
+	}
+	if (gotShield == true) {
+		shield_time--;
+		if (shield_time <= 0) {
+			gotShield = false;
+			shield_time = 60;
+		}
+	}
+	if (gotHeart == true) {
+		heart_time--;
+		if (heart_time <= 0) {
+			gotHeart = false;
+			heart_time = 60;
 		}
 	}
 
@@ -1352,11 +1402,45 @@ void Scene::CheckCollisions()
 				//Erase the object from the vector and get the iterator to the next valid element
 				it = objects.erase(it);
 			}
+			else if ((*it)->GetType() == ObjectType::HEART_BIG) {
+				AudioPlayer::Instance().PlaySoundByName("Collect");
+				player->IncrHearts(5);
+				gotHeart = true;
+				//Delete the object
+				delete* it;
+				//Erase the object from the vector and get the iterator to the next valid element
+				it = objects.erase(it);
+			}
+			else if ((*it)->GetType() == ObjectType::HEART_SMALL) {
+				AudioPlayer::Instance().PlaySoundByName("Collect");
+				player->IncrHearts(1);
+				//Delete the object
+				delete* it;
+				//Erase the object from the vector and get the iterator to the next valid element
+				it = objects.erase(it);
+			}
+			else if ((*it)->GetType() == ObjectType::BOOTS) {
+				AudioPlayer::Instance().PlaySoundByName("Collect");
+				gotBoots = true;
+				//Delete the object
+				delete* it;
+				//Erase the object from the vector and get the iterator to the next valid element
+				it = objects.erase(it);
+			}
+			else if ((*it)->GetType() == ObjectType::WINGS) {
+				AudioPlayer::Instance().PlaySoundByName("Collect");
+				gotWings = true;
+				//Delete the object
+				delete* it;
+				//Erase the object from the vector and get the iterator to the next valid element
+				it = objects.erase(it);
+			}
 			else if ((*it)->GetType() == ObjectType::SHIELD) {
 				AudioPlayer::Instance().PlaySoundByName("Collect");
 				if (!player->HasShield()) {
 					player->SwitchShield();
 				}
+				gotShield = true;
 				//Delete the object
 				delete* it;
 				//Erase the object from the vector and get the iterator to the next valid element
@@ -1409,6 +1493,57 @@ void Scene::CheckCollisions()
 				if (player->HasChestKey()) {
 					chestOpening = true;
 					currentChestType = ObjectType::CHEST_SHIELD;
+					currentChestX = (float)(*it)->GetPos().x;
+					currentChestY = (*it)->GetPos().y;
+					player->SwitchChestKey();
+					AudioPlayer::Instance().PlaySoundByName("OpenChest");
+					//Delete the object
+					delete* it;
+					//Erase the object from the vector and get the iterator to the next valid element
+					it = objects.erase(it);
+				}
+				else {
+					++it;
+				}
+			}
+			else if ((*it)->GetType() == ObjectType::CHEST_BOOTS) {
+				if (player->HasChestKey()) {
+					chestOpening = true;
+					currentChestType = ObjectType::CHEST_BOOTS;
+					currentChestX = (float)(*it)->GetPos().x;
+					currentChestY = (*it)->GetPos().y;
+					player->SwitchChestKey();
+					AudioPlayer::Instance().PlaySoundByName("OpenChest");
+					//Delete the object
+					delete* it;
+					//Erase the object from the vector and get the iterator to the next valid element
+					it = objects.erase(it);
+				}
+				else {
+					++it;
+				}
+			}
+			else if ((*it)->GetType() == ObjectType::CHEST_WINGS) {
+				if (player->HasChestKey()) {
+					chestOpening = true;
+					currentChestType = ObjectType::CHEST_WINGS;
+					currentChestX = (float)(*it)->GetPos().x;
+					currentChestY = (*it)->GetPos().y;
+					player->SwitchChestKey();
+					AudioPlayer::Instance().PlaySoundByName("OpenChest");
+					//Delete the object
+					delete* it;
+					//Erase the object from the vector and get the iterator to the next valid element
+					it = objects.erase(it);
+				}
+				else {
+					++it;
+				}
+			}
+			else if ((*it)->GetType() == ObjectType::CHEST_HEART) {
+				if (player->HasChestKey()) {
+					chestOpening = true;
+					currentChestType = ObjectType::CHEST_HEART;
 					currentChestX = (float)(*it)->GetPos().x;
 					currentChestY = (*it)->GetPos().y;
 					player->SwitchChestKey();
@@ -1490,9 +1625,6 @@ void Scene::RenderGUI() const
 	if (player->weapon->GetWeaponType() == WeaponType::CHAIN) {
 		DrawTextureRec(*hud_items, { 0,0,16,16 }, { 136 ,26 }, WHITE);
 	}	
-	if (player->HasShield()) {
-		DrawTextureRec(*hud_items, { 2 * 16,0,16,16 }, { 208 ,26 }, WHITE);
-	}
 
 	if (player->GetLives() >= 0) {
 		font->Draw(237, 14, TextFormat("%02d", player->GetLives()), WHITE);
@@ -1513,6 +1645,24 @@ void Scene::RenderGUI() const
 	}
 
 	DrawRectangle(68, 37, player->GetLife() * 4, 4, { 176, 6, 6, 255 });
+
+	if (gotBoots == true) {
+		DrawTextureRec(*hud_items, { 5 * 16,0,16,16 }, { 216 ,26 }, WHITE);
+	}
+	else if (gotWings == true) {
+		DrawTextureRec(*hud_items, { 6 * 16,0,16,16 }, { 216 ,26 }, WHITE);
+	}
+	else if (gotShield == true) {
+		DrawTextureRec(*hud_items, { 2 * 16,0,16,16 }, { 216 ,26 }, WHITE);
+	}
+	else if (gotHeart == true) {
+		DrawTextureRec(*hud_items, { 7 * 16,0,16,16 }, { 216 ,26 }, WHITE);
+	}
+	else {
+		if (player->HasShield()) {
+			DrawTextureRec(*hud_items, { 2 * 16,0,16,16 }, { 208 ,26 }, WHITE);
+		}
+	}
 
 }
 void Scene::RenderGameOver() const

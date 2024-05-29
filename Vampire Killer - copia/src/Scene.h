@@ -44,6 +44,15 @@ private:
     int chest_time;
     int enemy_delay_time;
 
+    bool gotBoots = false;
+    int boot_time = 60;
+    bool gotWings = false;
+    int wings_time = 60;
+    bool gotShield = false;
+    int shield_time = 60;
+    bool gotHeart = false;
+    int heart_time = 60;
+
     bool deathExecuted;
     bool renderingGameOver;
     bool chestOpening;
