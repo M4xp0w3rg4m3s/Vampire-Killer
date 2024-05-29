@@ -1097,7 +1097,6 @@ void Scene::Update()
 		player->SetPos(top_position);
 	}
 
-
 	if (level->TestCollisionWin(box)) {
 		AudioPlayer::Instance().StopMusicByName("VampireKiller");
 		player->Win();

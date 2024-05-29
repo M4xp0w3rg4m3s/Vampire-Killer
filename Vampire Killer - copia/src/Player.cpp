@@ -622,7 +622,7 @@ void Player::MoveX()
 	AABB box;
 	int prev_x = pos.x;
 
-	if (state == State::CLIMBING || state == State::CROUCHING || state == State::CROUCH_WHIP ||
+	if (state == State::CROUCHING || state == State::CROUCH_WHIP ||
 		state == State::CROUCH_THROWING || state == State::DYING)
 		return;
 
@@ -702,6 +702,7 @@ void Player::MoveY()
 		{
 			LogicJumping();
 		}
+
 		else if (state == State::CLIMBING)
 		{
 			LogicClimbing();
@@ -719,6 +720,14 @@ void Player::MoveY()
 					{
 						StartJumping();
 					}
+				}
+				if (map->TestCollisionStairs(box) && IsKeyPressed(KEY_UP))
+				{
+					StartClimbingUp();
+				}
+				else if (map->TestCollisionStairs(box) && IsKeyPressed(KEY_DOWN))
+				{
+					StartClimbingDown();
 				}
 			}
 			else
@@ -872,15 +881,35 @@ void Player::LogicClimbing()
 	AABB box;
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	int tmp;
-
-	if (IsKeyDown(KEY_UP))
+	if (!map->TestCollisionStairs(GetHitbox()))
 	{
-		pos.y -= PLAYER_LADDER_SPEED;
+		Stop();
+	}
+	if (IsKeyDown(KEY_UP) && IsLookingLeft())
+	{
+		SetState();
+		pos.y -= 3;
+		pos.x -= PLAYER_LADDER_SPEED;
 		sprite->NextFrame();
 	}
-	else if (IsKeyDown(KEY_DOWN))
+	else if (IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_LEFT))
 	{
 		pos.y += PLAYER_LADDER_SPEED;
+		pos.x -= PLAYER_LADDER_SPEED;
+		sprite->PrevFrame();
+	}
+
+	if (IsKeyDown(KEY_UP) && IsLookingRight())
+	{
+		SetLook(Look::RIGHT);
+		pos.y -= 3;
+		pos.x += PLAYER_LADDER_SPEED;
+		sprite->NextFrame();
+	}
+	else if (IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_RIGHT))
+	{
+		pos.y += PLAYER_LADDER_SPEED;
+		pos.x += PLAYER_LADDER_SPEED;
 		sprite->PrevFrame();
 	}
 
