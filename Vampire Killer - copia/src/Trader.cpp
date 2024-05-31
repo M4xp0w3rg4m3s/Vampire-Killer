@@ -106,7 +106,7 @@ void Trader::Brain()
 		PopUp = false;
 		SetAnimation((int)EnemyAnim::RED_TRADER);
 		currentAnimation = EnemyAnim::RED_TRADER;
-		EnemyManager::Instance().target->DecrHearts(90);
+		EnemyManager::Instance().target->DecrHearts(50);
 		EnemyManager::Instance().target->weapon->SetWeapon(WeaponType::CHAIN); // Put Knives when finished
 		justHit = true;
 		counter = 60;
