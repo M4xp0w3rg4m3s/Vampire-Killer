@@ -1051,7 +1051,9 @@ void Scene::Update()
 	else if (IsKeyPressed(KEY_SEVEN))	LoadLevel(7,0);
 	else if (IsKeyPressed(KEY_EIGHT))	LoadLevel(4,1);
 	else if (IsKeyPressed(KEY_NINE))	LoadLevel(5,1);
-	else if (IsKeyPressed(KEY_ZERO))	LoadLevel(8,1);
+	else if (IsKeyPressed(KEY_ZERO))	LoadLevel(6,1);
+	else if (IsKeyPressed(KEY_O))	LoadLevel(7,1);
+	else if (IsKeyPressed(KEY_P))	LoadLevel(8,1);
 
 	else if (IsKeyPressed(KEY_C))		player->weapon->SetWeapon(WeaponType::CHAIN);
 	else if (IsKeyPressed(KEY_F3)) {
@@ -1328,7 +1330,7 @@ void Scene::Render()
 
 			if (EnemyManager::Instance().GetTraderPopUp() && popUpDisplayed == false)
 			{
-				DrawTextureRec(*popup_trader, { 0,0,128,32 }, { 150,100 }, WHITE);
+				DrawTextureRec(*popup_trader, { 0,0,128,32 }, { 176,120 }, WHITE);
 			}
 			
 
