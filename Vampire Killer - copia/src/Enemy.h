@@ -11,7 +11,7 @@ enum class EnemyState {
 enum class EnemyLook { RIGHT, LEFT };
 
 enum class EnemyType {
-	ZOMBIE, PANTHER, BAT, TRADER
+	ZOMBIE, PANTHER, BAT, TRADER, BOSS
 };
 
 //Rendering states
@@ -19,6 +19,7 @@ enum class EnemyAnim {
 	IDLE_LEFT, IDLE_RIGHT,
 	ADVANCING_LEFT, ADVANCING_RIGHT, 
 	RED_TRADER,
+	MOVING,
 	EMPTY,
 	NUM_ANIMATIONS
 };

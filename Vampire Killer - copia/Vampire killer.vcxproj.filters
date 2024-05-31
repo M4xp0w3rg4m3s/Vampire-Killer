@@ -46,9 +46,6 @@
     <ClCompile Include="src\AudioPlayer.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\Enemy.cpp">
-      <Filter>Entities\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="src\EnemyManager.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
@@ -66,6 +63,9 @@
     </ClCompile>
     <ClCompile Include="src\Trader.cpp">
       <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Boss.cpp">
+      <Filter>Entities\Enemies</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="src\Trader.h">
       <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Boss.h">
+      <Filter>Entities\Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
