@@ -155,6 +155,7 @@ public:
 	bool TestCollisionWin(const AABB& box) const;
 	bool TestCollisionCandleFire(const AABB& box) const;
 	bool TestCollisionStairs(const AABB& box) const;
+
 	//Test for breakeable tiles
 	bool TestCollisionBreakableBrick(const AABB& box) const;
 

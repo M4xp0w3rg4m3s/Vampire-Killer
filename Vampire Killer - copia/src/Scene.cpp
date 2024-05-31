@@ -29,6 +29,7 @@ Scene::Scene()
 	debug = DebugMode::OFF;
 
 	chest_time = 60;
+	loot_time = 1;
 	enemy_delay_time = 120;
 }
 Scene::~Scene()
@@ -153,25 +154,25 @@ AppStatus Scene::Init()
 	Object* obj;
 
 	// Level 1 Objects
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 }, ObjectType::HEART_SMALL, 16);
 	objects.push_back(obj);
-	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 }, ObjectType::HEART_SMALL, 16);
 	objects.push_back(obj);
 	
 	//Level 2 Objects
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL, 16);
 	objects.push_back(obj);
-	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL, 16);
 	objects.push_back(obj);
 	
 	//Level 3 Objects
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 3,0 }, ObjectType::CHAIN);
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 3,0 }, ObjectType::CHAIN, 16);
 	objects.push_back(obj);
 	
 	//Level 4 Objects
-	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 }, ObjectType::HEART_SMALL, 32);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 12 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 }, ObjectType::HEART_SMALL, 32);
 	objects.push_back(obj);
 	
 	//Level 5 Objects
@@ -1153,20 +1154,28 @@ void Scene::Update()
 	}
 
 	if (lootOpening) {
-		if (currentLootType == ObjectType::CHAIN) {
-			obj = new Object({ (int)currentLootX,(int)currentLootY }, ObjectType::CHAIN, { (float)currentLevel, (float)currentFloor });
-			objects.push_back(obj);
-			lootOpening = false;
-		}
-		if (currentLootType == ObjectType::HEART_BIG) {
-			obj = new Object({ (int)currentLootX,(int)currentLootY }, ObjectType::HEART_BIG, { (float)currentLevel, (float)currentFloor });
-			objects.push_back(obj);
-			lootOpening = false;
-		}
-		if (currentLootType == ObjectType::HEART_SMALL) {
-			obj = new Object({ (int)currentLootX,(int)currentLootY }, ObjectType::HEART_SMALL, { (float)currentLevel, (float)currentFloor });
-			objects.push_back(obj);
-			lootOpening = false;
+		loot_time--;
+		spawnY++;
+
+		if (loot_time < 0) {
+			if (currentLootType == ObjectType::CHAIN) {
+				obj = new Object({ (int)currentLootX,(int)spawnY }, ObjectType::CHAIN, { (float)currentLevel, (float)currentFloor });
+				objects.push_back(obj);
+				lootOpening = false;
+				loot_time = 40;
+			}
+			if (currentLootType == ObjectType::HEART_BIG) {
+				obj = new Object({ (int)currentLootX,(int)spawnY }, ObjectType::HEART_BIG, { (float)currentLevel, (float)currentFloor });
+				objects.push_back(obj);
+				lootOpening = false;
+				loot_time = 40;
+			}
+			if (currentLootType == ObjectType::HEART_SMALL) {
+				obj = new Object({ (int)currentLootX,(int)spawnY }, ObjectType::HEART_SMALL, { (float)currentLevel, (float)currentFloor });
+				objects.push_back(obj);
+				lootOpening = false;
+				loot_time = 40;
+			}
 		}
 	}
 
@@ -1295,6 +1304,21 @@ void Scene::Render()
 			}
 		}
 
+		if (lootOpening) {		
+			if ((int)loot_time % 30 < 8) {
+				DrawTextureRec(*chest_animation, { 0,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
+			}
+			else if ((int)loot_time % 30 < 16) {
+				DrawTextureRec(*chest_animation, { 16 * 1,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
+			}
+			else if ((int)loot_time % 30 < 23) {
+				DrawTextureRec(*chest_animation, { 16 * 2,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
+			}
+			else if ((int)loot_time % 30 < 30) {
+				DrawTextureRec(*chest_animation, { 16 * 3,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
+			}
+		}
+
 		deathExecuted = false;
 	}
 	else if(player->IsDead() && deathExecuted == false){
@@ -1399,6 +1423,9 @@ void Scene::CheckCollisions()
 					currentLootType = (*it)->GetLoot();
 					currentLootX = (*it)->GetPos().x;
 					currentLootY = (*it)->GetPos().y;
+					spawnX = currentLootX;
+					spawnY = currentLootY;
+					loot_time = (*it)->GetDistanceToFloor();
 					//Delete the object
 					delete* it;
 					//Erase the object from the vector and get the iterator to the next valid element

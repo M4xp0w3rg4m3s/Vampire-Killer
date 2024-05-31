@@ -77,7 +77,7 @@ Object::Object(const Point& p, ObjectType t, Vector2 levelIndex) : Entity(p, OBJ
 
     levelContainer = levelIndex;
 }
-Object::Object(const Point& p, ObjectType t, Vector2 levelIndex, ObjectType loot) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
+Object::Object(const Point& p, ObjectType t, Vector2 levelIndex, ObjectType loot, int distanceToFloor) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
 {
     type = t;
 
@@ -152,6 +152,7 @@ Object::Object(const Point& p, ObjectType t, Vector2 levelIndex, ObjectType loot
 
     levelContainer = levelIndex;
     containedLoot = loot;
+    floorDistance = distanceToFloor;
 }
 Object::~Object()
 {
@@ -188,6 +189,11 @@ ObjectType Object::GetType() const
 ObjectType Object::GetLoot() const
 {
     return containedLoot;
+}
+
+int Object::GetDistanceToFloor() const
+{
+    return floorDistance;
 }
 
 Vector2 Object::GetObjectLevel() const

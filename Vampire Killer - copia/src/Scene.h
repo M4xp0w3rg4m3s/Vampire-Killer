@@ -41,7 +41,6 @@ private:
     const Texture2D* hud;
     const Texture2D* chest_animation;
     const Texture2D* hud_items;
-    int chest_time;
     int enemy_delay_time;
 
     bool gotBoots = false;
@@ -60,15 +59,22 @@ private:
     bool level6WallBroken;
     bool level7_1WallBroken;
     
+    //chest controllers
+    int chest_time;
     bool chestOpening;
     float currentChestX;
     float currentChestY;
     ObjectType currentChestType;
 
+    //fire / candle controllers
+    int loot_time;
     bool lootOpening;
     float currentLootX;
     float currentLootY;
     ObjectType currentLootType;
+
+    float spawnX;
+    float spawnY;
 
     Camera2D camera;
     DebugMode debug;

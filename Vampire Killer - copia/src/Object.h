@@ -19,7 +19,7 @@ class Object : public Entity
 {
 public:
     Object(const Point& p, ObjectType t, Vector2 levelIndex);
-    Object(const Point& p, ObjectType t, Vector2 levelIndex, ObjectType loot);
+    Object(const Point& p, ObjectType t, Vector2 levelIndex, ObjectType loot, int distanceToFloor);
     ~Object();
 
     void Update();
@@ -29,6 +29,7 @@ public:
 
     ObjectType GetType()const;
     ObjectType GetLoot()const;
+    int GetDistanceToFloor() const;
 
     Vector2 GetObjectLevel() const;
 
@@ -36,6 +37,7 @@ private:
     ObjectType type;
     ObjectType containedLoot;
     Vector2 levelContainer;
+    int floorDistance;
 
     RenderComponent* render2;
 
