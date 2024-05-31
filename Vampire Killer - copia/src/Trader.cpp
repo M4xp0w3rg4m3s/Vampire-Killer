@@ -70,6 +70,10 @@ bool Trader::GetPopUp() const
 {
 	return PopUp;
 }
+bool Trader::DeletePopUp() const
+{
+	return deletePopUp;
+}
 void Trader::Render()
 {
 	if (isActive) {
@@ -84,7 +88,9 @@ void Trader::Brain()
 {
 	if (currentAnimation == EnemyAnim::RED_TRADER && this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()))
 	{
+		PopUp = false;
 		isActive = false;
+		deletePopUp = true;
 		justHit = true;
 		counter = 60;
 	}

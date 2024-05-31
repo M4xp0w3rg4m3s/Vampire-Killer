@@ -32,13 +32,16 @@ public:
 	void SetAnimation(int id);
 
 	bool GetPopUp() const override;
+	bool DeletePopUp() const override;
 
 	int AnimationFrame;
 
 private:
 
-	bool PopUp;
+	bool PopUp = false;
 	bool justHit = false;
+	bool deletePopUp = false;
+	
 	int counter = 60;
 
 	TileMap* map;

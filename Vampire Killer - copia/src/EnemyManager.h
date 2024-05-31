@@ -27,6 +27,7 @@ public:
     void SpawnTrader(Point pos);
 
     bool GetTraderPopUp();
+    bool DeleteTraderPopUp();
 
     void Render();
     void RenderDebug();

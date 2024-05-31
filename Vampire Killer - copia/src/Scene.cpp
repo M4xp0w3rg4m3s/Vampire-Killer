@@ -1317,10 +1317,15 @@ void Scene::Render()
 				}
 			}
 
-			if (EnemyManager::Instance().GetTraderPopUp())
+			if (EnemyManager::Instance().DeleteTraderPopUp()) {
+				DeletePopUp();
+			}
+
+			if (EnemyManager::Instance().GetTraderPopUp() && popUpDisplayed == false)
 			{
 				DrawTextureRec(*popup_trader, { 0,0,128,32 }, { 150,100 }, WHITE);
 			}
+			
 
 			if(player->GetDamagedDelay() > 0){
 				if (player->GetDamagedDelay() % 12 == 0 || player->GetDamagedDelay() % 12 == 1 || player->GetDamagedDelay() % 12 == 2 ||
@@ -1430,6 +1435,10 @@ bool Scene::PlayerIsDead() const {
 }
 bool Scene::PlayerHasWon() const {
 	return player->HasWon();
+}
+void Scene::DeletePopUp()
+{
+	popUpDisplayed = true;
 }
 void Scene::CheckCollisions()
 {

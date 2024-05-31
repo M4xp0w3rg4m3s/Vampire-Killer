@@ -20,7 +20,7 @@ public:
     void Release();
     bool PlayerIsDead() const;
     bool PlayerHasWon() const;
-
+    void DeletePopUp();
 private:
     AppStatus LoadLevel(int stage,int floor);
     
@@ -79,7 +79,9 @@ private:
     Camera2D camera;
     DebugMode debug;
 
+    //Trader
     bool traderSpawned = false;
+    bool popUpDisplayed = false;
 
     Text* font;
 };

@@ -63,6 +63,14 @@ bool EnemyManager::GetTraderPopUp()
 		}
 	}
 }
+bool EnemyManager::DeleteTraderPopUp()
+{
+	for (int i = 0; i < enemies.size(); ++i) {
+		if (enemies[i]->GetType() == EnemyType::TRADER) {
+			return enemies[i]->DeletePopUp();
+		}
+	}
+}
 void EnemyManager::Render()
 {
 	for (int i = 0; i < enemies.size(); ++i) {

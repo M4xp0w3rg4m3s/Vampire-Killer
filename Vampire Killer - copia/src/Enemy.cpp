@@ -48,6 +48,10 @@ bool Enemy::GetPopUp() const
 {
 	return false;
 }
+bool Enemy::DeletePopUp() const
+{
+	return true;
+}
 void Enemy::Stop()
 {
 	dir = { 0,0 };

@@ -44,6 +44,7 @@ public:
 
 	virtual EnemyType GetType() const;
 	virtual bool GetPopUp() const;
+	virtual bool DeletePopUp() const;
 
 	bool isActive = true;
 
