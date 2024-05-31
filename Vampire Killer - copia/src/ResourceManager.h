@@ -17,6 +17,7 @@ enum class Resource {
     IMG_PLAYER, 
     IMG_ZOMBIE,
     IMG_PANTHER,
+    IMG_HIT_EFFECT,
     IMG_WEAPON,
     IMG_TILES,
     IMG_GAME_OVER,

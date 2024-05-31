@@ -55,15 +55,20 @@ private:
 
     bool deathExecuted;
     bool renderingGameOver;
-    bool chestOpening;
 
     //broken walls booleans
     bool level6WallBroken;
     bool level7_1WallBroken;
     
+    bool chestOpening;
     float currentChestX;
     float currentChestY;
     ObjectType currentChestType;
+
+    bool lootOpening;
+    float currentLootX;
+    float currentLootY;
+    ObjectType currentLootType;
 
     Camera2D camera;
     DebugMode debug;

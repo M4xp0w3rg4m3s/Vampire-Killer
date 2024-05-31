@@ -39,7 +39,11 @@ private:
 
 	void StartFalling();
 
+	bool killed = false;
+	int killed_time = 60;
+
 	TileMap* map;
+	const Texture2D* hit_effect;
 
 };
 

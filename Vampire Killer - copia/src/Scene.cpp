@@ -153,43 +153,43 @@ AppStatus Scene::Init()
 	Object* obj;
 
 	// Level 1 Objects
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 });
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 });
+	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 	
 	//Level 2 Objects
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 });
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 });
+	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 	
 	//Level 3 Objects
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 3,0 });
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 3,0 }, ObjectType::CHAIN);
 	objects.push_back(obj);
 	
 	//Level 4 Objects
-	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 });
+	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 });
+	obj = new Object({ 12 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 	
 	//Level 5 Objects
-	obj = new Object({ 4 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 });
+	obj = new Object({ 4 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 });
+	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 });
+	obj = new Object({ 12 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 10 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 });
+	obj = new Object({ 10 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 	
 	//Level 6 Objects
-	obj = new Object({ 7 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 });
+	obj = new Object({ 7 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 });
+	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 14 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 });
+	obj = new Object({ 14 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 	obj = new Object({ 5 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 6,0 });
 	objects.push_back(obj);
@@ -197,27 +197,27 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 	
 	//Level 7 Objects
-	obj = new Object({ 12 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 });
+	obj = new Object({ 12 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 5 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 });
+	obj = new Object({ 5 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 3 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 });
+	obj = new Object({ 3 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 9 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 });
+	obj = new Object({ 9 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 	obj = new Object({ 4 * TILE_SIZE, 6 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_WINGS, { 7,0 });
 	objects.push_back(obj);
 
 	//Level 4, floor 1 Objects
-	obj = new Object({ 4 * TILE_SIZE, 1 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
+	obj = new Object({ 4 * TILE_SIZE, 1 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 4 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
+	obj = new Object({ 4 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
+	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 11 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
+	obj = new Object({ 11 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 7 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 });
+	obj = new Object({ 7 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 	obj = new Object({ 3 * TILE_SIZE, 2 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_BOOTS, { 4,1 });
 	objects.push_back(obj);
@@ -227,29 +227,29 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 
 	//Level 5, floor 1 Objects
-	obj = new Object({ 10 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,1 });
+	obj = new Object({ 10 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,1 });
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 
 	//Level 6, floor 1 Objects
-	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,1 });
+	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 14 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,1 });
+	obj = new Object({ 14 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 
 	//Level 7, floor 1 Objects
-	obj = new Object({ 7 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,1 });
+	obj = new Object({ 7 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 11 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,1 });
+	obj = new Object({ 11 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 	obj = new Object({ 9 * TILE_SIZE, 6 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 7,1 });
 	objects.push_back(obj);
 
 	//Level 8, floor 1 Objects
-	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 });
+	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
-	obj = new Object({ 11 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 });
+	obj = new Object({ 11 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 }, ObjectType::HEART_SMALL);
 	objects.push_back(obj);
 
     return AppStatus::OK;
@@ -1113,7 +1113,6 @@ void Scene::Update()
 	Object* obj;
 	if (chestOpening) {
 		chest_time--;
-
 		// PLAY ANIMATION
 		if (chest_time == 0) {
 			if (currentChestType == ObjectType::CHEST_CHAIN) {
@@ -1150,6 +1149,24 @@ void Scene::Update()
 				chest_time = 60;
 				chestOpening = false;
 			}
+		}
+	}
+
+	if (lootOpening) {
+		if (currentLootType == ObjectType::CHAIN) {
+			obj = new Object({ (int)currentLootX,(int)currentLootY }, ObjectType::CHAIN, { (float)currentLevel, (float)currentFloor });
+			objects.push_back(obj);
+			lootOpening = false;
+		}
+		if (currentLootType == ObjectType::HEART_BIG) {
+			obj = new Object({ (int)currentLootX,(int)currentLootY }, ObjectType::HEART_BIG, { (float)currentLevel, (float)currentFloor });
+			objects.push_back(obj);
+			lootOpening = false;
+		}
+		if (currentLootType == ObjectType::HEART_SMALL) {
+			obj = new Object({ (int)currentLootX,(int)currentLootY }, ObjectType::HEART_SMALL, { (float)currentLevel, (float)currentFloor });
+			objects.push_back(obj);
+			lootOpening = false;
 		}
 	}
 
@@ -1378,6 +1395,10 @@ void Scene::CheckCollisions()
 			if (player->weapon->GetFrame() == 2) {
 				if (player->weapon->HitboxOnAttack().TestAABB(obj_box)) {
 					AudioPlayer::Instance().PlaySoundByName("Attack");
+					lootOpening = true;
+					currentLootType = (*it)->GetLoot();
+					currentLootX = (*it)->GetPos().x;
+					currentLootY = (*it)->GetPos().y;
 					//Delete the object
 					delete* it;
 					//Erase the object from the vector and get the iterator to the next valid element

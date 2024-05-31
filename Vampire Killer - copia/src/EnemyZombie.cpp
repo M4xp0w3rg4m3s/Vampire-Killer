@@ -73,20 +73,43 @@ AppStatus EnemyZombie::Initialise()
 		SetPos({ pos.x, 79 });
 	}
 
+	if (data.LoadTexture(Resource::IMG_HIT_EFFECT, "images/Spritesheets/FX/HitFx.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	hit_effect = data.GetTexture(Resource::IMG_HIT_EFFECT);
+
 	return AppStatus::OK;
 }
 void EnemyZombie::Update()
 {
-	Brain();
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->Update();
+	if (killed) {
+		--killed_time;
+		if (killed_time < 0) {
+			isActive = false;
+			EnemyManager::Instance().target->IncrScore(100);
+		}
+		else if (killed_time % 30 < 15) {
+			DrawTextureRec(*hit_effect, { 0,0,16,16 }, { (float)pos.x ,(float)pos.y }, WHITE);
+		}
+		else if (killed_time % 30 > 15) {
+			DrawTextureRec(*hit_effect, { 16,0,16,16 }, { (float)pos.x ,(float)pos.y }, WHITE);
+		}
+	}
+	else {
+		Brain();
+		Sprite* sprite = dynamic_cast<Sprite*>(render);
+		sprite->Update();
+	}
 }
 void EnemyZombie::Render()
 {
 	if (pos.x > 16 && pos.x < 256)
 	{
 		Point p = GetRenderingPosition();
-		render->Draw(p.x, p.y);
+		if (!killed) {
+			render->Draw(p.x, p.y);
+		}
 	}
 	else {
 		isActive = false;
@@ -111,8 +134,7 @@ void EnemyZombie::Brain()
 	}
 	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack())) {
 		AudioPlayer::Instance().PlaySoundByName("Attack");
-		isActive = false;
-		EnemyManager::Instance().target->IncrScore(100);
+		killed = true;
 	}
 }
 void EnemyZombie::SetTileMap(TileMap* tilemap)
