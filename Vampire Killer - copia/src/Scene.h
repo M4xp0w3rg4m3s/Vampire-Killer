@@ -43,7 +43,14 @@ private:
     const Texture2D* loot_heart;
     const Texture2D* hud_items;
     const Texture2D* popup_trader;
-    int enemy_delay_time;
+    const Texture2D* hit_effect;
+    int zombie_delay_time;
+    int bat_delay_time;
+
+    int hit_effect_time = 60;
+    bool enemy_killed = false;
+    bool got_enemy_pos = false;
+    Vector2 enemy_killed_pos;
 
     bool gotBoots = false;
     int boot_time = 60;

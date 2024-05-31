@@ -71,6 +71,24 @@ bool EnemyManager::DeleteTraderPopUp()
 		}
 	}
 }
+bool EnemyManager::GetKilled()
+{
+	for (int i = 0; i < enemies.size(); ++i) {
+		if (enemies[i]->isActive) {
+			return enemies[i]->IsKilled();
+			delete enemies[i];
+			enemies[i]->Update();
+		}
+	}
+}
+Vector2 EnemyManager::GetKilledPos()
+{
+	for (int i = 0; i < enemies.size(); ++i) {
+		if (enemies[i]->IsKilled()) {
+			return { (float)target->weapon->HitboxOnAttack().pos.x, (float)target->weapon->HitboxOnAttack().pos.y };
+		}
+	}
+}
 void EnemyManager::Render()
 {
 	for (int i = 0; i < enemies.size(); ++i) {

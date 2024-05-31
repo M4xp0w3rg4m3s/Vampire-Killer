@@ -40,6 +40,17 @@ void Enemy::Release()
 {
 	render->Release();
 }
+bool Enemy::IsKilled() const
+{
+	return killed;
+}
+Vector2 Enemy::GetKilledPosition() const
+{
+	if (IsKilled()) {
+		Vector2 killedPos = { (float)pos.x, (float)pos.y - 24 };
+		return killedPos;
+	}
+}
 EnemyType Enemy::GetType() const
 {
 	return type;

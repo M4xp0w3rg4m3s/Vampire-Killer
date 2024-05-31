@@ -32,17 +32,12 @@ public:
 	void MoveX();
 	void MoveY();
 
-	void DrawHitAnim() const;
-
 	void DrawDebug(const Color& col) const override;
 	void Release() override;
 
 private:
 
 	void StartFalling();
-
-	bool killed = false;
-	int killed_time = 60;
 
 	TileMap* map;
 

@@ -3,9 +3,7 @@
 #include "EnemyManager.h"
 
 
-
-
-EnemyBat::EnemyBat(Point pos) : Enemy(pos, BAT_HITBOX_HEIGHT, BAT_HITBOX_WIDTH, BAT_SPRITE_HEIGHT, BAT_SPRITE_WIDTH)
+EnemyBat::EnemyBat(Point pos) : Enemy({ pos.x, pos.y }, BAT_HITBOX_HEIGHT, BAT_HITBOX_WIDTH, BAT_SPRITE_HEIGHT, BAT_SPRITE_WIDTH)
 {
 	state = EnemyState::ADVANCING;
 	look = EnemyLook::RIGHT;
@@ -78,19 +76,27 @@ AppStatus EnemyBat::Initialise()
 }
 void EnemyBat::Update()
 {
-	Brain();
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->Update();
+	if (killed) {
+		isActive = false;
+		EnemyManager::Instance().target->IncrScore(100);
+	}
+	else {
+		Brain();
+		Sprite* sprite = dynamic_cast<Sprite*>(render);
+		sprite->Update();
+	}
 }
 void EnemyBat::Render()
 {
 	if (pos.x > 16 && pos.x < 256)
 	{
 		Point p = GetRenderingPosition();
-		render->Draw(p.x, p.y);
+		if (!killed) {
+			render->Draw(p.x, p.y);
+		}
 	}
 	else {
-		EnemyManager::Instance().DestroyEnemies();
+		isActive = false;
 	}
 }
 void EnemyBat::Reset()
@@ -100,8 +106,19 @@ void EnemyBat::Brain()
 {
 	internalTimer += GetFrameTime();
 	Move();
-	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
+	if (EnemyManager::Instance().target->GetState() == State::JUMPING || EnemyManager::Instance().target->GetState() == State::FALLING) {
+		AABB PlayerHitbox = EnemyManager::Instance().target->GetHitbox();
+		PlayerHitbox.pos.y = EnemyManager::Instance().target->GetHitbox().pos.y - 16;
+		if (this->GetHitbox().TestAABB(PlayerHitbox)) {
+			DamagePlayer();
+		}
+	}
+	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
 		DamagePlayer();
+	}
+	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack())) {
+		AudioPlayer::Instance().PlaySoundByName("Attack");
+		killed = true;
 	}
 }
 void EnemyBat::SetTileMap(TileMap* tilemap)
