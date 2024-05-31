@@ -14,7 +14,7 @@ Object::Object(const Point& p, ObjectType t, Vector2 levelIndex) : Entity(p, OBJ
     render2 = new Sprite(data.GetTexture(Resource::IMG_TILES));
     if (render2 == nullptr)
     {
-        LOG("Failed to allocate memory for player sprite");
+        LOG("Failed to allocate memory for objects sprites");
     }
 
     Sprite* sprite = dynamic_cast<Sprite*>(render2);
@@ -79,7 +79,7 @@ Object::Object(const Point& p, ObjectType t, Vector2 levelIndex) : Entity(p, OBJ
 }
 Object::Object(const Point& p, ObjectType t, Vector2 levelIndex, ObjectType loot) : Entity(p, OBJECT_PHYSICAL_SIZE, OBJECT_PHYSICAL_SIZE, OBJECT_FRAME_SIZE, OBJECT_FRAME_SIZE)
 {
-        type = t;
+    type = t;
 
     Rectangle rc;
     const int n = TILE_SIZE;

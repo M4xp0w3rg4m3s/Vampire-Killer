@@ -32,6 +32,8 @@ public:
 	void MoveX();
 	void MoveY();
 
+	void DrawHitAnim() const;
+
 	void DrawDebug(const Color& col) const override;
 	void Release() override;
 
@@ -43,7 +45,7 @@ private:
 	int killed_time = 60;
 
 	TileMap* map;
-	const Texture2D* hit_effect;
 
+	RenderComponent* render2;
 };
 
