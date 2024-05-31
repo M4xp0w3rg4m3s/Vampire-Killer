@@ -2,15 +2,15 @@
 #include "Enemy.h"
 #include "math.h"
 
-#define BAT_SPEED	2
+#define BAT_SPEED	1
 
 #define BAT_SPRITE_HEIGHT	32
 #define BAT_SPRITE_WIDTH	32
 
 #define BAT_HITBOX_HEIGHT	16
-#define BAT_HITBOX_WIDTH	32
+#define BAT_HITBOX_WIDTH	16
 
-#define BAT_DAMAGE			3
+#define BAT_DAMAGE			1
 
 class EnemyBat : public Enemy
 {

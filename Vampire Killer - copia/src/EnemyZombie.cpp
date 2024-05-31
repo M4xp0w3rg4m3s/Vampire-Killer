@@ -75,36 +75,13 @@ AppStatus EnemyZombie::Initialise()
 		SetPos({ pos.x, 79 });
 	}
 
-	data.LoadTexture(Resource::IMG_HIT_EFFECT, "images/Spritesheets/FX/HitFx.png");
-
-	render2 = new Sprite(data.GetTexture(Resource::IMG_HIT_EFFECT));
-
-	if (render2 == nullptr)
-	{
-		LOG("Failed to allocate memory for hit effects sprites");
-	}
-
-	Sprite* sprite2 = dynamic_cast<Sprite*>(render2);
-	sprite2->SetNumberAnimations(1);
-
-	sprite2->SetAnimationDelay(1, ANIM_DELAY);
-	sprite2->AddKeyFrame(1, { 0, 0, n, n });
-	sprite2->AddKeyFrame(1, { n, 0, n, n });
-
-	sprite2->SetAnimation(1);
-
 	return AppStatus::OK;
 }
 void EnemyZombie::Update()
 {
 	if (killed) {
-		--killed_time;
-		if (killed_time < 0) {
-			isActive = false;
-			EnemyManager::Instance().target->IncrScore(100);
-		}
-		Sprite* sprite2 = dynamic_cast<Sprite*>(render2);
-		sprite2->Update();
+		isActive = false;
+		EnemyManager::Instance().target->IncrScore(100);
 	}
 	else {
 		Brain();
@@ -119,9 +96,6 @@ void EnemyZombie::Render()
 		Point p = GetRenderingPosition();
 		if (!killed) {
 			render->Draw(p.x, p.y);
-		}
-		else {
-			render2->Draw(p.x, p.y);
 		}
 	}
 	else {
@@ -205,11 +179,6 @@ void EnemyZombie::MoveY()
 		if (state != EnemyState::FALLING) StartFalling();
 	}
 }
-void EnemyZombie::DrawHitAnim() const
-{
-	Sprite* sprite2 = dynamic_cast<Sprite*>(render2);
-	sprite2->Draw(pos.x, pos.y - TILE_SIZE + 1);
-}
 void EnemyZombie::DrawDebug(const Color& col) const
 {
 	DrawHitbox(BLUE);
@@ -218,11 +187,8 @@ void EnemyZombie::Release()
 {
 	ResourceManager& data = ResourceManager::Instance();
 	data.ReleaseTexture(Resource::IMG_ZOMBIE);
-	data.ReleaseTexture(Resource::IMG_HIT_EFFECT);
 
 	render->Release();
-	render2->Release();
-	delete[] render2;
 }
 void EnemyZombie::StartFalling()
 {

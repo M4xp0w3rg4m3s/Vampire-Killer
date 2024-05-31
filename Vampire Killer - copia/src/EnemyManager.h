@@ -29,6 +29,9 @@ public:
     bool GetTraderPopUp();
     bool DeleteTraderPopUp();
 
+    bool GetKilled();
+    Vector2 GetKilledPos();
+
     void Render();
     void RenderDebug();
 

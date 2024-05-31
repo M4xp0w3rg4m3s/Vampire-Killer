@@ -30,7 +30,8 @@ Scene::Scene()
 
 	chest_time = 60;
 	loot_time = 1;
-	enemy_delay_time = 120;
+	zombie_delay_time = 120;
+	bat_delay_time = 120*2;
 }
 Scene::~Scene()
 {
@@ -138,6 +139,13 @@ AppStatus Scene::Init()
 		return AppStatus::ERROR;
 	}
 	popup_trader = data.GetTexture(Resource::IMG_POPUP_TRADER);
+
+	//Add the hit effect image
+	if (data.LoadTexture(Resource::IMG_HIT_EFFECT, "images/Spritesheets/FX/HitFx.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	hit_effect = data.GetTexture(Resource::IMG_HIT_EFFECT);
 
 	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
@@ -389,8 +397,6 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 		EnemyManager::Instance().DestroyEnemies();
-		EnemyManager::Instance().SpawnPanther({ 40,143 });
-		EnemyManager::Instance().SpawnBat({ 40,120 });
 		
 	}
 	else if (stage == 3 && floor == 0)
@@ -1200,19 +1206,27 @@ void Scene::Update()
 		}
 	}
 
-	enemy_delay_time--;
-	if (enemy_delay_time < 0) {
+	zombie_delay_time--;
+	if (zombie_delay_time < 0) {
 		if (currentFloor == 0) {
-			if (currentLevel == 4 || currentLevel == 5) {
+			if (currentLevel == 4 || currentLevel == 5 ) {
 				EnemyManager::Instance().SpawnZombie({ 236,175 });
-				enemy_delay_time = 120;
+				zombie_delay_time = 120;
 			}
 		}
 		if (currentFloor == 1) {
-			if (currentLevel == 5) {
+			if (currentLevel == 5 || currentLevel == 6) {
 				EnemyManager::Instance().SpawnZombie({ 236,175 });
-				enemy_delay_time = 120;
+				zombie_delay_time = 120;
 			}
+		}
+	}
+
+	bat_delay_time--;
+	if (bat_delay_time < 0) {
+		if (currentFloor == 1 && currentLevel == 4) {
+			EnemyManager::Instance().SpawnBat({ 236,player->GetPos().y });
+			bat_delay_time = 120*2;
 		}
 	}
 
@@ -1324,6 +1338,30 @@ void Scene::Render()
 				}
 			}
 
+			enemy_killed = EnemyManager::Instance().GetKilled();
+
+			if (player->weapon->GetFrame() == 2 && enemy_killed) {
+				if (!got_enemy_pos) {
+					enemy_killed_pos = EnemyManager::Instance().GetKilledPos();
+					got_enemy_pos = true;
+				}
+			}
+
+			if (enemy_killed) {
+				hit_effect_time--;
+				if (hit_effect_time < 0) {
+					hit_effect_time = 60;
+					enemy_killed = false;
+					got_enemy_pos = false;
+				}
+				else if (hit_effect_time % 30 > 15) {
+					DrawTextureRec(*hit_effect, { 0,0,16,16 }, enemy_killed_pos, WHITE);
+				}
+				else if (hit_effect_time % 30 < 15) {
+					DrawTextureRec(*hit_effect, { 16,0,16,16 }, enemy_killed_pos, WHITE);
+				}
+			}
+
 			if (EnemyManager::Instance().DeleteTraderPopUp()) {
 				DeletePopUp();
 			}
@@ -1421,12 +1459,10 @@ void Scene::Release()
 {
 	ResourceManager& data = ResourceManager::Instance();
 	data.ReleaseTexture(Resource::IMG_GAME_OVER);
-
 	data.ReleaseTexture(Resource::IMG_HUD);
-
 	data.ReleaseTexture(Resource::IMG_OPEN_CHEST);
-
 	data.ReleaseTexture(Resource::IMG_POPUP_TRADER);
+	data.ReleaseTexture(Resource::IMG_HIT_EFFECT);
 
     level->Release();
 	player->Release();

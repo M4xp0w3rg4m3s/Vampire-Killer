@@ -42,6 +42,10 @@ public:
 	virtual void DrawDebug(const Color& col) const;
 	virtual void Release();
 
+	bool IsKilled() const;
+
+	Vector2 GetKilledPosition() const;
+
 	virtual EnemyType GetType() const;
 	virtual bool GetPopUp() const;
 	virtual bool DeletePopUp() const;
@@ -62,5 +66,7 @@ protected:
 	int AnimationFrame;
 	int EnemySpeed;
 	int Damage;
+
+	bool killed = false;
 };
 
