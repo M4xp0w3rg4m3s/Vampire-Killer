@@ -391,10 +391,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 		EnemyManager::Instance().DestroyEnemies();
 		EnemyManager::Instance().SpawnPanther({ 40,143 });
 		EnemyManager::Instance().SpawnBat({ 40,120 });
-		if (!traderSpawned) {
-			EnemyManager::Instance().SpawnTrader({ 60,150 });
-			traderSpawned = true;
-		}
+		
 	}
 	else if (stage == 3 && floor == 0)
 	{
@@ -842,6 +839,8 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,108,109,108,109,  0,109,108,109,108,109,108,109,108,109,108,109,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
+		EnemyManager::Instance().DestroyEnemies();
+		
 		if (!level7_1WallBroken) {
 			map = new int[size] {
 				  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -875,6 +874,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 				500,108,109,108,109,107,109,108,109,108,109,108,109,108,109,108,109,  0,
 				  0,  0,  0,  0,503,503,503,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 			};
+			
 		}
 		mapFront = new int[size] {
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -892,6 +892,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 		EnemyManager::Instance().DestroyEnemies();
+		
 	}
 	else if (stage == 8 && floor == 1)
 	{
@@ -914,17 +915,17 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 		};
 		map = new int[size] {
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,109,108,109,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,121,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,550,  0,  0,  0,501,
-			500,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			500,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,109,108,109,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,121,  0,  0,  0,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,550,  0,  0,  0,501,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
+			550,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 		mapFront = new int[size] {
@@ -1227,6 +1228,10 @@ void Scene::Update()
 			if (level->TestCollisionBreakableBrick(player->weapon->HitboxOnAttack())) {
 				level->TurnIntoAir();
 				level7_1WallBroken = true;
+				if (!traderSpawned) {
+					EnemyManager::Instance().SpawnTrader({ 205,175 });
+					traderSpawned = true;
+				}
 				AudioPlayer::Instance().PlaySoundByName("BreakWalls");
 			}
 		}
