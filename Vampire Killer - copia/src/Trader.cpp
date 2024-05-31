@@ -56,7 +56,7 @@ void Trader::Update()
 	}
 	if (counter <= 0 || !justHit) {
 		Brain();
-		justHit = false;
+		
 	}
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
@@ -86,16 +86,16 @@ void Trader::Brain()
 	{
 		isActive = false;
 		justHit = true;
-		//counter = 60;
+		counter = 60;
 	}
 	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()) && PopUp == false)
 	{
 		AudioPlayer::Instance().PlaySoundByName("Attack");
 		PopUp = true;
 		justHit = true;
-
+		counter = 60;
 	}
-	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()) && PopUp == true && EnemyManager::Instance().target->GetHearts() > 90)
+	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()) && PopUp == true && EnemyManager::Instance().target->GetHearts() > 50)
 	{
 		PopUp = false;
 		SetAnimation((int)EnemyAnim::RED_TRADER);
@@ -103,9 +103,9 @@ void Trader::Brain()
 		EnemyManager::Instance().target->DecrHearts(90);
 		EnemyManager::Instance().target->weapon->SetWeapon(WeaponType::CHAIN); // Put Knives when finished
 		justHit = true;
-		//counter = 60;
+		counter = 60;
 	}
-	counter = 60;
+	
 }
 void Trader::SetTileMap(TileMap* tilemap)
 {
