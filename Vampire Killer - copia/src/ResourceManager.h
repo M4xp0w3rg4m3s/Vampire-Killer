@@ -28,6 +28,7 @@ enum class Resource {
     IMG_HUD_INTRO,
     IMG_HUD_ITEMS,
     IMG_TRADER,
+    IMG_POPUP_TRADER,
     IMG_BAT
 };
 

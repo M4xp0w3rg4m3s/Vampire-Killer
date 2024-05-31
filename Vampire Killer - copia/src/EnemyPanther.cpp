@@ -9,6 +9,8 @@ EnemyPanther::EnemyPanther(Point pos) : Enemy(pos, PANTHER_HITBOX_HEIGHT, PANTHE
 	int AnimationFrame = 0;
 	Damage = PANTHER_DAMAGE;
 
+	type = EnemyType::PANTHER;
+
 	Initialise();
 }
 EnemyPanther::~EnemyPanther()

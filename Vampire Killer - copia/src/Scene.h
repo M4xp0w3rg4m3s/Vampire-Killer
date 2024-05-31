@@ -42,6 +42,7 @@ private:
     const Texture2D* chest_animation;
     const Texture2D* loot_heart;
     const Texture2D* hud_items;
+    const Texture2D* popup_trader;
     int enemy_delay_time;
 
     bool gotBoots = false;
@@ -77,6 +78,8 @@ private:
 
     Camera2D camera;
     DebugMode debug;
+
+    bool traderSpawned = false;
 
     Text* font;
 };

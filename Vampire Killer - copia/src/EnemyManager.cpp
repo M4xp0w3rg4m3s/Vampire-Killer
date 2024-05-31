@@ -55,6 +55,14 @@ void EnemyManager::SpawnTrader(Point pos)
 	Enemy* newEnemy = new Trader(pos);
 	enemies.push_back(newEnemy);
 }
+bool EnemyManager::GetTraderPopUp()
+{
+	for (int i = 0; i < enemies.size(); ++i) {
+		if (enemies[i]->GetType() == EnemyType::TRADER) {
+			return enemies[i]->GetPopUp();
+		}
+	}
+}
 void EnemyManager::Render()
 {
 	for (int i = 0; i < enemies.size(); ++i) {

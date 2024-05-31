@@ -9,6 +9,8 @@ EnemyZombie::EnemyZombie(Point pos) : Enemy(pos, ZOMBIE_HITBOX_HEIGHT, ZOMBIE_HI
 	int AnimationFrame = 0;
 	Damage = ZOMBIE_DAMAGE;
 
+	type = EnemyType::ZOMBIE;
+
 	Initialise();
 }
 EnemyZombie::~EnemyZombie()

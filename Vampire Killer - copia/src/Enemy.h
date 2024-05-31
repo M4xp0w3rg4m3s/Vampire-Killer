@@ -10,6 +10,10 @@ enum class EnemyState {
 };
 enum class EnemyLook { RIGHT, LEFT };
 
+enum class EnemyType {
+	ZOMBIE, PANTHER, BAT, TRADER
+};
+
 //Rendering states
 enum class EnemyAnim {
 	IDLE_LEFT, IDLE_RIGHT,
@@ -38,6 +42,9 @@ public:
 	virtual void DrawDebug(const Color& col) const;
 	virtual void Release();
 
+	virtual EnemyType GetType() const;
+	virtual bool GetPopUp() const;
+
 	bool isActive = true;
 
 protected:
@@ -49,6 +56,7 @@ protected:
 
 	EnemyState state;
 	EnemyLook look;
+	EnemyType type;
 
 	int AnimationFrame;
 	int EnemySpeed;

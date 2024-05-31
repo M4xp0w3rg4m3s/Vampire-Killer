@@ -11,6 +11,7 @@ EnemyBat::EnemyBat(Point pos) : Enemy(pos, BAT_HITBOX_HEIGHT, BAT_HITBOX_WIDTH, 
 	look = EnemyLook::RIGHT;
 	int AnimationFrame = 0;
 	Damage = BAT_DAMAGE;
+	type = EnemyType::BAT;
 
 	Initialise();
 }

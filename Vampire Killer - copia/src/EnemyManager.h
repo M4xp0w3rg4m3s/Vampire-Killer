@@ -26,6 +26,8 @@ public:
     void SpawnBat(Point pos);
     void SpawnTrader(Point pos);
 
+    bool GetTraderPopUp();
+
     void Render();
     void RenderDebug();
 

@@ -40,6 +40,14 @@ void Enemy::Release()
 {
 	render->Release();
 }
+EnemyType Enemy::GetType() const
+{
+	return type;
+}
+bool Enemy::GetPopUp() const
+{
+	return false;
+}
 void Enemy::Stop()
 {
 	dir = { 0,0 };

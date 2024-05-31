@@ -6,7 +6,7 @@
 #define TRADER_SPRITE_HEIGHT	32
 #define TRADER_SPRITE_WIDTH		32
 
-#define TRADER_HITBOX_HEIGHT	16
+#define TRADER_HITBOX_HEIGHT	32
 #define TRADER_HITBOX_WIDTH		32
 
 
@@ -31,15 +31,16 @@ public:
 
 	void SetAnimation(int id);
 
-	bool PopUp;
+	bool GetPopUp() const override;
 
 	int AnimationFrame;
 
 private:
 
+	bool PopUp;
+	bool justHit = false;
+	int counter = 60;
+
 	TileMap* map;
 	EnemyAnim currentAnimation;
 };
-
-
-

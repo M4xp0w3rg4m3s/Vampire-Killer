@@ -132,6 +132,13 @@ AppStatus Scene::Init()
 	}
 	loot_heart = data.GetTexture(Resource::IMG_TILES);
 
+	//Add the trader pop up
+	if (data.LoadTexture(Resource::IMG_POPUP_TRADER, "images/Spritesheets/Enemies & Characters/PopUp.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	popup_trader = data.GetTexture(Resource::IMG_POPUP_TRADER);
+
 	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
 
@@ -384,7 +391,10 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 		EnemyManager::Instance().DestroyEnemies();
 		EnemyManager::Instance().SpawnPanther({ 40,143 });
 		EnemyManager::Instance().SpawnBat({ 40,120 });
-		EnemyManager::Instance().SpawnTrader({ 20,100 });
+		if (!traderSpawned) {
+			EnemyManager::Instance().SpawnTrader({ 60,150 });
+			traderSpawned = true;
+		}
 	}
 	else if (stage == 3 && floor == 0)
 	{
@@ -1060,6 +1070,7 @@ void Scene::Update()
 			player->DecrLife(8);
 		}
 	}
+	else if (IsKeyPressed(KEY_H)) player->IncrHearts(99);
 
 
 	box = player->GetHitbox();
@@ -1306,6 +1317,11 @@ void Scene::Render()
 				}
 			}
 
+			if (EnemyManager::Instance().GetTraderPopUp())
+			{
+				DrawTextureRec(*popup_trader, { 0,0,128,32 }, { 150,100 }, WHITE);
+			}
+
 			if(player->GetDamagedDelay() > 0){
 				if (player->GetDamagedDelay() % 12 == 0 || player->GetDamagedDelay() % 12 == 1 || player->GetDamagedDelay() % 12 == 2 ||
 					player->GetDamagedDelay() % 12 == 3 || player->GetDamagedDelay() % 12 == 4 || player->GetDamagedDelay() % 12 == 5) {
@@ -1397,6 +1413,8 @@ void Scene::Release()
 	data.ReleaseTexture(Resource::IMG_HUD);
 
 	data.ReleaseTexture(Resource::IMG_OPEN_CHEST);
+
+	data.ReleaseTexture(Resource::IMG_POPUP_TRADER);
 
     level->Release();
 	player->Release();
