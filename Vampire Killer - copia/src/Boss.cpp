@@ -110,7 +110,10 @@ void Boss::Reset()
 
 void Boss::Brain()
 {
+	internalTimer += GetFrameTime();
+
 	Move();
+
 	if (EnemyManager::Instance().target->GetState() == State::JUMPING || EnemyManager::Instance().target->GetState() == State::FALLING) {
 		AABB PlayerHitbox = EnemyManager::Instance().target->GetHitbox();
 		PlayerHitbox.pos.y = EnemyManager::Instance().target->GetHitbox().pos.y-16;
@@ -134,7 +137,38 @@ void Boss::SetTileMap(TileMap* tilemap)
 
 void Boss::Move()
 {
-
+	if (ToCalculateVec) 
+	{
+		vec = { (float)GetRandomValue(-2,2),(float)GetRandomValue(-2, 2) };
+		counter = 60 * GetRandomValue(1,3);
+		ToCalculateVec = false;
+		Straight_or_curve = GetRandomValue(0, 1);
+		Curve_Up_or_Down = GetRandomValue(0, 1);
+	}
+	if (counter >= 0 && Straight_or_curve == 1)
+	{
+		pos.x += vec.x;
+		pos.y += vec.y;
+		counter--;
+	}
+	else if (counter >= 0 && Straight_or_curve == 0)
+	{
+		if (Curve_Up_or_Down == 1)
+		{
+			currentAmplitude = amplitude * sin(internalTimer * amplitudeChangeSpeed);
+			pos.y = Init_pos_y + currentAmplitude * TILE_SIZE;
+		}
+		else
+		{
+			currentAmplitude = amplitude * sin(internalTimer * amplitudeChangeSpeed);
+			pos.y = Init_pos_y + currentAmplitude * TILE_SIZE * (- 1);
+		}
+	}
+	else 
+	{
+		ToCalculateVec = true;
+	}
+	
 }
 
 void Boss::DrawDebug(const Color& col) const

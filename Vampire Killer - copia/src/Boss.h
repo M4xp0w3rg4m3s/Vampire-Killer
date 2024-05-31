@@ -38,8 +38,17 @@ public:
 
 private:
 
+	int counter;
+	int Straight_or_curve;
+	int Curve_Up_or_Down;
+
+	bool ToCalculateVec = true;
+	Vector2 vec;
+
 	TileMap* map;
 	int Init_pos_y;
+
+	
 
 	float internalTimer = 0;
 	float amplitude = 0.75;
