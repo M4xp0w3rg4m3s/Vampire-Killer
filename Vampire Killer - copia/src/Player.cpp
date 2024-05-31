@@ -170,6 +170,8 @@ AppStatus Player::Initialise()
 
 	AudioPlayer::Instance().CreateSound("audio/SFX/26.wav", "MissAttack");
 
+	AudioPlayer::Instance().CreateSound("audio/SFX/04.wav", "PlayerDamaged");
+
 	return AppStatus::OK;
 }
 void Player::InitGUI() {
@@ -250,9 +252,11 @@ void Player::DecrLife(int n)
 	if (life - n > 0) {
 		life -= n;
 		damaged_delay = PLAYER_DAMAGED_DELAY;
+		AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
 		StartDamaged();
 	}
 	else if (life - n <= 0){
+		AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
 		StartDying();
 	}
 }
