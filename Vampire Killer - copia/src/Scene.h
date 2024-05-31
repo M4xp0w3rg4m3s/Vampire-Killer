@@ -40,6 +40,7 @@ private:
     const Texture2D* game_over;
     const Texture2D* hud;
     const Texture2D* chest_animation;
+    const Texture2D* loot_heart;
     const Texture2D* hud_items;
     int enemy_delay_time;
 
@@ -72,8 +73,6 @@ private:
     float currentLootX;
     float currentLootY;
     ObjectType currentLootType;
-
-    float spawnX;
     float spawnY;
 
     Camera2D camera;

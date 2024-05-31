@@ -125,6 +125,13 @@ AppStatus Scene::Init()
 	}
 	chest_animation = data.GetTexture(Resource::IMG_OPEN_CHEST);
 
+	//Add the loot animation
+	if (data.LoadTexture(Resource::IMG_TILES, "images/Levels/LevelsTileset.png") != AppStatus::OK)
+	{
+		return AppStatus::ERROR;
+	}
+	loot_heart = data.GetTexture(Resource::IMG_TILES);
+
 	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
 
@@ -154,43 +161,43 @@ AppStatus Scene::Init()
 	Object* obj;
 
 	// Level 1 Objects
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 }, ObjectType::HEART_SMALL, 16);
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 }, ObjectType::HEART_SMALL, 16);
+	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 1,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
 	
 	//Level 2 Objects
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL, 16);
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL, 16);
+	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
 	
 	//Level 3 Objects
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 3,0 }, ObjectType::CHAIN, 16);
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 3,0 }, ObjectType::CHAIN, TILE_SIZE);
 	objects.push_back(obj);
 	
 	//Level 4 Objects
-	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 }, ObjectType::HEART_SMALL, 32);
+	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 }, ObjectType::HEART_SMALL, 32);
+	obj = new Object({ 12 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,0 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
 	
 	//Level 5 Objects
-	obj = new Object({ 4 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 4 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 12 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 10 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 10 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
 	objects.push_back(obj);
 	
 	//Level 6 Objects
-	obj = new Object({ 7 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 7 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 14 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 14 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
 	obj = new Object({ 5 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 6,0 });
 	objects.push_back(obj);
@@ -198,27 +205,27 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 	
 	//Level 7 Objects
-	obj = new Object({ 12 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 12 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 5 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 5 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 3 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 3 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 9 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 9 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
 	obj = new Object({ 4 * TILE_SIZE, 6 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_WINGS, { 7,0 });
 	objects.push_back(obj);
 
 	//Level 4, floor 1 Objects
-	obj = new Object({ 4 * TILE_SIZE, 1 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 4 * TILE_SIZE, 1 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 4 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 4 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 11 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 11 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 7 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 7 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
 	obj = new Object({ 3 * TILE_SIZE, 2 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CHEST_BOOTS, { 4,1 });
 	objects.push_back(obj);
@@ -228,29 +235,29 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 
 	//Level 5, floor 1 Objects
-	obj = new Object({ 10 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 10 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,1 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,1 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
 
 	//Level 6, floor 1 Objects
-	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,1 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 14 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 14 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,1 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
 
 	//Level 7, floor 1 Objects
-	obj = new Object({ 7 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 7 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,1 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 11 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 11 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,1 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
 	obj = new Object({ 9 * TILE_SIZE, 6 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 7,1 });
 	objects.push_back(obj);
 
 	//Level 8, floor 1 Objects
-	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 11 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 }, ObjectType::HEART_SMALL);
+	obj = new Object({ 11 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
 
     return AppStatus::OK;
@@ -1264,6 +1271,41 @@ void Scene::Render()
 		{
 			RenderObjects(); 
 			EnemyManager::Instance().Render();
+			if (chestOpening) {
+				if (chest_time % 30 < 8) {
+					DrawTextureRec(*chest_animation, { 0,0,16,16 }, { currentChestX, currentChestY-16 }, WHITE);
+				}
+				else if (chest_time % 30 < 16) {
+					DrawTextureRec(*chest_animation, { 16 * 1,0,16,16 }, { currentChestX, currentChestY-16  }, WHITE);
+				}
+				else if (chest_time % 30 < 23) {
+					DrawTextureRec(*chest_animation, { 16 * 2,0,16,16 }, { currentChestX, currentChestY-16  }, WHITE);
+				}
+				else if (chest_time % 30 < 30) {
+					DrawTextureRec(*chest_animation, { 16 * 3,0,16,16 }, { currentChestX, currentChestY-16  }, WHITE);
+				}
+			}
+
+			if (lootOpening) {		
+				if (currentLootType == ObjectType::CHAIN) {
+					if ((int)loot_time % 30 < 8) {
+						DrawTextureRec(*chest_animation, { 0,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
+					}
+					else if ((int)loot_time % 30 < 16) {
+						DrawTextureRec(*chest_animation, { 16 * 1,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
+					}
+					else if ((int)loot_time % 30 < 23) {
+						DrawTextureRec(*chest_animation, { 16 * 2,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
+					}
+					else if ((int)loot_time % 30 < 30) {
+						DrawTextureRec(*chest_animation, { 16 * 3,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
+					}
+				}
+				else {
+					DrawTextureRec(*loot_heart, { 14*16,4*16,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
+				}
+			}
+
 			if(player->GetDamagedDelay() > 0){
 				if (player->GetDamagedDelay() % 12 == 0 || player->GetDamagedDelay() % 12 == 1 || player->GetDamagedDelay() % 12 == 2 ||
 					player->GetDamagedDelay() % 12 == 3 || player->GetDamagedDelay() % 12 == 4 || player->GetDamagedDelay() % 12 == 5) {
@@ -1289,35 +1331,6 @@ void Scene::Render()
 		}
 		level->RenderLate();
 
-		if (chestOpening) {
-			if (chest_time % 30 < 8) {
-				DrawTextureRec(*chest_animation, { 0,0,16,16 }, { currentChestX, currentChestY-16 }, WHITE);
-			}
-			else if (chest_time % 30 < 16) {
-				DrawTextureRec(*chest_animation, { 16 * 1,0,16,16 }, { currentChestX, currentChestY-16  }, WHITE);
-			}
-			else if (chest_time % 30 < 23) {
-				DrawTextureRec(*chest_animation, { 16 * 2,0,16,16 }, { currentChestX, currentChestY-16  }, WHITE);
-			}
-			else if (chest_time % 30 < 30) {
-				DrawTextureRec(*chest_animation, { 16 * 3,0,16,16 }, { currentChestX, currentChestY-16  }, WHITE);
-			}
-		}
-
-		if (lootOpening) {		
-			if ((int)loot_time % 30 < 8) {
-				DrawTextureRec(*chest_animation, { 0,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
-			}
-			else if ((int)loot_time % 30 < 16) {
-				DrawTextureRec(*chest_animation, { 16 * 1,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
-			}
-			else if ((int)loot_time % 30 < 23) {
-				DrawTextureRec(*chest_animation, { 16 * 2,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
-			}
-			else if ((int)loot_time % 30 < 30) {
-				DrawTextureRec(*chest_animation, { 16 * 3,0,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
-			}
-		}
 
 		deathExecuted = false;
 	}
@@ -1423,7 +1436,6 @@ void Scene::CheckCollisions()
 					currentLootType = (*it)->GetLoot();
 					currentLootX = (*it)->GetPos().x;
 					currentLootY = (*it)->GetPos().y;
-					spawnX = currentLootX;
 					spawnY = currentLootY;
 					loot_time = (*it)->GetDistanceToFloor();
 					//Delete the object
@@ -1451,7 +1463,7 @@ void Scene::CheckCollisions()
 				it = objects.erase(it);
 			}
 			else if ((*it)->GetType() == ObjectType::HEART_BIG) {
-				AudioPlayer::Instance().PlaySoundByName("Collect");
+				AudioPlayer::Instance().PlaySoundByName("GetHeart");
 				player->IncrHearts(5);
 				gotHeart = true;
 				//Delete the object
@@ -1460,7 +1472,7 @@ void Scene::CheckCollisions()
 				it = objects.erase(it);
 			}
 			else if ((*it)->GetType() == ObjectType::HEART_SMALL) {
-				AudioPlayer::Instance().PlaySoundByName("Collect");
+				AudioPlayer::Instance().PlaySoundByName("GetHeart");
 				player->IncrHearts(1);
 				//Delete the object
 				delete* it;
