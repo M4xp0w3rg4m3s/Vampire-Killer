@@ -213,10 +213,12 @@ void Player::InitHearts()
 }
 void Player::IncrHearts(int n)
 {
-	hearts += n;
-	if (hearts == 100) {
+	if (hearts + n >= 100) {
 		IncrLives(1);
-		hearts = 0;
+		hearts += n - 100;
+	}
+	else {
+		hearts += n;
 	}
 }
 void Player::DecrHearts(int n)
