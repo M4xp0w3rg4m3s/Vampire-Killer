@@ -32,6 +32,8 @@ Scene::Scene()
 	loot_time = 1;
 	zombie_delay_time = 120;
 	bat_delay_time = 120*2;
+
+	bossDoor = new Door({ 15 * TILE_SIZE+8, 2 * TILE_SIZE + 48 });
 }
 Scene::~Scene()
 {
@@ -40,6 +42,12 @@ Scene::~Scene()
 		player->Release();
 		delete player;
 		player = nullptr;
+	}
+	if (bossDoor != nullptr)
+	{
+		bossDoor->Release();
+		delete bossDoor;
+		bossDoor = nullptr;
 	}
     if (level != nullptr)
     {
@@ -883,7 +891,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 		}
 		mapFront = new int[size] {
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
@@ -1036,6 +1044,8 @@ void Scene::Update()
 	Point top_position(player->GetPos().x, 48);
 	Point bottom_position(player->GetPos().x, 150);
 
+	Point boss_position(16 + 3, 170);
+
 	EnemyManager::Instance().SetTilemap(level);
 
 	//Switch between the different debug modes: off, on (sprites & hitboxes), on (hitboxes) 
@@ -1082,7 +1092,6 @@ void Scene::Update()
 		else if (IsKeyPressed(KEY_H)) player->IncrHearts(99);
 	}
 
-
 	box = player->GetHitbox();
 
 	AudioPlayer::Instance().Update();
@@ -1092,7 +1101,7 @@ void Scene::Update()
 		if (currentLevel == 7 && currentFloor == 1)
 		{
 			LoadLevel(8, currentFloor);
-			player->SetPos(left_position);
+			player->SetPos(boss_position);
 		}
 		else if (currentLevel == 7) {
 			LoadLevel(4,currentFloor);
@@ -1300,6 +1309,18 @@ void Scene::Update()
 		}
 	}
 
+	if (currentLevel == 7 && currentFloor == 1) {
+		if (player->GetHitbox().TestAABB(bossDoor->GetHitbox())) {
+			if (player->HasDoorKey()) {
+				bossDoor->Open();
+			}
+			else {
+				player->SetPos({ player->GetPos().x-1, player->GetPos().y });
+			}
+		}
+	}
+
+	bossDoor->Update();
 	level->Update();
 	EnemyManager::Instance().SetTilemap(level);
 	EnemyManager::Instance().Update();
@@ -1334,6 +1355,10 @@ void Scene::Render()
 				else if (chest_time % 30 < 30) {
 					DrawTextureRec(*chest_animation, { 16 * 3,0,16,16 }, { currentChestX, currentChestY-16  }, WHITE);
 				}
+			}
+
+			if (currentLevel == 7 && currentFloor == 1) {
+				bossDoor->Draw();
 			}
 
 			if (lootOpening) {		
@@ -1416,6 +1441,9 @@ void Scene::Render()
 		}
 		if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES)
 		{
+			if (currentLevel == 7 && currentFloor == 1) {
+				bossDoor->DrawDebug(PURPLE);
+			}
 			RenderObjectsDebug(YELLOW);
 			EnemyManager::Instance().RenderDebug();
 			player->DrawDebug(GREEN);
@@ -1480,9 +1508,10 @@ void Scene::Render()
 		}
 	}
 
+	RenderGUI();
+
 	DrawTexture(*hud, 0, 0, WHITE);
 
-	RenderGUI();
 }
 void Scene::Release()
 {
@@ -1823,6 +1852,8 @@ void Scene::RenderObjectsDebug(const Color& col) const
 }
 void Scene::RenderGUI() const
 {
+	DrawRectangle(0, 0, WINDOW_WIDTH, 46, { 6, 6, 6, 255 });
+
 	font->Draw(65, 14, TextFormat("%06d", player->GetScore()), WHITE);
 	
 	if (currentLevel <= 3) {
@@ -1885,7 +1916,6 @@ void Scene::RenderGUI() const
 			DrawTextureRec(*hud_items, { 2 * 16,0,16,16 }, { 208 ,26 }, WHITE);
 		}
 	}
-
 }
 void Scene::RenderGameOver() const
 {

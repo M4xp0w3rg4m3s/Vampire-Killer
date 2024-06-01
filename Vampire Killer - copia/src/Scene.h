@@ -5,6 +5,7 @@
 #include "Object.h"
 #include "AudioPlayer.h"
 #include "Text.h"
+#include "Door.h"
 
 enum class DebugMode { OFF, SPRITES_AND_HITBOXES, ONLY_HITBOXES, SIZE };
 
@@ -98,5 +99,9 @@ private:
     bool popUpDisplayed = false;
 
     Text* font;
+
+    //Door
+
+    Door* bossDoor;
 };
 
