@@ -6,9 +6,13 @@ Github page :
 
 https://github.com/M4xp0w3rg4m3s/Vampire-Killer
 
-Youtube Video of the features :
+---Youtube Video of the features---
 
+First Release Video :
 https://www.youtube.com/watch?v=6NMuUqSo27c
+
+Final Release Video:
+
 
 -----Team Members-----
 
@@ -45,10 +49,7 @@ Rightwards Arrow - Move to the right.
 Leftwards Arrow - Move to the left.
 Space - Whip Attack.
 Z - Throw.
-
-F1 - Activate / Deactivate God Mode.
 F2 - Activate / Deactivate Debug Mode.
-
 
 | Only with the DebugMode activated |
 
@@ -68,6 +69,7 @@ P - Go to Level Boss.
 C - Set weapon to Chain.
 H - Increase hearts by 99.
 
+F1 - Activate / Deactivate God Mode.
 F3 - Instant Win.
 F4 - Instant Death.
 F5 - Get Damage.
