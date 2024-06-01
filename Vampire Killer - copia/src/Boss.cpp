@@ -64,7 +64,12 @@ void Boss::Update()
 		EnemyManager::Instance().target->IncrScore(2000);
 	}
 	else {
-		Brain();
+		if (justHit) {
+			hitCounter--;
+		}
+		if (hitCounter <= 0 || !justHit) {
+			Brain();
+		}
 		Sprite* sprite = dynamic_cast<Sprite*>(render);
 		sprite->Update();
 	}
@@ -109,13 +114,29 @@ void Boss::Brain()
 	}
 	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack())) {
 		AudioPlayer::Instance().PlaySoundByName("Attack");
-		killed = true;
+		if (EnemyManager::Instance().target->weapon->GetWeaponType() == WeaponType::WHIP) {
+			life -= 2;
+		}
+		else if(EnemyManager::Instance().target->weapon->GetWeaponType() == WeaponType::CHAIN) {
+			life -= 3;
+		}
+		if (life <= 0) {
+			killed = true;
+			life = 0;
+		}
+		justHit = true;
+		hitCounter = 30;
 	}
 }
 
 void Boss::SetTileMap(TileMap* tilemap)
 {
 	map = tilemap;
+}
+
+int Boss::GetLife() const
+{
+	return life;
 }
 
 void Boss::Move()

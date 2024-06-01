@@ -95,6 +95,27 @@ Vector2 EnemyManager::GetKilledPos()
 		}
 	}
 }
+bool EnemyManager::IsBossDead()
+{
+	for (int i = 0; i < enemies.size(); ++i) {
+		if (enemies[i]->GetType() == EnemyType::BOSS) {
+			if (enemies[i]->GetLife() == 0) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+	}
+}
+int EnemyManager::GetBossLife()
+{
+	for (int i = 0; i < enemies.size(); ++i) {
+		if (enemies[i]->GetType() == EnemyType::BOSS) {
+			return enemies[i]->GetLife();
+		}
+	}
+}
 void EnemyManager::Render()
 {
 	for (int i = 0; i < enemies.size(); ++i) {

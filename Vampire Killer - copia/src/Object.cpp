@@ -66,8 +66,11 @@ Object::Object(const Point& p, ObjectType t, Vector2 levelIndex) : Entity(p, OBJ
         render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
         break;
     case ObjectType::WINGS:         rc = { 0 * n,  8 * n, n, n };       
-    render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
-    break;
+        render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+        break;
+    case ObjectType::BOSS_BALL:     rc = { 1 * n,  8 * n, n, n };       
+        render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+        break;
 
     case ObjectType::FIRE:          sprite->SetAnimation((int)ObjectAnim::FIRE);          break;
     case ObjectType::CANDLE:        sprite->SetAnimation((int)ObjectAnim::CANDLE);        break;
@@ -141,8 +144,11 @@ Object::Object(const Point& p, ObjectType t, Vector2 levelIndex, ObjectType loot
         render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
         break;
     case ObjectType::WINGS:         rc = { 0 * n,  8 * n, n, n };       
-    render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
-    break;
+        render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+        break;
+    case ObjectType::BOSS_BALL:     rc = { 1 * n,  8 * n, n, n };       
+        render = new StaticImage(data.GetTexture(Resource::IMG_TILES), rc);
+        break;
 
     case ObjectType::FIRE:          sprite->SetAnimation((int)ObjectAnim::FIRE);          break;
     case ObjectType::CANDLE:        sprite->SetAnimation((int)ObjectAnim::CANDLE);        break;
