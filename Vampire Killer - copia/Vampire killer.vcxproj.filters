@@ -73,6 +73,9 @@
     <ClCompile Include="src\Stairs.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
+    <ClCompile Include="src\Door.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Globals.h">
@@ -148,6 +151,9 @@
       <Filter>Entities\Enemies</Filter>
     </ClInclude>
     <ClInclude Include="src\Stairs.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Door.h">
       <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
