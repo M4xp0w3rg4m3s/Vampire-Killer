@@ -46,8 +46,10 @@ private:
     const Texture2D* hit_effect;
     int zombie_delay_time;
     int bat_delay_time;
+    
+    bool boss_spawned = false;
 
-    int hit_effect_time = 60;
+    int hit_effect_time = 30;
     bool enemy_killed = false;
     bool got_enemy_pos = false;
     Vector2 enemy_killed_pos;

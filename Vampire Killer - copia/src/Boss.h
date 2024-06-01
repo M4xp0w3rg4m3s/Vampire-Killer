@@ -2,13 +2,13 @@
 #include "Enemy.h"
 #include "math.h"
 
-#define BOSS_SPEED	2
+#define BOSS_SPEED	1
 
 #define BOSS_SPRITE_HEIGHT	32
-#define BOSS_SPRITE_WIDTH	32
+#define BOSS_SPRITE_WIDTH	64
 
-#define BOSS_HITBOX_HEIGHT	16
-#define BOSS_HITBOX_WIDTH	32
+#define BOSS_HITBOX_HEIGHT	32
+#define BOSS_HITBOX_WIDTH	64
 
 #define BOSS_DAMAGE			3
 
@@ -48,12 +48,9 @@ private:
 	TileMap* map;
 	int Init_pos_y;
 
-	
-
 	float internalTimer = 0;
 	float amplitude = 0.75;
 	float currentAmplitude = 0;
 	float amplitudeChangeSpeed = 3;
-
 };
 

@@ -25,6 +25,7 @@ public:
     void SpawnPanther(Point pos);
     void SpawnBat(Point pos);
     void SpawnTrader(Point pos);
+    void SpawnBoss(Point pos);
 
     bool GetTraderPopUp();
     bool DeleteTraderPopUp();

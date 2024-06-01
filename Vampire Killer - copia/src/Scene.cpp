@@ -397,7 +397,6 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 		EnemyManager::Instance().DestroyEnemies();
-		
 	}
 	else if (stage == 3 && floor == 0)
 	{
@@ -921,17 +920,17 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 		};
 		map = new int[size] {
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,109,108,109,501,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,121,  0,  0,  0,501,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,550,  0,  0,  0,501,
-			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,501,
-			550,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,  0,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,550,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,550,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,550,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,550,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,550,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,550,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,109,108,109,550,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,119,121,  0,  0,  0,550,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,108,109,550,  0,  0,  0,550,
+			550,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,550,
+			550,108,109,108,109,108,109,108,109,108,109,108,109,108,109,108,109,550,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 		mapFront = new int[size] {
@@ -1253,6 +1252,11 @@ void Scene::Update()
 		}
 	}
 
+	if (currentLevel == 8 && !boss_spawned) {
+		EnemyManager::Instance().SpawnBoss({ 100, 100 });
+		boss_spawned = true;
+	}
+
 	if (gotBoots == true) {
 		boot_time--;
 		if (boot_time <= 0) {
@@ -1338,29 +1342,29 @@ void Scene::Render()
 				}
 			}
 
-			enemy_killed = EnemyManager::Instance().GetKilled();
+			//enemy_killed = EnemyManager::Instance().GetKilled();
 
-			if (player->weapon->GetFrame() == 2 && enemy_killed) {
-				if (!got_enemy_pos) {
-					enemy_killed_pos = EnemyManager::Instance().GetKilledPos();
-					got_enemy_pos = true;
-				}
-			}
+			//if (player->weapon->GetFrame() == 2 && enemy_killed) {
+			//	if (!got_enemy_pos) {
+			//		enemy_killed_pos = EnemyManager::Instance().GetKilledPos();
+			//		got_enemy_pos = true;
+			//	}
+			//}
 
-			if (enemy_killed) {
-				hit_effect_time--;
-				if (hit_effect_time < 0) {
-					hit_effect_time = 60;
-					enemy_killed = false;
-					got_enemy_pos = false;
-				}
-				else if (hit_effect_time % 30 > 15) {
-					DrawTextureRec(*hit_effect, { 0,0,16,16 }, enemy_killed_pos, WHITE);
-				}
-				else if (hit_effect_time % 30 < 15) {
-					DrawTextureRec(*hit_effect, { 16,0,16,16 }, enemy_killed_pos, WHITE);
-				}
-			}
+			//if (enemy_killed) {
+			//	hit_effect_time--;
+			//	if (hit_effect_time < 0) {
+			//		hit_effect_time = 30;
+			//		enemy_killed = false;
+			//		got_enemy_pos = false;
+			//	}
+			//	else if (hit_effect_time % 30 > 15) {
+			//		DrawTextureRec(*hit_effect, { 0,0,16,16 }, enemy_killed_pos, WHITE);
+			//	}
+			//	else if (hit_effect_time % 30 < 15) {
+			//		DrawTextureRec(*hit_effect, { 16,0,16,16 }, enemy_killed_pos, WHITE);
+			//	}
+			//}
 
 			if (EnemyManager::Instance().DeleteTraderPopUp()) {
 				DeletePopUp();

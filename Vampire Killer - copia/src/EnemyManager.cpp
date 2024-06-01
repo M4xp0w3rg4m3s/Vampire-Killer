@@ -3,6 +3,7 @@
 #include "EnemyBat.h"
 #include "EnemyManager.h"
 #include "Trader.h"
+#include "Boss.h"
 
 EnemyManager::EnemyManager() {
 	AudioPlayer::Instance().CreateSound("audio/SFX/27.wav", "Attack");
@@ -53,6 +54,11 @@ void EnemyManager::SpawnBat(Point pos)
 void EnemyManager::SpawnTrader(Point pos)
 {
 	Enemy* newEnemy = new Trader(pos);
+	enemies.push_back(newEnemy);
+}
+void EnemyManager::SpawnBoss(Point pos)
+{
+	Enemy* newEnemy = new Boss(pos);
 	enemies.push_back(newEnemy);
 }
 bool EnemyManager::GetTraderPopUp()

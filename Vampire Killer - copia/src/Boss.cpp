@@ -1,7 +1,7 @@
 #include "Boss.h"
 #include "EnemyManager.h"
 
-Boss::Boss(Point pos)
+Boss::Boss(Point pos) : Enemy({ pos.x, pos.y }, BOSS_HITBOX_HEIGHT, BOSS_HITBOX_WIDTH, BOSS_SPRITE_HEIGHT, BOSS_SPRITE_WIDTH)
 {
 	state = EnemyState::ADVANCING;
 	look = EnemyLook::RIGHT;
@@ -41,43 +41,26 @@ AppStatus Boss::Initialise()
 	sprite->SetNumberAnimations((int)EnemyAnim::NUM_ANIMATIONS);
 
 	sprite->SetAnimationDelay((int)EnemyAnim::IDLE_RIGHT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)EnemyAnim::IDLE_RIGHT, { 0, 0, n, n });
+	sprite->AddKeyFrame((int)EnemyAnim::IDLE_RIGHT, { 0, 0, n2, n });
 
 	sprite->SetAnimationDelay((int)EnemyAnim::MOVING, ANIM_DELAY);
-	for (i = 0; i < 1; ++i)
-		sprite->AddKeyFrame((int)EnemyAnim::MOVING, { (float)i * n, 0, n, n });
+	for (i = 0; i < 2; ++i)
+		sprite->AddKeyFrame((int)EnemyAnim::MOVING, { (float)i * n2, 0, n2, n });
 
 
+	SetPos({ pos.x, pos.y });
+	state = EnemyState::ADVANCING;
+	look = EnemyLook::LEFT;
+	SetAnimation((int)EnemyAnim::MOVING);
 
-	if (EnemyManager::Instance().target->GetPos().x < 208 && EnemyManager::Instance().target->IsLookingRight()) {
-		SetPos({ 255, pos.y });
-		state = EnemyState::ADVANCING;
-		look = EnemyLook::LEFT;
-		SetAnimation((int)EnemyAnim::MOVING);
-	}
-	else if (EnemyManager::Instance().target->GetPos().x > 68 && EnemyManager::Instance().target->IsLookingLeft()) {
-		SetPos({ 20, pos.y });
-		state = EnemyState::ADVANCING;
-		look = EnemyLook::RIGHT;
-		SetAnimation((int)EnemyAnim::MOVING);
-	}
-	else {
-		isActive = false;
-	}
-	if (EnemyManager::Instance().target->GetPos().y < 130 && EnemyManager::Instance().target->IsLookingRight()) {
-		SetPos({ pos.x, 79 });
-	}
 	return AppStatus::OK;
 }
 
 void Boss::Update()
 {
 	if (killed) {
-		--killed_time;
-		if (killed_time < 0) {
-			isActive = false;
-			EnemyManager::Instance().target->IncrScore(100);
-		}
+		isActive = false;
+		EnemyManager::Instance().target->IncrScore(2000);
 	}
 	else {
 		Brain();
@@ -93,9 +76,6 @@ void Boss::Render()
 		Point p = GetRenderingPosition();
 		if (!killed) {
 			render->Draw(p.x, p.y);
-		}
-		else 
-		{
 		}
 	}
 	else {
@@ -168,7 +148,6 @@ void Boss::Move()
 	{
 		ToCalculateVec = true;
 	}
-	
 }
 
 void Boss::DrawDebug(const Color& col) const
