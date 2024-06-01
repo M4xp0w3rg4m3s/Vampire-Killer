@@ -1047,38 +1047,40 @@ void Scene::Update()
 
 	AudioPlayer::Instance().PlayMusicByName("VampireKiller");
 
-	if (IsKeyPressed(KEY_ONE))			LoadLevel(1,0);
-	else if (IsKeyPressed(KEY_TWO))		LoadLevel(2,0);
-	else if (IsKeyPressed(KEY_THREE))	LoadLevel(3,0);
-	else if (IsKeyPressed(KEY_FOUR))	LoadLevel(4,0);
-	else if (IsKeyPressed(KEY_FIVE))	LoadLevel(5,0);
-	else if (IsKeyPressed(KEY_SIX))		LoadLevel(6,0);
-	else if (IsKeyPressed(KEY_SEVEN))	LoadLevel(7,0);
-	else if (IsKeyPressed(KEY_EIGHT))	LoadLevel(4,1);
-	else if (IsKeyPressed(KEY_NINE))	LoadLevel(5,1);
-	else if (IsKeyPressed(KEY_ZERO))	LoadLevel(6,1);
-	else if (IsKeyPressed(KEY_O))	LoadLevel(7,1);
-	else if (IsKeyPressed(KEY_P))	LoadLevel(8,1);
+	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES) {
+		if (IsKeyPressed(KEY_ONE))			LoadLevel(1,0);
+		else if (IsKeyPressed(KEY_TWO))		LoadLevel(2,0);
+		else if (IsKeyPressed(KEY_THREE))	LoadLevel(3,0);
+		else if (IsKeyPressed(KEY_FOUR))	LoadLevel(4,0);
+		else if (IsKeyPressed(KEY_FIVE))	LoadLevel(5,0);
+		else if (IsKeyPressed(KEY_SIX))		LoadLevel(6,0);
+		else if (IsKeyPressed(KEY_SEVEN))	LoadLevel(7,0);
+		else if (IsKeyPressed(KEY_EIGHT))	LoadLevel(4,1);
+		else if (IsKeyPressed(KEY_NINE))	LoadLevel(5,1);
+		else if (IsKeyPressed(KEY_ZERO))	LoadLevel(6,1);
+		else if (IsKeyPressed(KEY_O))	LoadLevel(7,1);
+		else if (IsKeyPressed(KEY_P))	LoadLevel(8,1);
 
-	else if (IsKeyPressed(KEY_C))		player->weapon->SetWeapon(WeaponType::CHAIN);
-	else if (IsKeyPressed(KEY_F3)) {
-		AudioPlayer::Instance().StopMusicByName("VampireKiller");
-		player->Win();
-	}
-	else if (IsKeyPressed(KEY_F1))	    player->GodModeSwitch();
-	else if (IsKeyPressed(KEY_F4) || player->GetLife() == 0)
-	{
-		if (!player->IsGodMode() && player->GetState() != State::DYING) {
-			player->StartDying();
+		else if (IsKeyPressed(KEY_C))		player->weapon->SetWeapon(WeaponType::CHAIN);
+		else if (IsKeyPressed(KEY_F3)) {
+			AudioPlayer::Instance().StopMusicByName("VampireKiller");
+			player->Win();
 		}
-	}
-	else if (IsKeyPressed(KEY_F5))
-	{
-		if (!player->IsGodMode()) {
-			player->DecrLife(8);
+		else if (IsKeyPressed(KEY_F1))	    player->GodModeSwitch();
+		else if (IsKeyPressed(KEY_F4) || player->GetLife() == 0)
+		{
+			if (!player->IsGodMode() && player->GetState() != State::DYING) {
+				player->StartDying();
+			}
 		}
+		else if (IsKeyPressed(KEY_F5))
+		{
+			if (!player->IsGodMode()) {
+				player->DecrLife(8);
+			}
+		}
+		else if (IsKeyPressed(KEY_H)) player->IncrHearts(99);
 	}
-	else if (IsKeyPressed(KEY_H)) player->IncrHearts(99);
 
 
 	box = player->GetHitbox();
@@ -1704,6 +1706,55 @@ void Scene::CheckCollisions()
 			++it; 
 		}
 	}
+	//CheckCollisionsStairs();
+}
+void Scene::CheckCollisionsStairs()
+{
+	//bool hasOnStair = false;
+	//AABB player_box;
+
+	//player_box = player->GetHitbox();
+
+	//for (/*ir por todas las escaleras*/) {
+	//	if (stairs[i].checkcollision(player_box) {
+	//		hasOnStair = true;
+	//		if (inFirstStairCheck) {
+	//			if (isStairMode) {
+	//				isStairMode = false;
+	//			}
+	//			else {
+	//				if (isStairTop) {
+	//					if (IsKeyPressed(KEY_DOWN)) {
+	//						start going down;
+	//					}
+	//				}
+	//				if (isStairBottom) {
+	//					if(IsKeyPressed(KEY_UP)) {
+	//						start going up;
+	//					}
+	//				}
+	//			}
+	//			inFirstStairCheck = false;
+	//		}
+	//		else {
+	//			if (!isStairMode) {
+	//				if (isStairTop) {
+	//					if (IsKeyPressed(KEY_DOWN)) {
+	//						start going down;
+	//					}
+	//				}
+	//				if (isStairBottom) {
+	//					if (IsKeyPressed(KEY_UP)) {
+	//						start going up;
+	//					}
+	//				}
+	//			}
+	//		}
+	//	}
+	//	else {
+	//		inFirstStairCheck = true;
+	//	}
+	//}
 }
 void Scene::ClearLevel()
 {

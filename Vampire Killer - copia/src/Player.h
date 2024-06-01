@@ -185,12 +185,6 @@ private:
 	bool IsLevitating() const;
 	bool IsDescending() const;
 
-
-	//Ladder get in/out steps
-	bool IsInFirstHalfTile() const;
-	bool IsInSecondHalfTile() const;
-
-	bool staticJump;
 	bool damaged_finished;
 	bool GodMode;
 	State state;
@@ -213,5 +207,10 @@ private:
 	int lives;
 	int life;
 	int hearts;
+
+	////Stairs
+	//bool inFirstStairCheck = true;
+	//bool isStairMode = false;
+
 };
 

@@ -25,6 +25,7 @@ private:
     AppStatus LoadLevel(int stage,int floor);
     
     void CheckCollisions(); 
+    void CheckCollisionsStairs();
     void ClearLevel();
     void RenderGameOver() const;
     void RenderObjects() const;

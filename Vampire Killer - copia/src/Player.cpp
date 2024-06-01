@@ -24,7 +24,7 @@ Player::Player(const Point& p, State s, Look view) :
 	GodMode = false;
 	isGUIinit = false;
 	damaged_finished = true;
-	staticJump = false;
+
 
 	shield = false;
 	doorKey = false;
@@ -305,14 +305,6 @@ bool Player::IsLevitating() const
 bool Player::IsDescending() const
 {
 	return dir.y > PLAYER_LEVITATING_SPEED;
-}
-bool Player::IsInFirstHalfTile() const
-{
-	return pos.y % TILE_SIZE < TILE_SIZE / 2;
-}
-bool Player::IsInSecondHalfTile() const
-{
-	return pos.y % TILE_SIZE >= TILE_SIZE/2;
 }
 bool Player::IsGodMode() const {
 	return GodMode;
@@ -693,12 +685,7 @@ void Player::MoveX()
 		state == State::CROUCH_THROWING || state == State::DYING)
 		return;
 
-	if (staticJump) return;
 
-	if (state == State::IDLE && IsKeyPressed(KEY_UP)) {
-		staticJump = true;
-		return;
-	}
 	if (state != State::DAMAGED) {
 		if (state == State::WHIP || state == State::THROWING) {
 			box = GetHitbox();
@@ -710,14 +697,6 @@ void Player::MoveX()
 				else {
 					pos.x += PLAYER_SPEED;
 				}*/
-			}
-		}
-		else if (state == State::JUMPING && (state != State::WHIP && state != State::THROWING)) {
-			if (look == Look::LEFT) {
-				pos.x += -PLAYER_SPEED;
-			}
-			else {
-				pos.x += PLAYER_SPEED;
 			}
 		}
 		else if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
@@ -940,7 +919,6 @@ void Player::LogicJumping()
 				map->TestCollisionGround(box, &pos.y))
 			{
 				Stop();
-				staticJump = false;
 				height = PLAYER_PHYSICAL_HEIGHT;
 			}
 		}
@@ -1084,7 +1062,6 @@ void Player::LogicAttack()
 			}
 			else {
 				Stop();
-				staticJump = false;
 			}
 
 			AudioPlayer::Instance().PlaySoundByName("MissAttack");
@@ -1147,7 +1124,6 @@ void Player::LogicDamaged()
 
 		if (AnimationFrame >= 2) {
 			Stop();
-			staticJump = false;
 			damaged_finished = true;
 
 			sprite->SetAutomaticMode();
