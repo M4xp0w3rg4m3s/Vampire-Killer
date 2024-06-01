@@ -33,6 +33,9 @@ public:
     bool GetKilled();
     Vector2 GetKilledPos();
 
+    bool IsBossDead();
+    int GetBossLife();
+
     void Render();
     void RenderDebug();
 

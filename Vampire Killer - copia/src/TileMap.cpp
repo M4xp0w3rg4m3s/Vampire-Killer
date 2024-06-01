@@ -524,6 +524,30 @@ bool TileMap::TestCollisionStairs(const AABB& box) const {
 	}
 	return false;
 }
+bool TileMap::TestCollisionEnemies(const AABB& box) const {
+	const Point& p = box.pos;
+	int distance = box.height;
+	Tile tile;
+
+	int x, y, y0, y1;
+
+	//Calculate the tile coordinates and the range of tiles to check for collision
+	x = (p.x) / TILE_SIZE;
+	y0 = p.y / TILE_SIZE;
+	y1 = (p.y + distance - 1) / TILE_SIZE;
+
+	//Iterate over the tiles within the vertical range
+	for (y = y0; y <= y1; ++y)
+	{
+		tile = GetFrontTileIndex(x, y);
+
+		//One solid tile is sufficient
+		if (tile == Tile::INVISIBLE_ENEMIES) {
+			return true;
+		}
+	}
+	return false;
+}
 void TileMap::TurnIntoAir() {
 	Tile tile;
 	Rectangle rc;

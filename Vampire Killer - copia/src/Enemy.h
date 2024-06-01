@@ -47,6 +47,8 @@ public:
 
 	Vector2 GetKilledPosition() const;
 
+	virtual int GetLife() const;
+
 	virtual EnemyType GetType() const;
 	virtual bool GetPopUp() const;
 	virtual bool DeletePopUp() const;

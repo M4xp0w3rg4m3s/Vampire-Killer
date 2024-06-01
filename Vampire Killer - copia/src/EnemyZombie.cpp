@@ -170,7 +170,7 @@ void EnemyZombie::MoveX()
 void EnemyZombie::MoveY()
 {
 	pos.y += ZOMBIE_SPEED;
-	if (map->TestCollisionGround(GetHitbox(), &pos.y))
+	if (map->TestCollisionGround(GetHitbox(), &pos.y) || map->TestCollisionEnemies(GetHitbox()))
 	{
 		if (state == EnemyState::FALLING) Stop();
 	}

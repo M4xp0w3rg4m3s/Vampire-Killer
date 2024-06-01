@@ -86,6 +86,10 @@ private:
     ObjectType currentLootType;
     float spawnY;
 
+    float bossSpawnY = 64;
+    int boss_loot_time = 110;
+    bool boss_loot_spawned = false;
+
     Camera2D camera;
     DebugMode debug;
 

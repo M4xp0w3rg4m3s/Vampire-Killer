@@ -769,7 +769,7 @@ AppStatus Scene::LoadLevel(int stage,int floor)
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
+			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,551,  0,  0,  0,  0,  0,
 			  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0
 		};
 		EnemyManager::Instance().DestroyEnemies();
@@ -1254,6 +1254,18 @@ void Scene::Update()
 		}
 	}
 
+	if (currentLevel == 8 && EnemyManager::Instance().IsBossDead()) {
+		boss_loot_time--;
+		bossSpawnY++;
+		if (boss_loot_time < 0) {
+			if (!boss_loot_spawned) {
+				obj = new Object({ WINDOW_WIDTH/2,(int)bossSpawnY }, ObjectType::BOSS_BALL, { (float)currentLevel, (float)currentFloor });
+				objects.push_back(obj);
+				boss_loot_spawned = true;
+			}
+		}
+	}
+
 	if (currentLevel == 8 && !boss_spawned) {
 		EnemyManager::Instance().SpawnBoss({ 100, 100 });
 		boss_spawned = true;
@@ -1341,6 +1353,17 @@ void Scene::Render()
 				}
 				else {
 					DrawTextureRec(*loot_heart, { 14*16,4*16,16,16 }, { currentLootX, spawnY - 16 }, WHITE);
+				}
+			}
+
+			if (currentLevel == 8) {
+				if (EnemyManager::Instance().IsBossDead()) {
+					if (boss_loot_time % 30 > 15 && boss_loot_time > 0) {
+						DrawTextureRec(*loot_heart, { 1 * 16,8 * 16,16,16 }, { WINDOW_WIDTH / 2, bossSpawnY - 16 }, WHITE);
+					}
+					else if (boss_loot_time % 30 < 15 && boss_loot_time > 0) {
+						DrawTextureRec(*loot_heart, { 2 * 16,8 * 16,16,16 }, { WINDOW_WIDTH / 2, bossSpawnY - 16 }, WHITE);
+					}
 				}
 			}
 
@@ -1533,6 +1556,15 @@ void Scene::CheckCollisions()
 			if ((*it)->GetType() == ObjectType::CHAIN) {
 				AudioPlayer::Instance().PlaySoundByName("Collect");
 				player->weapon->SetWeapon(WeaponType::CHAIN);
+				//Delete the object
+				delete* it;
+				//Erase the object from the vector and get the iterator to the next valid element
+				it = objects.erase(it);
+			}
+			else if ((*it)->GetType() == ObjectType::BOSS_BALL) {
+				AudioPlayer::Instance().PlaySoundByName("Collect");
+				AudioPlayer::Instance().StopMusicByName("VampireKiller");
+				player->Win();
 				//Delete the object
 				delete* it;
 				//Erase the object from the vector and get the iterator to the next valid element
@@ -1829,12 +1861,12 @@ void Scene::RenderGUI() const
 		DrawRectangle(68, 28, player->GetLife() * 2, 4, { 247, 176, 144, 255 });
 	}
 
-	//if(EnemyManager::Instance().IfThereIsBoss() ){
-	//	DrawRectangle(68, 37, EnemyManager::Instance().GetBossLife(), 4, { 176, 6, 6, 255 });
-	//}
-	//else{
+	if (currentLevel == 8) {
+		DrawRectangle(68, 37, EnemyManager::Instance().GetBossLife()*4, 4, { 176, 6, 6, 255 });
+	}
+	else {
 		DrawRectangle(68, 37, 64, 4, { 176, 6, 6, 255 });
-	//}
+	}
 
 	if (gotBoots == true) {
 		DrawTextureRec(*hud_items, { 5 * 16,0,16,16 }, { 216 ,26 }, WHITE);

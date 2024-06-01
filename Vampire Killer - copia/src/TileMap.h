@@ -122,7 +122,7 @@ enum class Tile {
 	WIN = 505,
 
 	// 550 = solid invisible tile
-	INVISIBLE = 550,
+	INVISIBLE = 550, INVISIBLE_ENEMIES = 551,
 
 	//Intervals
 	STATIC_FIRST = TREE_FIRST_1,
@@ -155,6 +155,7 @@ public:
 	bool TestCollisionWin(const AABB& box) const;
 	bool TestCollisionCandleFire(const AABB& box) const;
 	bool TestCollisionStairs(const AABB& box) const;
+	bool TestCollisionEnemies(const AABB& box) const;
 
 	//Test for breakeable tiles
 	bool TestCollisionBreakableBrick(const AABB& box) const;

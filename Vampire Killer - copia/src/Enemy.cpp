@@ -51,6 +51,10 @@ Vector2 Enemy::GetKilledPosition() const
 		return killedPos;
 	}
 }
+int Enemy::GetLife() const
+{
+	return 0;
+}
 EnemyType Enemy::GetType() const
 {
 	return type;

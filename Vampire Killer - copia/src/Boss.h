@@ -29,14 +29,19 @@ public:
 
 	void SetTileMap(TileMap* tilemap) override;
 
-	void AdvanceRight();
-	void AdvanceLeft();
+	int GetLife() const override;
+
 	void Move();
 
 	void DrawDebug(const Color& col) const override;
 	void Release() override;
 
 private:
+
+	int life = 16;
+
+	bool justHit = false;
+	int hitCounter = 30;
 
 	int counter;
 	int Straight_or_curve;

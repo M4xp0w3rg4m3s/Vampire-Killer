@@ -11,6 +11,7 @@ enum class ObjectType {
     KEY_CHEST, KEY_DOOR,
     CHEST_CHAIN, CHEST_SHIELD, CHEST_BOOTS, CHEST_WINGS, CHEST_HEART,
     HEART_SMALL, HEART_BIG,
+    BOSS_BALL,
     FIRE, CANDLE };
 
 enum class ObjectAnim { FIRE, CANDLE };
