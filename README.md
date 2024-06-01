@@ -131,4 +131,4 @@ F5 - Get Damage.
 - God Mode
 - Animated Tiles
 - Animated Tiles heart drop
-
+- Boss Door
