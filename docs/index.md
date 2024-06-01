@@ -21,7 +21,7 @@
 * Designer
 
 ## Team photo
-![](https://github.com/M4xp0w3rg4m3s/Vampire-Killer/blob/main/Art/Zephyrus%20Team%20photo.jpg)
+![Zephyrus Team photo](https://github.com/M4xp0w3rg4m3s/Vampire-Killer/assets/156011390/5d2bedac-e102-4ffd-b7bd-5e43b7c9936b)
 # **Vampire Killer**
 ![](https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2022/07/Castlevania-Que-es-el-Vampire-Killer.jpg)
 ## Game Title
