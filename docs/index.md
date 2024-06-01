@@ -1,4 +1,3 @@
-# **Zephyrus Games - Project 1: Vampire Killer**
 ## Logotype
 
 > _Logo_
@@ -57,6 +56,3 @@ In this game you play Simon Belmont, a descendant of a legendary clan of vampire
 5.1. [Mood Analysis](https://github.com/M4xp0w3rg4m3s/Vampire-Killer/wiki/Art#mood-analysis)  
 5.2. [Sprites](https://github.com/M4xp0w3rg4m3s/Vampire-Killer/wiki/Art#sprites)  
 5.3. [Level Art](https://github.com/M4xp0w3rg4m3s/Vampire-Killer/wiki/Art#level-art)  
-
-## Webpage
-https://m4xp0w3rg4m3s.github.io/Vampire-Killer/
