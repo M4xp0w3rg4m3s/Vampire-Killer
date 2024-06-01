@@ -10,7 +10,7 @@
 #define BOSS_HITBOX_HEIGHT	32
 #define BOSS_HITBOX_WIDTH	64
 
-#define BOSS_DAMAGE			3
+#define BOSS_DAMAGE			6
 
 class Boss : public Enemy
 {

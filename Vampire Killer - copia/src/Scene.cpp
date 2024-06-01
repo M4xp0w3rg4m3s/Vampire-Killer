@@ -1775,10 +1775,15 @@ void Scene::RenderGUI() const
 	}
 
 	if (player->GetLife() > 0) {
-		DrawRectangle(68, 28, player->GetLife() * 4, 4, { 247, 176, 144, 255 });
+		DrawRectangle(68, 28, player->GetLife() * 2, 4, { 247, 176, 144, 255 });
 	}
 
-	DrawRectangle(68, 37, player->GetLife() * 4, 4, { 176, 6, 6, 255 });
+	//if(EnemyManager::Instance().IfThereIsBoss() ){
+	//	DrawRectangle(68, 37, EnemyManager::Instance().GetBossLife(), 4, { 176, 6, 6, 255 });
+	//}
+	//else{
+		DrawRectangle(68, 37, 64, 4, { 176, 6, 6, 255 });
+	//}
 
 	if (gotBoots == true) {
 		DrawTextureRec(*hud_items, { 5 * 16,0,16,16 }, { 216 ,26 }, WHITE);

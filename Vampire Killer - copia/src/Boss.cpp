@@ -160,7 +160,6 @@ void Boss::Release()
 	ResourceManager& data = ResourceManager::Instance();
 	data.ReleaseTexture(Resource::IMG_BOSS);
 	render->Release();
-
 }
 
 

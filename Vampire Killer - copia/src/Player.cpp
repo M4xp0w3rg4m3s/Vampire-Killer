@@ -18,7 +18,7 @@ Player::Player(const Point& p, State s, Look view) :
 	map = nullptr;
 	weapon = new Weapon(p);
 	score = 0;
-	lives = PLAYER_MAX_LIVES;
+	lives = PLAYER_INIT_LIVES;
 	life = PLAYER_MAX_LIFE;
 	AnimationFrame = 0;
 	GodMode = false;
@@ -195,7 +195,7 @@ int Player::GetScore() const
 }
 void Player::InitLives()
 {
-	lives = PLAYER_MAX_LIVES;
+	lives = PLAYER_INIT_LIVES;
 }
 void Player::IncrLives(int n)
 {
@@ -249,15 +249,29 @@ void Player::DecrLife(int n)
 	
 	if (damaged_delay > 0) return;
 
-	if (life - n > 0) {
-		life -= n;
-		damaged_delay = PLAYER_DAMAGED_DELAY;
-		AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
-		StartDamaged();
+	if (!shield) {
+		if (life - n > 0) {
+			life -= n;
+			damaged_delay = PLAYER_DAMAGED_DELAY;
+			AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
+			StartDamaged();
+		}
+		else if (life - n <= 0){
+			AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
+			StartDying();
+		}
 	}
-	else if (life - n <= 0){
-		AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
-		StartDying();
+	else {
+		if (life - (n/2) > 0) {
+			life -= (n/2);
+			damaged_delay = PLAYER_DAMAGED_DELAY;
+			AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
+			StartDamaged();
+		}
+		else if (life - (n/2) <= 0) {
+			AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
+			StartDying();
+		}
 	}
 }
 int Player::GetLife() const

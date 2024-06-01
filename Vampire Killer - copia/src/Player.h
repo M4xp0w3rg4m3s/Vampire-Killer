@@ -14,8 +14,8 @@
 #define PLAYER_PHYSICAL_CROUCHING_HEIGHT	22
 
 //The maximum amount of lives a player can have and the initial lives
-#define PLAYER_MAX_LIVES		2
-#define PLAYER_MAX_LIFE			16
+#define PLAYER_INIT_LIVES		2
+#define PLAYER_MAX_LIFE			32
 
 //Horizontal speed and vertical speed while falling down
 #define PLAYER_SPEED			1

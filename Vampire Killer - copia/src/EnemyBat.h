@@ -10,7 +10,7 @@
 #define BAT_HITBOX_HEIGHT	16
 #define BAT_HITBOX_WIDTH	16
 
-#define BAT_DAMAGE			1
+#define BAT_DAMAGE			2
 
 class EnemyBat : public Enemy
 {
