@@ -8,7 +8,7 @@
 #define BOSS_SPRITE_WIDTH	64
 
 #define BOSS_HITBOX_HEIGHT	32
-#define BOSS_HITBOX_WIDTH	64
+#define BOSS_HITBOX_WIDTH	32
 
 #define BOSS_DAMAGE			6
 
@@ -42,6 +42,8 @@ private:
 	int Straight_or_curve;
 	int Curve_Up_or_Down;
 
+	bool Moving = false;
+
 	bool ToCalculateVec = true;
 	Vector2 vec;
 
@@ -49,7 +51,7 @@ private:
 	int Init_pos_y;
 
 	float internalTimer = 0;
-	float amplitude = 0.75;
+	float amplitude = 2.5;
 	float currentAmplitude = 0;
 	float amplitudeChangeSpeed = 3;
 };

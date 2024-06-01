@@ -1,12 +1,13 @@
 #include "Boss.h"
 #include "EnemyManager.h"
 
-Boss::Boss(Point pos) : Enemy({ pos.x, pos.y }, BOSS_HITBOX_HEIGHT, BOSS_HITBOX_WIDTH, BOSS_SPRITE_HEIGHT, BOSS_SPRITE_WIDTH)
+Boss::Boss(Point pos) : Enemy(pos, BOSS_HITBOX_HEIGHT, BOSS_HITBOX_WIDTH, BOSS_SPRITE_HEIGHT, BOSS_SPRITE_WIDTH)
 {
 	state = EnemyState::ADVANCING;
 	look = EnemyLook::RIGHT;
 	int AnimationFrame = 0;
 	Damage = BOSS_DAMAGE;
+
 
 	type = EnemyType::BOSS;
 
@@ -48,10 +49,10 @@ AppStatus Boss::Initialise()
 		sprite->AddKeyFrame((int)EnemyAnim::MOVING, { (float)i * n2, 0, n2, n });
 
 
-	SetPos({ pos.x, pos.y });
+	
 	state = EnemyState::ADVANCING;
-	look = EnemyLook::LEFT;
 	SetAnimation((int)EnemyAnim::MOVING);
+	Init_pos_y = pos.y;
 
 	return AppStatus::OK;
 }
@@ -71,15 +72,9 @@ void Boss::Update()
 
 void Boss::Render()
 {
-	if (pos.x > 16 && pos.x < 256)
-	{
-		Point p = GetRenderingPosition();
-		if (!killed) {
-			render->Draw(p.x, p.y);
-		}
-	}
-	else {
-		isActive = false;
+	Point p = GetRenderingPosition();
+	if (!killed) {
+		render->Draw(p.x, p.y);
 	}
 }
 
@@ -91,13 +86,21 @@ void Boss::Reset()
 void Boss::Brain()
 {
 	internalTimer += GetFrameTime();
+	
+	if (pos.x == 232)
+	{
+		Moving = false;
+	}
+	if (pos.x == 25)
+	{
+		Moving = true;
+	}
 
 	Move();
 
 	if (EnemyManager::Instance().target->GetState() == State::JUMPING || EnemyManager::Instance().target->GetState() == State::FALLING) {
-		AABB PlayerHitbox = EnemyManager::Instance().target->GetHitbox();
-		PlayerHitbox.pos.y = EnemyManager::Instance().target->GetHitbox().pos.y-16;
-		if(this->GetHitbox().TestAABB(PlayerHitbox)) {
+	
+		if(this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
 			DamagePlayer();
 		}
 	}
@@ -117,37 +120,82 @@ void Boss::SetTileMap(TileMap* tilemap)
 
 void Boss::Move()
 {
-	if (ToCalculateVec) 
+	if (Moving)
 	{
-		vec = { (float)GetRandomValue(-2,2),(float)GetRandomValue(-2, 2) };
-		counter = 60 * GetRandomValue(1,3);
-		ToCalculateVec = false;
-		Straight_or_curve = GetRandomValue(0, 1);
-		Curve_Up_or_Down = GetRandomValue(0, 1);
+		pos.x += BOSS_SPEED;
 	}
-	if (counter >= 0 && Straight_or_curve == 1)
+	if (!Moving)
 	{
-		pos.x += vec.x;
-		pos.y += vec.y;
-		counter--;
+		pos.x -= BOSS_SPEED;
 	}
-	else if (counter >= 0 && Straight_or_curve == 0)
-	{
-		if (Curve_Up_or_Down == 1)
-		{
-			currentAmplitude = amplitude * sin(internalTimer * amplitudeChangeSpeed);
-			pos.y = Init_pos_y + currentAmplitude * TILE_SIZE;
-		}
-		else
-		{
-			currentAmplitude = amplitude * sin(internalTimer * amplitudeChangeSpeed);
-			pos.y = Init_pos_y + currentAmplitude * TILE_SIZE * (- 1);
-		}
-	}
-	else 
-	{
-		ToCalculateVec = true;
-	}
+
+	currentAmplitude = amplitude * sin(internalTimer * amplitudeChangeSpeed);
+
+	pos.y = Init_pos_y + currentAmplitude * TILE_SIZE;
+
+
+	//AABB box = this->GetHitbox();
+
+	//if (!map->TestCollisionEmptyEnemies(box))
+	//{
+	//	if (ToCalculateVec)
+	//	{
+	//		vec = { (float)GetRandomValue(-1,1),(float)GetRandomValue(-3, 3) };
+	//		counter = 30 * GetRandomValue(1, 2);
+	//		ToCalculateVec = false;
+	//		Straight_or_curve = GetRandomValue(0, 1);
+	//		
+	//	}
+	//	if (counter >= 0 && Straight_or_curve == 1)
+	//	{
+	//		pos.x += vec.x;
+	//		pos.y += vec.y;
+	//		counter--;
+	//	}
+	//	/*else if (counter >= 0 && Straight_or_curve == 0)
+	//	{
+	//		pos.x += vec.x;
+
+	//		currentAmplitude = amplitude * sin(internalTimer * amplitudeChangeSpeed);
+	//		pos.y = Init_pos_y + currentAmplitude * TILE_SIZE;
+	//			
+	//		counter--;
+	//	}*/
+	//	else
+	//	{
+	//		ToCalculateVec = true;
+	//	}
+	//}
+	//else
+	//{
+	//	vec.x = -vec.x;
+	//	vec.y = -vec.y;
+
+	//	/*counter = 30 * GetRandomValue(1, 3);*/
+
+	//	ToCalculateVec = false;
+
+	//	if (pos.x <= 256)
+	//	{
+	//		pos.x -= BOSS_SPEED;
+	//	}
+	//	else if (pos.x > 16)
+	//	{
+	//		pos.x += BOSS_SPEED;
+	//	}
+
+	//	if (pos.y <= 16)
+	//	{
+	//		pos.y += BOSS_SPEED;
+	//	}
+	//	else if (pos.y > 176/* && map->TestCollisionEmptyEnemies(box)*/)
+	//	{
+	//		pos.y -= BOSS_SPEED;
+	//	}
+
+	//	/*counter--;*/
+	//}
+
 }
 
 void Boss::DrawDebug(const Color& col) const
