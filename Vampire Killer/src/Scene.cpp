@@ -1089,7 +1089,24 @@ void Scene::Update()
 				player->DecrLife(8);
 			}
 		}
-		else if (IsKeyPressed(KEY_H)) player->IncrHearts(99);
+		else if (IsKeyPressed(KEY_F6)) player->IncrHearts(99);
+		else if (IsKeyPressed(KEY_G)) {
+			EnemyManager::Instance().SpawnZombie(player->GetPos());
+		}
+		else if (IsKeyPressed(KEY_H)) {
+			EnemyManager::Instance().SpawnBat(player->GetPos());
+		}
+		else if (IsKeyPressed(KEY_J)) {
+			EnemyManager::Instance().SpawnBoss(player->GetPos());
+		}
+		else if (IsKeyPressed(KEY_K)) {
+			EnemyManager::Instance().SpawnTrader(player->GetPos());
+		}
+		else if (IsKeyPressed(KEY_L)) {
+			Object* obj;
+			obj = new Object(player->GetPos(), ObjectType::SHIELD, {(float)currentLevel, (float)currentFloor});
+			objects.push_back(obj);
+		}
 	}
 
 	box = player->GetHitbox();
