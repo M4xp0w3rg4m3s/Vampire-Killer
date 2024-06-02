@@ -119,9 +119,11 @@ void EnemyZombie::Brain()
 	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
 		DamagePlayer();
 	}
-	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack())) {
-		AudioPlayer::Instance().PlaySoundByName("Attack");
-		killed = true;
+	if (EnemyManager::Instance().target->weapon->GetFrame() == 2) {
+		if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack())) {
+			AudioPlayer::Instance().PlaySoundByName("Attack");
+			killed = true;
+		}
 	}
 }
 void EnemyZombie::SetTileMap(TileMap* tilemap)

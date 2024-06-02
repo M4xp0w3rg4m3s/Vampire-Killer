@@ -112,20 +112,22 @@ void Boss::Brain()
 	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
 		DamagePlayer();
 	}
-	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack())) {
-		AudioPlayer::Instance().PlaySoundByName("Attack");
-		if (EnemyManager::Instance().target->weapon->GetWeaponType() == WeaponType::WHIP) {
-			life -= 2;
+	if (EnemyManager::Instance().target->weapon->GetFrame() == 2) {
+		if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack())) {
+			AudioPlayer::Instance().PlaySoundByName("Attack");
+			if (EnemyManager::Instance().target->weapon->GetWeaponType() == WeaponType::WHIP) {
+				life -= 2;
+			}
+			else if (EnemyManager::Instance().target->weapon->GetWeaponType() == WeaponType::CHAIN) {
+				life -= 3;
+			}
+			if (life <= 0) {
+				killed = true;
+				life = 0;
+			}
+			justHit = true;
+			hitCounter = 30;
 		}
-		else if(EnemyManager::Instance().target->weapon->GetWeaponType() == WeaponType::CHAIN) {
-			life -= 3;
-		}
-		if (life <= 0) {
-			killed = true;
-			life = 0;
-		}
-		justHit = true;
-		hitCounter = 30;
 	}
 }
 

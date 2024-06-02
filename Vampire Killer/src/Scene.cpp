@@ -190,9 +190,9 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 	
 	//Level 2 Objects
-	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
+	obj = new Object({ 5 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_BIG, TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
+	obj = new Object({ 13 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::FIRE, { 2,0 }, ObjectType::HEART_BIG, TILE_SIZE);
 	objects.push_back(obj);
 	
 	//Level 3 Objects
@@ -210,9 +210,9 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 	obj = new Object({ 8 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
+	obj = new Object({ 12 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_BIG, 3 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 10 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
+	obj = new Object({ 10 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 5,0 }, ObjectType::HEART_BIG, 3 * TILE_SIZE);
 	objects.push_back(obj);
 	
 	//Level 6 Objects
@@ -220,7 +220,7 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 14 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
+	obj = new Object({ 14 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 6,0 }, ObjectType::HEART_BIG, 2 * TILE_SIZE);
 	objects.push_back(obj);
 	obj = new Object({ 5 * TILE_SIZE, 10 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::KEY_CHEST, { 6,0 });
 	objects.push_back(obj);
@@ -228,9 +228,9 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 	
 	//Level 7 Objects
-	obj = new Object({ 12 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
+	obj = new Object({ 12 * TILE_SIZE, 4 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_BIG, 2 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 5 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
+	obj = new Object({ 5 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_BIG, TILE_SIZE);
 	objects.push_back(obj);
 	obj = new Object({ 3 * TILE_SIZE, 9 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 7,0 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
@@ -240,11 +240,11 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 
 	//Level 4, floor 1 Objects
-	obj = new Object({ 4 * TILE_SIZE, 1 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL, TILE_SIZE);
+	obj = new Object({ 4 * TILE_SIZE, 1 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_BIG, TILE_SIZE);
 	objects.push_back(obj);
 	obj = new Object({ 4 * TILE_SIZE, 5 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL, TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL, TILE_SIZE);
+	obj = new Object({ 12 * TILE_SIZE, 3 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_BIG, TILE_SIZE);
 	objects.push_back(obj);
 	obj = new Object({ 11 * TILE_SIZE, 8 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 4,1 }, ObjectType::HEART_SMALL, 2 * TILE_SIZE);
 	objects.push_back(obj);
@@ -278,9 +278,9 @@ AppStatus Scene::Init()
 	objects.push_back(obj);
 
 	//Level 8, floor 1 Objects
-	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 }, ObjectType::HEART_SMALL, 3 * TILE_SIZE);
+	obj = new Object({ 8 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 }, ObjectType::HEART_BIG, 3 * TILE_SIZE);
 	objects.push_back(obj);
-	obj = new Object({ 11 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 }, ObjectType::HEART_SMALL, TILE_SIZE);
+	obj = new Object({ 11 * TILE_SIZE, 7 * TILE_SIZE + TILE_SIZE - 1 }, ObjectType::CANDLE, { 8,1 }, ObjectType::HEART_BIG, TILE_SIZE);
 	objects.push_back(obj);
 
     return AppStatus::OK;
@@ -1477,12 +1477,10 @@ void Scene::Render()
 			if (player->HasShield()) {
 				player->SwitchShield();
 			}
-			if (player->HasDoorKey()) {
-				player->SwitchDoorKey();
-			}
 			if (player->HasChestKey()) {
 				player->SwitchChestKey();
 			}
+			boss_spawned = false;
 
 			if (currentLevel > 3) {
 				LoadLevel(4, 0);

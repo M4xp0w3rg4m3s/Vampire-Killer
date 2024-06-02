@@ -86,32 +86,33 @@ void Trader::Reset()
 }
 void Trader::Brain()
 {
-	if (currentAnimation == EnemyAnim::RED_TRADER && this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()))
-	{
-		PopUp = false;
-		isActive = false;
-		deletePopUp = true;
-		justHit = true;
-		counter = 60;
+	if (EnemyManager::Instance().target->weapon->GetFrame() == 2) {
+		if (currentAnimation == EnemyAnim::RED_TRADER && this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()))
+		{
+			PopUp = false;
+			isActive = false;
+			deletePopUp = true;
+			justHit = true;
+			counter = 60;
+		}
+		else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()) && PopUp == false)
+		{
+			AudioPlayer::Instance().PlaySoundByName("Attack");
+			PopUp = true;
+			justHit = true;
+			counter = 60;
+		}
+		else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()) && PopUp == true && EnemyManager::Instance().target->GetHearts() > 50)
+		{
+			PopUp = false;
+			SetAnimation((int)EnemyAnim::RED_TRADER);
+			currentAnimation = EnemyAnim::RED_TRADER;
+			EnemyManager::Instance().target->DecrHearts(50);
+			EnemyManager::Instance().target->weapon->SetWeapon(WeaponType::CHAIN); // Put Knives when finished
+			justHit = true;
+			counter = 60;
+		}
 	}
-	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()) && PopUp == false)
-	{
-		AudioPlayer::Instance().PlaySoundByName("Attack");
-		PopUp = true;
-		justHit = true;
-		counter = 60;
-	}
-	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack()) && PopUp == true && EnemyManager::Instance().target->GetHearts() > 50)
-	{
-		PopUp = false;
-		SetAnimation((int)EnemyAnim::RED_TRADER);
-		currentAnimation = EnemyAnim::RED_TRADER;
-		EnemyManager::Instance().target->DecrHearts(50);
-		EnemyManager::Instance().target->weapon->SetWeapon(WeaponType::CHAIN); // Put Knives when finished
-		justHit = true;
-		counter = 60;
-	}
-	
 }
 void Trader::SetTileMap(TileMap* tilemap)
 {
