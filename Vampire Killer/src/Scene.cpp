@@ -158,12 +158,16 @@ AppStatus Scene::Init()
 	AudioPlayer::Instance().CreateMusic("audio/Music/02 Vampire Killer.ogg", "VampireKiller");
 	AudioPlayer::Instance().SetMusicLoopStatus("VampireKiller",true);
 
+	AudioPlayer::Instance().CreateMusic("audio/Music/08 Poison Mind.ogg", "BossMusic");
+	AudioPlayer::Instance().SetMusicLoopStatus("BossMusic", true);
+
 	AudioPlayer::Instance().CreateSound("audio/SFX/17.wav", "Collect");
 	AudioPlayer::Instance().CreateSound("audio/SFX/25.wav", "OpenChest");
 	AudioPlayer::Instance().CreateSound("audio/SFX/02.wav", "BreakWalls");
 	AudioPlayer::Instance().CreateSound("audio/SFX/03.wav", "EnterCastle");
 	AudioPlayer::Instance().CreateSound("audio/SFX/01.wav", "GetDoorKey");
 	AudioPlayer::Instance().CreateSound("audio/SFX/12.wav", "GetHeart");
+	AudioPlayer::Instance().CreateSound("audio/SFX/05.wav", "OpenDoor");
 
 	player->weapon->SetWeapon(WeaponType::WHIP);
 
@@ -1083,6 +1087,7 @@ void Scene::Update()
 		else if (IsKeyPressed(KEY_C))		player->weapon->SetWeapon(WeaponType::CHAIN);
 		else if (IsKeyPressed(KEY_F3)) {
 			AudioPlayer::Instance().StopMusicByName("VampireKiller");
+			AudioPlayer::Instance().StopMusicByName("BossMusic");
 			player->Win();
 		}
 		else if (IsKeyPressed(KEY_F1))	    player->GodModeSwitch();
@@ -1169,6 +1174,7 @@ void Scene::Update()
 
 	if (level->TestCollisionWin(box)) {
 		AudioPlayer::Instance().StopMusicByName("VampireKiller");
+		AudioPlayer::Instance().StopMusicByName("BossMusic");
 		player->Win();
 	}
 
@@ -1339,10 +1345,24 @@ void Scene::Update()
 		if (player->GetHitbox().TestAABB(bossDoor->GetHitbox())) {
 			if (player->HasDoorKey()) {
 				bossDoor->Open();
+				AudioPlayer::Instance().PlaySoundByName("OpenDoor");
 			}
 			else {
 				player->SetPos({ player->GetPos().x-1, player->GetPos().y });
 			}
+		}
+	}
+
+	if (currentLevel == 8 && currentFloor == 1) {
+		if (AudioPlayer::Instance().IsMusicPlaying("VampireKiller")) {
+			AudioPlayer::Instance().StopMusicByName("VampireKiller");
+			AudioPlayer::Instance().PlayMusicByName("BossMusic");
+		}
+	}
+	else {
+		if (AudioPlayer::Instance().IsMusicPlaying("BossMusic")) {
+			AudioPlayer::Instance().StopMusicByName("BossMusic");
+			AudioPlayer::Instance().PlayMusicByName("VampireKiller");
 		}
 	}
 
@@ -1486,6 +1506,7 @@ void Scene::Render()
 	else if(player->IsDead() && deathExecuted == false){
 		if (player->GetLives() <= 0) {
 			AudioPlayer::Instance().StopMusicByName("VampireKiller");
+			AudioPlayer::Instance().StopMusicByName("BossMusic");
 			renderingGameOver = true;
 			deathExecuted = true;
 		}
@@ -1493,6 +1514,7 @@ void Scene::Render()
 			player->DecrLives(1);
 			deathExecuted = true;
 			AudioPlayer::Instance().StopMusicByName("VampireKiller");
+			AudioPlayer::Instance().StopMusicByName("BossMusic");
 			
 			player->SetPos({ 20,140 });
 			player->SetState(State::IDLE);
@@ -1617,6 +1639,7 @@ void Scene::CheckCollisions()
 			else if ((*it)->GetType() == ObjectType::BOSS_BALL) {
 				AudioPlayer::Instance().PlaySoundByName("Collect");
 				AudioPlayer::Instance().StopMusicByName("VampireKiller");
+				AudioPlayer::Instance().StopMusicByName("BossMusic");
 				player->Win();
 				//Delete the object
 				delete* it;
