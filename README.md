@@ -1,30 +1,27 @@
-# Vampire-Killer
-Castlevania
+# **Vampire-Killer**
+A project made by Zephyrus Games
 
-
-Github page :
+## **Github page**
 
 [Vampire Killer - Zephyrus Games](https://github.com/M4xp0w3rg4m3s/Vampire-Killer).
 
-## **---Youtube Video of the features---**
+## **Youtube Video of the features**
 
 First Release Video *(0.5)*:
-[Vampire Killer version 0.5 - CITM Bcn, Zephyrus Games]((https://www.youtube.com/watch?v=6NMuUqSo27c)).
+
+[Vampire Killer version 0.5 - CITM Bcn Zephyrus Games]((https://www.youtube.com/watch?v=6NMuUqSo27c)).
 
 Final Release Video *(1.0)*:
-[Vampire Killer version 1 - CITM Bcn, Zephyrus Games]((https://www.youtube.com/watch?v=6NMuUqSo27c)).
 
-## **-----Team Members-----**
+[Vampire Killer version 1 - CITM Bcn Zephyrus Games]().
 
-Max Mateo :
+## **Team Members**
 
-https://github.com/M4xp0w3rg4m3s
+* *[Max Mateo](https://github.com/M4xp0w3rg4m3s)*
 
-Guillem Martinez :
+* *[Guillem Martinez](https://github.com/GuillemDev)*
 
-https://github.com/GuillemDev
-
-## **----- Game Description -----**
+## **Game Description **
 
 In this game you play Simon Belmont,
 a descendant of a legendary clan of 
@@ -39,53 +36,53 @@ fierce battle against Dracula himself to
 vanquish him and put to an end his reign 
 of terror.
 
-## **----- Controls -----**
+## **Controls**
 
-Player deafult controls: 
-
+* Controllers
 | Key | Action |
 -- | --
-|Upwards Arrow - |Jump.|
-|Downwards Arrow - |Crouch.|
-|Rightwards Arrow - |Move to the right.|
-|Leftwards Arrow - |Move to the left.|
-|Space - |Whip Attack.|
-|Z - |Throw.|
-|F2 - |Activate / Deactivate Debug Mode.|
+|ESC | Exit game. |
+|F | Toggle fullscreen |
 
-| *Only while in DebugMode* |
-
+* Player deafult controls
 | Key | Action |
 -- | --
-|1 - |Go to Level 1.|
-|2 - |Go to Level 2.|
-|3 - |Go to Level 3.|
-|4 - |Go to Level 4.|
-|5 - |Go to Level 5.|
-|6 - |Go to Level 6.|
-|7 - |Go to Level 7.|
-|8 - |Go to Level 8.|
-|9 - |Go to Level 9.|
-|0 - |Go to Level 10.|
-|O - |Go to Level 11.|
-|P - |Go to Level Boss.|
+|Upwards Arrow |Jump.|
+|Downwards Arrow |Crouch.|
+|Rightwards Arrow |Move to the right.|
+|Leftwards Arrow |Move to the left.|
+|Space |Whip Attack.|
+|Z |Throw.|
+|F2 |Activate / Deactivate Debug Mode.|
 
-|C - |Set weapon to Chain.|
+* *Only while in DebugMode*
+| Key | Action |
+-- | --
+|1 |Go to Level 1.|
+|2 |Go to Level 2.|
+|3 |Go to Level 3.|
+|4 |Go to Level 4.|
+|5 |Go to Level 5.|
+|6 |Go to Level 6.|
+|7 |Go to Level 7.|
+|8 |Go to Level 8.|
+|9 |Go to Level 9.|
+|0 |Go to Level 10.|
+|O |Go to Level 11.|
+|P |Go to Level Boss.|
+|C |Set weapon to Chain.|
+|G |Spawn a Zombie.|
+|H |Spawn a Bat.|
+|J |Spawn a Boss in your position.|
+|K |Spawn a Trader in your position.|
+|L |Spawn a shield in your position.|
+|F1 |Activate / Deactivate God Mode.|
+|F3 |Instant Win.|
+|F4 |Instant Death.|
+|F5 |Get Damaged.|
+|F6 |Increase hearts by 99.|
 
-|G - |Spawn a Zombie.|
-|H - |Spawn a Bat.|
-|J - |Spawn a Boss in your position.|
-|K - |Spawn a Trader in your position.|
-
-|L - |Spawn a shield in your position.|
-
-|F1 - |Activate / Deactivate God Mode.|
-|F3 - |Instant Win.|
-|F4 - |Instant Death.|
-|F5 - |Get Damaged.|
-|F6 - |Increase hearts by 99.|
-
-## **----- Features -----**
+## ** List of Features **
 
 * Intro UPC
 * Intro Teachers
