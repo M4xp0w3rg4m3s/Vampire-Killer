@@ -48,6 +48,8 @@ AppStatus Game::Initialise(float scale)
     w = WINDOW_WIDTH * scale;
     h = WINDOW_HEIGHT * scale;
 
+    SetConfigFlags(FLAG_FULLSCREEN_MODE);
+
     //Initialise window
     InitWindow((int)w, (int)h, "Vampire killer");
 
@@ -180,6 +182,10 @@ AppStatus Game::Update()
     if(WindowShouldClose()) return AppStatus::QUIT;
 
     AudioPlayer::Instance().Update();
+
+    if (IsKeyPressed(KEY_F)) {
+        ToggleFullscreen();  // modifies window size when scaling!
+    }
 
     switch (state)
     {
