@@ -1058,9 +1058,18 @@ void Scene::Update()
 	AudioPlayer::Instance().PlayMusicByName("VampireKiller");
 
 	if (debug == DebugMode::SPRITES_AND_HITBOXES || debug == DebugMode::ONLY_HITBOXES) {
-		if (IsKeyPressed(KEY_ONE))			LoadLevel(1,0);
-		else if (IsKeyPressed(KEY_TWO))		LoadLevel(2,0);
-		else if (IsKeyPressed(KEY_THREE))	LoadLevel(3,0);
+		if (IsKeyPressed(KEY_ONE)) {
+			player->SetPos({ player->GetPos().x , player->GetPos().y - 16 });
+			LoadLevel(1, 0);
+		}
+		else if (IsKeyPressed(KEY_TWO)) {
+			player->SetPos({ player->GetPos().x , player->GetPos().y - 16 });
+			LoadLevel(2, 0);
+		}
+		else if (IsKeyPressed(KEY_THREE)) {
+			player->SetPos({ player->GetPos().x , player->GetPos().y - 16 });
+			LoadLevel(3, 0);
+		}
 		else if (IsKeyPressed(KEY_FOUR))	LoadLevel(4,0);
 		else if (IsKeyPressed(KEY_FIVE))	LoadLevel(5,0);
 		else if (IsKeyPressed(KEY_SIX))		LoadLevel(6,0);
