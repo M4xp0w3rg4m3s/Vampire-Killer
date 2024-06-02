@@ -37,5 +37,4 @@ In this game you play Simon Belmont, a descendant of a legendary clan of vampire
 
 
 # **Video of the aplha version**
-[Vampire Killer *Alpha* - CITM Bcn Zephyrus Games](https://www.youtube.com/watch?v=TM-ENfidVEI)
-[](https://www.youtube.com/watch?v=TM-ENfidVEI)
+<iframe width="740" height="590" src="https://www.youtube.com/watch?v=TM-ENfidVEI" frameborder="0" allowfullscreen></iframe>
