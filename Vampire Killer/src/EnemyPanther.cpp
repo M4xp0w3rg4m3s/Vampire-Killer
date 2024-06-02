@@ -5,8 +5,11 @@
 EnemyPanther::EnemyPanther(Point pos) : Enemy(pos, PANTHER_HITBOX_HEIGHT, PANTHER_HITBOX_WIDTH, PANTHER_SPRITE_HEIGHT, PANTHER_SPRITE_WIDTH)
 {
 	state = EnemyState::ADVANCING;
-	look = EnemyLook::LEFT;
+	look = EnemyLook::RIGHT;
 	int AnimationFrame = 0;
+	Damage = PANTHER_DAMAGE;
+
+	type = EnemyType::PANTHER;
 
 	Initialise();
 }
@@ -15,12 +18,6 @@ EnemyPanther::~EnemyPanther()
 }
 AppStatus EnemyPanther::Initialise()
 {
-	if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
-		SetPos({ 255, 176 });
-	}
-	else if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
-		SetPos({ 20, 176 });
-	}
 
 	int i;
 	const float n = (float)PANTHER_SPRITE_HEIGHT;
@@ -58,9 +55,21 @@ AppStatus EnemyPanther::Initialise()
 	sprite->SetAnimationDelay((int)EnemyAnim::EMPTY, ANIM_DELAY);
 	sprite->AddKeyFrame((int)EnemyAnim::EMPTY, { 0, 0, 0, 0 });
 
-	state = EnemyState::IDLE;
-	look = EnemyLook::RIGHT;
-	SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
+	if (EnemyManager::Instance().target->GetPos().x < 208 && EnemyManager::Instance().target->IsLookingRight()) {
+		SetPos({ 255, pos.y });
+		state = EnemyState::ADVANCING;
+		look = EnemyLook::LEFT;
+		SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
+	}
+	else if (EnemyManager::Instance().target->GetPos().x > 68 && EnemyManager::Instance().target->IsLookingLeft()) {
+		SetPos({ 20, pos.y });
+		state = EnemyState::ADVANCING;
+		look = EnemyLook::RIGHT;
+		SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
+	}
+	else {
+		isActive = false;
+	}
 
 	return AppStatus::OK;
 }
@@ -70,11 +79,6 @@ void EnemyPanther::Update()
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
 }
-void EnemyPanther::SetAnimation(int id)
-{
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetAnimation(id);
-}
 void EnemyPanther::Render()
 {
 	if (pos.x > 16 && pos.x < 256)
@@ -83,7 +87,7 @@ void EnemyPanther::Render()
 		render->Draw(p.x, p.y);
 	}
 	else {
-		EnemyManager::Instance().DestroyEnemies();
+		isActive = false;
 	}
 }
 void EnemyPanther::Reset()
@@ -92,6 +96,9 @@ void EnemyPanther::Reset()
 void EnemyPanther::Brain()
 {
 	MoveX();
+	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
+		DamagePlayer();
+	}
 }
 void EnemyPanther::SetTileMap(TileMap* tilemap)
 {
@@ -131,10 +138,6 @@ void EnemyPanther::MoveX()
 	else if (state == EnemyState::DEAD) {
 		SetAnimation((int)EnemyAnim::EMPTY);
 	}
-	if (pos.x > 256 || pos.x < 16)
-	{
-		state == EnemyState::DEAD;
-	}
 }
 void EnemyPanther::DrawDebug(const Color& col) const
 {
@@ -143,7 +146,7 @@ void EnemyPanther::DrawDebug(const Color& col) const
 void EnemyPanther::Release()
 {
 	ResourceManager& data = ResourceManager::Instance();
-	data.ReleaseTexture(Resource::IMG_PLAYER);
+	data.ReleaseTexture(Resource::IMG_PANTHER);
 
 	render->Release();
 }

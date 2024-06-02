@@ -5,10 +5,11 @@
 #include "Globals.h"
 #include "Weapon.h"
 #include <raymath.h>
+#include "EnemyManager.h"
 
 Enemy::Enemy(Point pos, int height, int width, int frameheight, int framewidth) : Entity(pos, width, height, framewidth, frameheight)
 {
-
+	Damage = 0;
 }
 Enemy::~Enemy()
 {
@@ -38,6 +39,49 @@ void Enemy::DrawDebug(const Color& col) const
 void Enemy::Release()
 {
 	render->Release();
+}
+bool Enemy::IsKilled() const
+{
+	return killed;
+}
+Vector2 Enemy::GetKilledPosition() const
+{
+	if (IsKilled()) {
+		Vector2 killedPos = { (float)pos.x, (float)pos.y - 24 };
+		return killedPos;
+	}
+}
+int Enemy::GetLife() const
+{
+	return 0;
+}
+EnemyType Enemy::GetType() const
+{
+	return type;
+}
+bool Enemy::GetPopUp() const
+{
+	return false;
+}
+bool Enemy::DeletePopUp() const
+{
+	return true;
+}
+void Enemy::Stop()
+{
+	dir = { 0,0 };
+	state = EnemyState::IDLE;
+	if (look == EnemyLook::RIGHT) SetAnimation((int)EnemyAnim::IDLE_RIGHT);
+	else SetAnimation((int)EnemyAnim::IDLE_LEFT);
+}
+void Enemy::SetAnimation(int id)
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetAnimation(id);
+}
+void Enemy::DamagePlayer() const
+{
+	EnemyManager::Instance().target->DecrLife(Damage);
 }
 
 

@@ -14,16 +14,25 @@ Player::Player(const Point& p, State s, Look view) :
 	jump_delay = PLAYER_JUMP_DELAY;
 	attack_delay = PLAYER_ATTACK_DELAY;
 	die_delay = PLAYER_DYING_DELAY;
+	damaged_delay = 0;
 	map = nullptr;
 	weapon = new Weapon(p);
 	score = 0;
-	lives = PLAYER_MAX_LIVES;
+	lives = PLAYER_INIT_LIVES;
+	life = PLAYER_MAX_LIFE;
 	AnimationFrame = 0;
 	GodMode = false;
 	isGUIinit = false;
+	damaged_finished = true;
+
+
+	shield = false;
+	doorKey = false;
+	shield = false;
 }
 Player::~Player()
 {
+	delete weapon;
 }
 AppStatus Player::Initialise()
 {
@@ -52,36 +61,72 @@ AppStatus Player::Initialise()
 	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT, { 0, 0, -n, n });
 
+	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_RIGHT_SHIELD, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::IDLE_RIGHT_SHIELD, { n*4, 0, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::IDLE_LEFT_SHIELD, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::IDLE_LEFT_SHIELD, { n*4, 0, -n, n });
+
 	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 4; ++i)
 		sprite->AddKeyFrame((int)PlayerAnim::WALKING_RIGHT, { (float)i*n, 0, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_LEFT, ANIM_DELAY);
-	for (i = 0; i < 8; ++i)
+	for (i = 0; i < 4; ++i)
 		sprite->AddKeyFrame((int)PlayerAnim::WALKING_LEFT, { (float)i*n, 0, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_RIGHT_SHIELD, ANIM_DELAY);
+	for (i = 4; i < 8; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::WALKING_RIGHT_SHIELD, { (float)i * n, 0, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::WALKING_LEFT_SHIELD, ANIM_DELAY);
+	for (i = 4; i < 8; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::WALKING_LEFT_SHIELD, { (float)i * n, 0, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_RIGHT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { n, n, n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT, { n, n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_LEFT, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 0, n, -n, n });
-	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { 0, n, -n, n });
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT, { n, n, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_RIGHT_SHIELD, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_RIGHT_SHIELD, { n*5, n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::FALLING_LEFT_SHIELD, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::FALLING_LEFT_SHIELD, { n*5, n, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_RIGHT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT, { n, n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT, { n, n, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_RIGHT_SHIELD, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_RIGHT_SHIELD, { n*5, n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::JUMPING_LEFT_SHIELD, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::JUMPING_LEFT_SHIELD, { n*5, n, -n, n });
+
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_RIGHT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT, { n, n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT, { n, n, -n, n });
 
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING, ANIM_LADDER_DELAY);
+	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_RIGHT_SHIELD, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_RIGHT_SHIELD, { n*5, n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::LEVITATING_LEFT_SHIELD, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::LEVITATING_LEFT_SHIELD, { n*5, n, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_RIGHT, ANIM_LADDER_DELAY);
 	for (i = 0; i < 2; ++i)
-		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING, { (float)i * n, 2 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_PRE_TOP, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_PRE_TOP, { 0, 2 * n, n, n });
-	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_TOP, ANIM_DELAY);
-	sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_TOP, { n, 2 * n, n, n });
+		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_RIGHT, { (float)i * n, 2 * n, n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_LEFT, ANIM_LADDER_DELAY);
+	for (i = 0; i < 2; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_LEFT, { (float)i * n, 2 * n, -n, n });
+	
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_SHIELD_RIGHT, ANIM_LADDER_DELAY);
+	for (i = 4; i < 6; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_SHIELD_RIGHT, { (float)i * n, 2 * n, n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::CLIMBING_SHIELD_LEFT, ANIM_LADDER_DELAY);
+	for (i = 4; i < 6; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::CLIMBING_SHIELD_LEFT, { (float)i * n, 2 * n, -n, n });
+
+
 
 	sprite->SetAnimationDelay((int)PlayerAnim::ATTACKING_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
@@ -94,6 +139,11 @@ AppStatus Player::Initialise()
 	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_RIGHT, { 0, n, n, n });
 	sprite->SetAnimationDelay((int)PlayerAnim::CROUCHING_LEFT, ANIM_DELAY);
 	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_LEFT, { 0, n, -n, n });
+
+	sprite->SetAnimationDelay((int)PlayerAnim::CROUCHING_RIGHT_SHIELD, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_RIGHT_SHIELD, { n*4, n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::CROUCHING_LEFT_SHIELD, ANIM_DELAY);
+	sprite->AddKeyFrame((int)PlayerAnim::CROUCHING_LEFT_SHIELD, { n*4, n, -n, n });
 
 	sprite->SetAnimationDelay((int)PlayerAnim::CROUCH_ATTACK_RIGHT, ANIM_DELAY);
 	for (i = 0; i < 3; ++i)
@@ -109,15 +159,26 @@ AppStatus Player::Initialise()
 	for (i = 0; i < 3; ++i)
 		sprite->AddKeyFrame((int)PlayerAnim::DYING_LEFT, { (float)i * n, 4 * n, -n, n });
 
+	sprite->SetAnimationDelay((int)PlayerAnim::DAMAGED_RIGHT, ANIM_DELAY);
+	for (i = 0; i < 2; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::DAMAGED_RIGHT, { (float)i * n, 4 * n, n, n });
+	sprite->SetAnimationDelay((int)PlayerAnim::DAMAGED_LEFT, ANIM_DELAY);
+	for (i = 0; i < 2; ++i)
+		sprite->AddKeyFrame((int)PlayerAnim::DAMAGED_LEFT, { (float)i * n, 4 * n, -n, n });
+
 	sprite->SetAnimation((int)PlayerAnim::IDLE_RIGHT);
 
-	AudioPlayer::Instance().CreateSound("audio/SFX/27.wav", "Attack");
+	AudioPlayer::Instance().CreateSound("audio/SFX/26.wav", "MissAttack");
+
+	AudioPlayer::Instance().CreateSound("audio/SFX/04.wav", "PlayerDamaged");
 
 	return AppStatus::OK;
 }
 void Player::InitGUI() {
 	InitScore();
 	InitLives();
+	InitLife();
+	InitHearts();
 	isGUIinit = true;
 }
 void Player::InitScore()
@@ -134,7 +195,7 @@ int Player::GetScore() const
 }
 void Player::InitLives()
 {
-	lives = PLAYER_MAX_LIVES;
+	lives = PLAYER_INIT_LIVES;
 }
 void Player::IncrLives(int n)
 {
@@ -147,6 +208,79 @@ void Player::DecrLives(int n)
 int Player::GetLives() const
 {
 	return lives;
+}
+void Player::InitHearts()
+{
+	hearts = 0;
+}
+void Player::IncrHearts(int n)
+{
+	if (hearts + n >= 100) {
+		IncrLives(1);
+		hearts += n - 100;
+	}
+	else {
+		hearts += n;
+	}
+}
+void Player::DecrHearts(int n)
+{
+	if (hearts > 0) {
+		hearts -= n;
+	}
+}
+int Player::GetHearts() const
+{
+	return hearts;
+}
+void Player::InitLife()
+{
+	life = PLAYER_MAX_LIFE;
+}
+void Player::IncrLife(int n)
+{
+	if (life <= 16) {
+		life += n;
+	}
+}
+void Player::DecrLife(int n)
+{
+	if (GodMode) return;
+	
+	if (damaged_delay > 0) return;
+
+	if (!shield) {
+		if (life - n > 0) {
+			life -= n;
+			damaged_delay = PLAYER_DAMAGED_DELAY;
+			AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
+			StartDamaged();
+		}
+		else if (life - n <= 0){
+			AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
+			StartDying();
+		}
+	}
+	else {
+		if (life - (n/2) > 0) {
+			life -= (n/2);
+			damaged_delay = PLAYER_DAMAGED_DELAY;
+			AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
+			StartDamaged();
+		}
+		else if (life - (n/2) <= 0) {
+			AudioPlayer::Instance().PlaySoundByName("PlayerDamaged");
+			StartDying();
+		}
+	}
+}
+int Player::GetLife() const
+{
+	return life;
+}
+int Player::GetDamagedDelay() const
+{
+	return damaged_delay;
 }
 void Player::SetTileMap(TileMap* tilemap)
 {
@@ -172,14 +306,6 @@ bool Player::IsDescending() const
 {
 	return dir.y > PLAYER_LEVITATING_SPEED;
 }
-bool Player::IsInFirstHalfTile() const
-{
-	return pos.y % TILE_SIZE < TILE_SIZE / 2;
-}
-bool Player::IsInSecondHalfTile() const
-{
-	return pos.y % TILE_SIZE >= TILE_SIZE/2;
-}
 bool Player::IsGodMode() const {
 	return GodMode;
 }
@@ -193,6 +319,44 @@ bool Player::HasWon() const
 }
 void Player::Win() {
 	state = State::WIN;
+}
+bool Player::HasChestKey() const {
+	return chestKey;
+}
+void Player::SwitchChestKey()
+{
+	if (HasChestKey()) {
+		chestKey = false;
+	}
+	else {
+		chestKey = true;
+	}
+}
+bool Player::HasDoorKey() const
+{
+	return doorKey;
+}
+void Player::SwitchDoorKey()
+{
+	if (HasDoorKey()) {
+		doorKey = false;
+	}
+	else {
+		doorKey = true;
+	}
+}
+bool Player::HasShield() const
+{
+	return shield;
+}
+void Player::SwitchShield()
+{
+	if (HasShield()) {
+		shield = false;
+	}
+	else {
+		shield = true;
+	}
 }
 void Player::GodModeSwitch() {
 	if (GodMode == true) {
@@ -222,37 +386,77 @@ PlayerAnim Player::GetAnimation() const
 }
 void Player::Stop()
 {
-	dir = { 0,0 };
-	state = State::IDLE;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
-	else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
+	if (!shield) {
+		dir = { 0,0 };
+		state = State::IDLE;
+		if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT);
+		else					SetAnimation((int)PlayerAnim::IDLE_LEFT);
+	}
+	else {
+		dir = { 0,0 };
+		state = State::IDLE;
+		if (IsLookingRight())	SetAnimation((int)PlayerAnim::IDLE_RIGHT_SHIELD);
+		else					SetAnimation((int)PlayerAnim::IDLE_LEFT_SHIELD);
+	}
 }
 void Player::StartWalkingLeft()
 {
-	state = State::WALKING;
-	look = Look::LEFT;
-	SetAnimation((int)PlayerAnim::WALKING_LEFT);
+	if (!shield) {
+		state = State::WALKING;
+		look = Look::LEFT;
+		SetAnimation((int)PlayerAnim::WALKING_LEFT);
+	}
+	else {
+		state = State::WALKING;
+		look = Look::LEFT;
+		SetAnimation((int)PlayerAnim::WALKING_LEFT_SHIELD);
+	}
 }
 void Player::StartWalkingRight()
 {
-	state = State::WALKING;
-	look = Look::RIGHT;
-	SetAnimation((int)PlayerAnim::WALKING_RIGHT);
+	if (!shield) {
+		state = State::WALKING;
+		look = Look::RIGHT;
+		SetAnimation((int)PlayerAnim::WALKING_RIGHT);
+	}
+	else {
+		state = State::WALKING;
+		look = Look::RIGHT;
+		SetAnimation((int)PlayerAnim::WALKING_RIGHT_SHIELD);
+	}
 }
 void Player::StartFalling()
 {
-	dir.y = PLAYER_SPEED;
-	state = State::FALLING;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
-	else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
+	if (!shield) {
+		dir.y = PLAYER_SPEED;
+		state = State::FALLING;
+		if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
+		else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
+	}
+	else {
+		dir.y = PLAYER_SPEED;
+		state = State::FALLING;
+		if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT_SHIELD);
+		else					SetAnimation((int)PlayerAnim::FALLING_LEFT_SHIELD);
+	}
 }
 void Player::StartJumping()
 {
-	dir.y = -PLAYER_JUMP_FORCE;
-	state = State::JUMPING;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
-	else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
-	jump_delay = PLAYER_JUMP_DELAY;
+	if (!damaged_finished) return;
+	if (!shield) {
+		dir.y = -PLAYER_JUMP_FORCE;
+		state = State::JUMPING;
+		if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
+		else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
+		jump_delay = PLAYER_JUMP_DELAY;
+	}
+	else {
+		dir.y = -PLAYER_JUMP_FORCE;
+		state = State::JUMPING;
+		if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT_SHIELD);
+		else					SetAnimation((int)PlayerAnim::JUMPING_LEFT_SHIELD);
+		jump_delay = PLAYER_JUMP_DELAY;
+	}
 }
 void Player::StartWhip() {
 	state = State::WHIP;
@@ -268,7 +472,6 @@ void Player::StartWhip() {
 	else if (IsLookingLeft()) {
 		weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
 	}
-	AudioPlayer::Instance().PlaySoundByName("Attack");
 }
 void Player::StartThrowing()
 {
@@ -281,9 +484,16 @@ void Player::StartThrowing()
 }
 void Player::StartCrouching()
 {
-	state = State::CROUCHING;
-	if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCHING_RIGHT);
-	else					SetAnimation((int)PlayerAnim::CROUCHING_LEFT);
+	if (!shield) {
+		state = State::CROUCHING;
+		if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCHING_RIGHT);
+		else					SetAnimation((int)PlayerAnim::CROUCHING_LEFT);
+	}
+	else {
+		state = State::CROUCHING;
+		if (IsLookingRight())	SetAnimation((int)PlayerAnim::CROUCHING_RIGHT_SHIELD);
+		else					SetAnimation((int)PlayerAnim::CROUCHING_LEFT_SHIELD);
+	}
 }
 void Player::StartCrouchWhip() {
 	state = State::CROUCH_WHIP;
@@ -299,7 +509,6 @@ void Player::StartCrouchWhip() {
 	else if (IsLookingLeft()) {
 		weapon->Attack(AnimationFrame, (LookAt)Look::LEFT);
 	}
-	AudioPlayer::Instance().PlaySoundByName("Attack");
 }
 void Player::StartCrouchThrowing()
 {
@@ -319,26 +528,84 @@ void Player::StartDying()
 	sprite->SetManualMode();
 	die_delay = PLAYER_DYING_DELAY;
 }
+void Player::StartDamaged()
+{
+	if (state == State::JUMPING || state == State::FALLING || state == State::WHIP) {
+		Stop();
+		weapon->Attack(-1, LookAt::RIGHT);
+	}
+	state = State::DAMAGED;
+	if (IsLookingRight())	SetAnimation((int)PlayerAnim::DAMAGED_RIGHT);
+	else					SetAnimation((int)PlayerAnim::DAMAGED_LEFT);
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
+	sprite->SetManualMode();
+	die_delay = PLAYER_DYING_DELAY;
+	damaged_finished = false;
+}
 void Player::StartClimbingUp()
 {
 	state = State::CLIMBING;
-	SetAnimation((int)PlayerAnim::CLIMBING);
+	if (!shield) 
+	{
+		if (IsLookingRight())
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_RIGHT);
+		}
+		else
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_LEFT);
+		}
+	}
+	else 
+	{
+		if (IsLookingRight())
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_RIGHT);
+		}
+		else
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_LEFT);
+		}
+	}
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 }
 void Player::StartClimbingDown()
 {
 	state = State::CLIMBING;
-	SetAnimation((int)PlayerAnim::CLIMBING_TOP);
+
+	if (!shield)
+	{
+		if (IsLookingRight())
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_RIGHT);
+		}
+		else
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_LEFT);
+		}
+	}
+	else
+	{
+		if (IsLookingRight())
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_RIGHT);
+		}
+		else
+		{
+			SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_LEFT);
+		}
+	}
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->SetManualMode();
 }
 void Player::ChangeAnimRight()
 {
 	look = Look::RIGHT;
-	switch (state)
-	{
-		case State::IDLE:			SetAnimation((int)PlayerAnim::IDLE_RIGHT);			break; 
+	if (!shield) {
+		switch (state)
+		{
+		case State::IDLE:			SetAnimation((int)PlayerAnim::IDLE_RIGHT);			break;
 		case State::WALKING:		SetAnimation((int)PlayerAnim::WALKING_RIGHT);		break;
 		case State::JUMPING:		SetAnimation((int)PlayerAnim::JUMPING_RIGHT);		break;
 		case State::FALLING:		SetAnimation((int)PlayerAnim::FALLING_RIGHT);		break;
@@ -347,14 +614,30 @@ void Player::ChangeAnimRight()
 		case State::CROUCH_WHIP:	SetAnimation((int)PlayerAnim::CROUCH_ATTACK_RIGHT);	break;
 		case State::THROWING:		SetAnimation((int)PlayerAnim::ATTACKING_RIGHT);		break;
 		case State::CROUCH_THROWING:SetAnimation((int)PlayerAnim::CROUCH_ATTACK_RIGHT);	break;
+		}
+	}
+	else {
+		switch (state)
+		{
+		case State::IDLE:			SetAnimation((int)PlayerAnim::IDLE_RIGHT_SHIELD);			break;
+		case State::WALKING:		SetAnimation((int)PlayerAnim::WALKING_RIGHT_SHIELD);		break;
+		case State::JUMPING:		SetAnimation((int)PlayerAnim::JUMPING_RIGHT_SHIELD);		break;
+		case State::FALLING:		SetAnimation((int)PlayerAnim::FALLING_RIGHT_SHIELD);		break;
+		case State::CROUCHING:		SetAnimation((int)PlayerAnim::CROUCHING_RIGHT_SHIELD);		break;
+		case State::WHIP:			SetAnimation((int)PlayerAnim::ATTACKING_RIGHT);		break;
+		case State::CROUCH_WHIP:	SetAnimation((int)PlayerAnim::CROUCH_ATTACK_RIGHT);	break;
+		case State::THROWING:		SetAnimation((int)PlayerAnim::ATTACKING_RIGHT);		break;
+		case State::CROUCH_THROWING:SetAnimation((int)PlayerAnim::CROUCH_ATTACK_RIGHT);	break;
+		}
 	}
 }
 void Player::ChangeAnimLeft()
 {
 	look = Look::LEFT;
-	switch (state)
-	{
-		case State::IDLE:			SetAnimation((int)PlayerAnim::IDLE_LEFT);			break; 
+	if (!shield) {
+		switch (state)
+		{
+		case State::IDLE:			SetAnimation((int)PlayerAnim::IDLE_LEFT);			break;
 		case State::WALKING:		SetAnimation((int)PlayerAnim::WALKING_LEFT);		break;
 		case State::JUMPING:		SetAnimation((int)PlayerAnim::JUMPING_LEFT);		break;
 		case State::FALLING:		SetAnimation((int)PlayerAnim::FALLING_LEFT);		break;
@@ -363,6 +646,21 @@ void Player::ChangeAnimLeft()
 		case State::CROUCH_WHIP:	SetAnimation((int)PlayerAnim::CROUCH_ATTACK_LEFT);	break;
 		case State::THROWING:		SetAnimation((int)PlayerAnim::ATTACKING_LEFT);		break;
 		case State::CROUCH_THROWING:SetAnimation((int)PlayerAnim::CROUCH_ATTACK_LEFT);	break;
+		}
+	}
+	else {
+		switch (state)
+		{
+		case State::IDLE:			SetAnimation((int)PlayerAnim::IDLE_LEFT_SHIELD);			break;
+		case State::WALKING:		SetAnimation((int)PlayerAnim::WALKING_LEFT_SHIELD);		break;
+		case State::JUMPING:		SetAnimation((int)PlayerAnim::JUMPING_LEFT_SHIELD);		break;
+		case State::FALLING:		SetAnimation((int)PlayerAnim::FALLING_LEFT_SHIELD);		break;
+		case State::CROUCHING:		SetAnimation((int)PlayerAnim::CROUCHING_LEFT_SHIELD);		break;
+		case State::WHIP:			SetAnimation((int)PlayerAnim::ATTACKING_LEFT);		break;
+		case State::CROUCH_WHIP:	SetAnimation((int)PlayerAnim::CROUCH_ATTACK_LEFT);	break;
+		case State::THROWING:		SetAnimation((int)PlayerAnim::ATTACKING_LEFT);		break;
+		case State::CROUCH_THROWING:SetAnimation((int)PlayerAnim::CROUCH_ATTACK_LEFT);	break;
+		}
 	}
 }
 void Player::Update()
@@ -373,6 +671,7 @@ void Player::Update()
 	MoveY();
 	Static();
 	weapon->Update(pos, (state == State::CROUCH_THROWING || state == State::CROUCH_WHIP));
+	damaged_delay--;
 
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	sprite->Update();
@@ -382,100 +681,110 @@ void Player::MoveX()
 	AABB box;
 	int prev_x = pos.x;
 
-	//We can only go up and down while climbing
-	if (state == State::CLIMBING)		return;
+	if (state == State::CROUCHING || state == State::CROUCH_WHIP ||
+		state == State::CROUCH_THROWING || state == State::DYING)
+		return;
 
-	//Same with crouching
-	else if (state == State::CROUCHING)	return;
 
-	else if (state == State::WHIP)	return;
+	if (state != State::DAMAGED) {
+		if (state == State::WHIP || state == State::THROWING) {
+			box = GetHitbox();
+			if (!map->TestCollisionGround(box, &pos.y))
+			{
+				/*if (look == Look::LEFT) {
+					pos.x += -PLAYER_SPEED;
+				}
+				else {
+					pos.x += PLAYER_SPEED;
+				}*/
+			}
+		}
+		else if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
+		{
+			pos.x += -PLAYER_SPEED;
+			if (state == State::IDLE) StartWalkingLeft();
+			else
+			{
+				if (IsLookingRight()) ChangeAnimLeft();
+			}
 
-	else if (state == State::CROUCH_WHIP) return;
+			box = GetHitbox();
+			if (map->TestCollisionWallLeft(box))
+			{
+				pos.x = prev_x;
+				if (state == State::WALKING) Stop();
+			}
+		}
+		else if (IsKeyDown(KEY_RIGHT) && !IsKeyDown(KEY_LEFT))
+		{
+			pos.x += PLAYER_SPEED;
+			if (state == State::IDLE) StartWalkingRight();
+			else
+			{
+				if (IsLookingLeft()) ChangeAnimRight();
+			}
 
-	else if (state == State::CROUCH_THROWING) return;
-
-	else if (state == State::THROWING)	return;
-
-	else if (state == State::DYING)	return;
-
-	if (IsKeyDown(KEY_LEFT) && !IsKeyDown(KEY_RIGHT))
-	{
-		pos.x += -PLAYER_SPEED;
-		if (state == State::IDLE) StartWalkingLeft();
+			box = GetHitbox();
+			if (map->TestCollisionWallRight(box))
+			{
+				pos.x = prev_x;
+				if (state == State::WALKING) Stop();
+			}
+		}
 		else
 		{
-			if (IsLookingRight()) ChangeAnimLeft();
-		}
-
-		box = GetHitbox();
-		if (map->TestCollisionWallLeft(box))
-		{
-			pos.x = prev_x;
 			if (state == State::WALKING) Stop();
 		}
-	}
-	else if (IsKeyDown(KEY_RIGHT))
-	{
-		pos.x += PLAYER_SPEED;
-		if (state == State::IDLE) StartWalkingRight();
-		else
-		{
-			if (IsLookingLeft()) ChangeAnimRight();
-		}
-
-		box = GetHitbox();
-		if (map->TestCollisionWallRight(box))
-		{
-			pos.x = prev_x;
-			if (state == State::WALKING) Stop();
-		}
-	}
-	else
-	{
-		if (state == State::WALKING) Stop();
 	}
 }
 void Player::MoveY()
 {
 	AABB box;
 	
-	// you can't move while crouching
-	if (state == State::CROUCHING)	return;
+	if (state == State::CROUCHING || state == State::CROUCH_WHIP || state == State::CROUCH_THROWING || state == State::DYING)	return;
 
-	else if (state == State::WHIP)	return;
-
-	else if (state == State::CROUCH_WHIP) return;
-
-	else if (state == State::THROWING)	return;
-
-	else if (state == State::CROUCH_THROWING)	return;
-
-	else if (state == State::DYING)	return;
-
-	else if (state == State::JUMPING)
-	{
-		LogicJumping();
-	}
-	else if (state == State::CLIMBING)
-	{
-		LogicClimbing();
-	}
-	else //idle, walking, falling
-	{
-		pos.y += PLAYER_SPEED;
-		box = GetHitbox();
-		if (map->TestCollisionGround(box, &pos.y))
+	if (state != State::DAMAGED) {
+		if (state == State::JUMPING)
 		{
-			if (state == State::FALLING) Stop();
-
-			if (IsKeyDown(KEY_UP))
-			{
-				StartJumping();
-			}
+			LogicJumping();
 		}
-		else
+
+		else if (state == State::CLIMBING)
 		{
-			if (state != State::FALLING) StartFalling();
+			LogicClimbing();
+		}
+		
+		else //idle, walking, falling
+		{
+			pos.y += PLAYER_SPEED;
+			box = GetHitbox();
+
+			if (map->TestCollisionGround(box, &pos.y))
+			{
+				if (state == State::FALLING) Stop();
+
+				if (state != State::WHIP && state != State::THROWING) {
+					if (IsKeyDown(KEY_UP))
+					{
+						StartJumping();
+
+						if (map->TestCollisionStairs(box) && IsKeyPressed(KEY_UP))
+						{
+							StartClimbingUp();
+						}
+						else if (map->TestCollisionStairs(box) && IsKeyPressed(KEY_DOWN))
+						{
+							StartClimbingDown();
+						}
+					}
+				}
+			}
+			else
+			{
+				if (state != State::WHIP && state != State::THROWING) {
+					if (state != State::FALLING) StartFalling();
+				}
+			}
 		}
 	}
 }
@@ -487,19 +796,11 @@ void Player::Static()
 	{
 		LogicCrouching();
 	}
-	else if (state == State::WHIP)
+	else if (state == State::WHIP || state == State::CROUCH_WHIP)
 	{
 		LogicAttack();
 	}
-	else if (state == State::CROUCH_WHIP)
-	{
-		LogicAttack();
-	}
-	else if (state == State::THROWING)
-	{
-		LogicThrow();
-	}
-	else if (state == State::CROUCH_THROWING)
+	else if (state == State::THROWING || state == State::CROUCH_THROWING)
 	{
 		LogicThrow();
 	}
@@ -507,9 +808,20 @@ void Player::Static()
 	{
 		Die();
 	}
+	else if (state == State::DAMAGED) {
+		LogicDamaged();
+	}
 	else {
 		pos.y += PLAYER_SPEED;
 		box = GetHitbox();
+		if (IsKeyPressed(KEY_SPACE))
+		{
+			StartWhip();
+		}
+		else if (IsKeyPressed(KEY_Z))
+		{
+			StartThrowing();
+		}
 		if (map->TestCollisionGround(box, &pos.y))
 		{
 			if (IsKeyDown(KEY_DOWN))
@@ -558,22 +870,41 @@ void Player::LogicJumping()
 		}
 		else
 		{
+			if (!shield) {
+				if (IsAscending())
+				{
+					if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
+					else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
+				}
+				else if (IsLevitating())
+				{
+					if (IsLookingRight())	SetAnimation((int)PlayerAnim::LEVITATING_RIGHT);
+					else					SetAnimation((int)PlayerAnim::LEVITATING_LEFT);
+				}
+				else if (IsDescending())
+				{
+					if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
+					else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
+				}
+			}
+			else if (shield) {
+				if (IsAscending())
+				{
+					if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT_SHIELD);
+					else					SetAnimation((int)PlayerAnim::JUMPING_LEFT_SHIELD);
+				}
+				else if (IsLevitating())
+				{
+					if (IsLookingRight())	SetAnimation((int)PlayerAnim::LEVITATING_RIGHT_SHIELD);
+					else					SetAnimation((int)PlayerAnim::LEVITATING_LEFT_SHIELD);
+				}
+				else if (IsDescending())
+				{
+					if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT_SHIELD);
+					else					SetAnimation((int)PlayerAnim::FALLING_LEFT_SHIELD);
+				}
+			}
 			//Jumping is represented with 3 different states
-			if (IsAscending())
-			{
-				if (IsLookingRight())	SetAnimation((int)PlayerAnim::JUMPING_RIGHT);
-				else					SetAnimation((int)PlayerAnim::JUMPING_LEFT);
-			}
-			else if (IsLevitating())
-			{
-				if (IsLookingRight())	SetAnimation((int)PlayerAnim::LEVITATING_RIGHT);
-				else					SetAnimation((int)PlayerAnim::LEVITATING_LEFT);
-			}
-			else if (IsDescending())
-			{
-				if (IsLookingRight())	SetAnimation((int)PlayerAnim::FALLING_RIGHT);
-				else					SetAnimation((int)PlayerAnim::FALLING_LEFT);
-			}
 		}
 		//We check ground collision when jumping down
 		if (dir.y >= 0)
@@ -588,6 +919,7 @@ void Player::LogicJumping()
 				map->TestCollisionGround(box, &pos.y))
 			{
 				Stop();
+				height = PLAYER_PHYSICAL_HEIGHT;
 			}
 		}
 	}
@@ -597,15 +929,33 @@ void Player::LogicClimbing()
 	AABB box;
 	Sprite* sprite = dynamic_cast<Sprite*>(render);
 	int tmp;
-
-	if (IsKeyDown(KEY_UP))
+	if (!map->TestCollisionStairs(GetHitbox()))
 	{
-		pos.y -= PLAYER_LADDER_SPEED;
+		Stop();
+	}
+	if (IsKeyDown(KEY_UP) && IsLookingLeft())
+	{
+		pos.y -= 3;
+		pos.x -= PLAYER_LADDER_SPEED;
 		sprite->NextFrame();
 	}
-	else if (IsKeyDown(KEY_DOWN))
+	else if (IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_LEFT))
 	{
 		pos.y += PLAYER_LADDER_SPEED;
+		pos.x -= PLAYER_LADDER_SPEED;
+		sprite->PrevFrame();
+	}
+
+	if (IsKeyDown(KEY_UP) && IsLookingRight())
+	{
+		pos.y -= 3;
+		pos.x += PLAYER_LADDER_SPEED;
+		sprite->NextFrame();
+	}
+	else if (IsKeyDown(KEY_DOWN) && IsKeyDown(KEY_RIGHT))
+	{
+		pos.y += PLAYER_LADDER_SPEED;
+		pos.x += PLAYER_LADDER_SPEED;
 		sprite->PrevFrame();
 	}
 
@@ -620,7 +970,30 @@ void Player::LogicClimbing()
 	}
 	else
 	{
-		if (GetAnimation() != PlayerAnim::CLIMBING)	SetAnimation((int)PlayerAnim::CLIMBING);
+		if (!shield)
+		{
+			if (IsLookingRight())
+			{
+				if (GetAnimation() != PlayerAnim::CLIMBING_RIGHT)	SetAnimation((int)PlayerAnim::CLIMBING_RIGHT);
+			}
+			else
+			{
+				if (GetAnimation() != PlayerAnim::CLIMBING_LEFT)	SetAnimation((int)PlayerAnim::CLIMBING_LEFT);
+			}
+		}
+		else
+		{
+			if (IsLookingRight())
+			{
+				if (GetAnimation() != PlayerAnim::CLIMBING_SHIELD_RIGHT)	SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_RIGHT);
+			}
+			else
+			{
+				if (GetAnimation() != PlayerAnim::CLIMBING_SHIELD_LEFT)	SetAnimation((int)PlayerAnim::CLIMBING_SHIELD_LEFT);
+			}
+		}
+		
+		
 	}
 }
 void Player::LogicCrouching() 
@@ -650,7 +1023,7 @@ void Player::LogicThrow()
 
 		if (AnimationFrame == 3) {
 			
-			if (state == State::CROUCH_THROWING) {
+			if (state == State::CROUCH_THROWING && IsKeyDown(KEY_DOWN)) {
 				StartCrouching();
 			}
 			else {
@@ -684,12 +1057,14 @@ void Player::LogicAttack()
 
 		if (AnimationFrame == 3) {
 
-			if (state == State::CROUCH_WHIP) {
+			if (state == State::CROUCH_WHIP && IsKeyDown(KEY_DOWN)) {
 				StartCrouching();
 			}
 			else {
 				Stop();
 			}
+
+			AudioPlayer::Instance().PlaySoundByName("MissAttack");
 
 			sprite->SetAutomaticMode();
 			AnimationFrame = 0;
@@ -710,10 +1085,13 @@ void Player::Die()
 		sprite->NextFrame();
 		die_delay = PLAYER_DYING_DELAY;
 
-		if (AnimationFrame == 3) {
+		if (AnimationFrame <= 3) {
 
 			if (state == State::DYING) {
 				state = State::DEAD;
+			}
+			else {
+				Stop();
 			}
 
 			sprite->SetAutomaticMode();
@@ -724,7 +1102,38 @@ void Player::Die()
 		}
 	}
 }
+void Player::LogicDamaged()
+{
+	Sprite* sprite = dynamic_cast<Sprite*>(render);
 
+	die_delay--;
+	if (die_delay > PLAYER_DYING_DELAY / 2) {
+		if (look == Look::RIGHT) {
+			pos.x -= PLAYER_SPEED;
+		}
+		else {
+			pos.x += PLAYER_SPEED;
+		}
+		pos.y -= PLAYER_SPEED;
+	}
+	if (die_delay <= 0)
+	{
+		AnimationFrame++;
+		sprite->NextFrame();
+		die_delay = PLAYER_DYING_DELAY;
+
+		if (AnimationFrame >= 2) {
+			Stop();
+			damaged_finished = true;
+
+			sprite->SetAutomaticMode();
+			AnimationFrame = 0;
+		}
+		else {
+			sprite->NextFrame();
+		}
+	}
+}
 void Player::DrawDebug(const Color& col) const
 {	
 	if (!IsGodMode()) {
@@ -739,9 +1148,10 @@ void Player::DrawDebug(const Color& col) const
 }
 void Player::Release()
 {
-	ResourceManager& data = ResourceManager::Instance();
-	data.ReleaseTexture(Resource::IMG_PLAYER);
-
 	weapon->Release();
 	render->Release();
+}
+State Player::GetState() const
+{
+	return state;
 }

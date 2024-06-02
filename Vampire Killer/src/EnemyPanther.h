@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy.h"
 
-#define PANTHER_SPEED	1
+#define PANTHER_SPEED	2
 
 #define PANTHER_SPRITE_HEIGHT	32
 #define PANTHER_SPRITE_WIDTH	32
@@ -9,6 +9,7 @@
 #define PANTHER_HITBOX_HEIGHT	16
 #define PANTHER_HITBOX_WIDTH	32
 
+#define PANTHER_DAMAGE			6
 
 class EnemyPanther : public Enemy
 {
@@ -32,8 +33,6 @@ public:
 
 	void DrawDebug(const Color& col) const override;
 	void Release() override;
-
-	void SetAnimation(int id);
 
 private:
 

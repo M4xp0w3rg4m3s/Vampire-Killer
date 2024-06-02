@@ -7,21 +7,18 @@ EnemyZombie::EnemyZombie(Point pos) : Enemy(pos, ZOMBIE_HITBOX_HEIGHT, ZOMBIE_HI
 	state = EnemyState::ADVANCING;
 	look = EnemyLook::LEFT;
 	int AnimationFrame = 0;
+	Damage = ZOMBIE_DAMAGE;
+
+	type = EnemyType::ZOMBIE;
 
 	Initialise();
 }
 EnemyZombie::~EnemyZombie()
 {
+	Release();
 }
 AppStatus EnemyZombie::Initialise()
 {
-	if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
-		SetPos({ 255, 176 });
-	}
-	else if (EnemyManager::Instance().target->GetPos().x > WINDOW_WIDTH) {
-		SetPos({ 20, 176 });
-	}
-
 	int i;
 	const float n = (float)ZOMBIE_SPRITE_HEIGHT;
 	const float n2 = (float)ZOMBIE_SPRITE_WIDTH;
@@ -53,32 +50,56 @@ AppStatus EnemyZombie::Initialise()
 	sprite->SetAnimationDelay((int)EnemyAnim::EMPTY, ANIM_DELAY);
 	sprite->AddKeyFrame((int)EnemyAnim::EMPTY, { 0, 0, 0, 0 });
 
-	state = EnemyState::IDLE;
-	look = EnemyLook::LEFT;
-	SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
+	sprite->SetAnimationDelay((int)EnemyAnim::IDLE_LEFT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)EnemyAnim::IDLE_LEFT, { 0, 0, n, n });
+
+	sprite->SetAnimationDelay((int)EnemyAnim::IDLE_RIGHT, ANIM_DELAY);
+	sprite->AddKeyFrame((int)EnemyAnim::IDLE_RIGHT, { 0, 0, -n, n });
+
+	if (EnemyManager::Instance().target->GetPos().x < 208 && EnemyManager::Instance().target->IsLookingRight()) {
+		SetPos({ 255, pos.y });
+		state = EnemyState::ADVANCING;
+		look = EnemyLook::LEFT;
+		SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
+	}
+	else if (EnemyManager::Instance().target->GetPos().x > 68 && EnemyManager::Instance().target->IsLookingLeft()) {
+		SetPos({ 20, pos.y });
+		state = EnemyState::ADVANCING;
+		look = EnemyLook::RIGHT;
+		SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
+	}
+	else {
+		isActive = false;
+	}
+	if (EnemyManager::Instance().target->GetPos().y < 130 && EnemyManager::Instance().target->IsLookingRight()) {
+		SetPos({ pos.x, 79 });
+	}
 
 	return AppStatus::OK;
 }
 void EnemyZombie::Update()
 {
-	Brain();
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->Update();
-}
-void EnemyZombie::SetAnimation(int id)
-{
-	Sprite* sprite = dynamic_cast<Sprite*>(render);
-	sprite->SetAnimation(id);
+	if (killed) {
+		isActive = false;
+		EnemyManager::Instance().target->IncrScore(100);
+	}
+	else {
+		Brain();
+		Sprite* sprite = dynamic_cast<Sprite*>(render);
+		sprite->Update();
+	}
 }
 void EnemyZombie::Render()
 {
 	if (pos.x > 16 && pos.x < 256)
 	{
 		Point p = GetRenderingPosition();
-		render->Draw(p.x, p.y);
+		if (!killed) {
+			render->Draw(p.x, p.y);
+		}
 	}
 	else {
-		EnemyManager::Instance().DestroyEnemies();
+		isActive = false;
 	}
 }
 void EnemyZombie::Reset()
@@ -87,6 +108,21 @@ void EnemyZombie::Reset()
 void EnemyZombie::Brain()
 {
 	MoveX();
+	MoveY();
+	if (EnemyManager::Instance().target->GetState() == State::JUMPING || EnemyManager::Instance().target->GetState() == State::FALLING) {
+		AABB PlayerHitbox = EnemyManager::Instance().target->GetHitbox();
+		PlayerHitbox.pos.y = EnemyManager::Instance().target->GetHitbox().pos.y-16;
+		if(this->GetHitbox().TestAABB(PlayerHitbox)) {
+			DamagePlayer();
+		}
+	}
+	else if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->GetHitbox())) {
+		DamagePlayer();
+	}
+	if (this->GetHitbox().TestAABB(EnemyManager::Instance().target->weapon->HitboxOnAttack())) {
+		AudioPlayer::Instance().PlaySoundByName("Attack");
+		killed = true;
+	}
 }
 void EnemyZombie::SetTileMap(TileMap* tilemap)
 {
@@ -124,9 +160,24 @@ void EnemyZombie::MoveX()
 		}
 	}
 	else if (state == EnemyState::DEAD) {
-		SetAnimation((int)EnemyAnim::EMPTY);
+		isActive = false;
+	}
+	else if (state == EnemyState::FALLING) {
+		pos.y += ZOMBIE_SPEED;
 	}
 
+}
+void EnemyZombie::MoveY()
+{
+	pos.y += ZOMBIE_SPEED;
+	if (map->TestCollisionGround(GetHitbox(), &pos.y) || map->TestCollisionEnemies(GetHitbox()))
+	{
+		if (state == EnemyState::FALLING) Stop();
+	}
+	else
+	{
+		if (state != EnemyState::FALLING) StartFalling();
+	}
 }
 void EnemyZombie::DrawDebug(const Color& col) const
 {
@@ -135,8 +186,15 @@ void EnemyZombie::DrawDebug(const Color& col) const
 void EnemyZombie::Release()
 {
 	ResourceManager& data = ResourceManager::Instance();
-	data.ReleaseTexture(Resource::IMG_PLAYER);
+	data.ReleaseTexture(Resource::IMG_ZOMBIE);
 
 	render->Release();
+}
+void EnemyZombie::StartFalling()
+{
+	dir.y = ZOMBIE_SPEED;
+	state = EnemyState::FALLING;
+	if (look == EnemyLook::RIGHT)	SetAnimation((int)EnemyAnim::ADVANCING_RIGHT);
+	else					SetAnimation((int)EnemyAnim::ADVANCING_LEFT);
 }
 

@@ -14,10 +14,20 @@ Game::Game()
     img_intro_background = nullptr;
     img_game_win = nullptr;
 
+    img_introduction = nullptr;
+    img_intro_bat = nullptr;
+    img_intro_cloud = nullptr;
+    img_intro_simon = nullptr;
+    img_intro_gui = nullptr;
+
     timerWin = 1800;
     timerLose = 300;
-    timerPlay = 420;
+    timerPlay = 120;
+    timerIntroduction = 360;
+
     panAnimation = 200;
+
+    playerAnim = 240;
 
     target = {};
     src = {};
@@ -112,6 +122,33 @@ AppStatus Game::LoadResources()
         return AppStatus::ERROR;
     }
     img_game_win = data.GetTexture(Resource::IMG_GAME_WIN);
+
+
+    if (data.LoadTexture(Resource::IMG_INTRODUCTION, "images/Spritesheets/Introduction/IntroOutside.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_introduction = data.GetTexture(Resource::IMG_INTRODUCTION);
+    if (data.LoadTexture(Resource::IMG_INTRO_BAT, "images/Spritesheets/Introduction/IntroBat.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro_bat = data.GetTexture(Resource::IMG_INTRO_BAT);
+    if (data.LoadTexture(Resource::IMG_INTRO_CLOUD, "images/Spritesheets/Introduction/IntroCloud.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro_cloud = data.GetTexture(Resource::IMG_INTRO_CLOUD);
+    if (data.LoadTexture(Resource::IMG_PLAYER, "images/Spritesheets/Simon/Simon Spritesheet.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro_simon = data.GetTexture(Resource::IMG_PLAYER);
+    if (data.LoadTexture(Resource::IMG_HUD_INTRO, "images/Spritesheets/Introduction/IntroHud.png") != AppStatus::OK)
+    {
+        return AppStatus::ERROR;
+    }
+    img_intro_gui = data.GetTexture(Resource::IMG_HUD_INTRO);
     
     return AppStatus::OK;
 }
@@ -152,6 +189,11 @@ AppStatus Game::Update()
             {
                 state = GameState::TRANSITION_1;
             }
+            if (IsKeyPressed(KEY_ZERO))
+            {
+                if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
+                state = GameState::PLAYING;
+            }
             break;
         case GameState::TRANSITION_1:
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
@@ -180,14 +222,25 @@ AppStatus Game::Update()
             AudioPlayer::Instance().PlayMusicByName("Prologue");
             timerPlay--;
             if (timerPlay == 0) {
+                timerPlay = 120;
+                state = GameState::INTRODUCTION;
+            }
+            break;
+        case GameState::INTRODUCTION:
+            if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            timerIntroduction--;
+            if (timerIntroduction == 0) {
                 AudioPlayer::Instance().StopMusicByName("Prologue");
                 if (BeginPlay() != AppStatus::OK) return AppStatus::ERROR;
                 state = GameState::PLAYING;
-                timerPlay = 420;
+                timerIntroduction = 300;
+                panAnimation = 200;
+                playerAnim = 240;
             }
             break;
         case GameState::GAME_WIN:
             if (IsKeyPressed(KEY_ESCAPE)) return AppStatus::QUIT;
+            if (AudioPlayer::Instance().IsMusicPlaying("Prologue")) AudioPlayer::Instance().StopMusicByName("Prologue");
             AudioPlayer::Instance().PlayMusicByName("Unused");
             timerWin--;
             if (timerWin == 0) {
@@ -236,7 +289,7 @@ void Game::Render()
 {
     //Draw everything in the render texture, note this will not be rendered on screen, yet
     BeginTextureMode(target);
-    ClearBackground(BLACK);
+    ClearBackground({6,6,6,255});
     
     switch (state)
     {
@@ -255,16 +308,64 @@ void Game::Render()
 
         case GameState::MENU_PLAY:
             DrawTexture(*img_menu_play, 0, 0, WHITE);
-            if (timerPlay % 4 == 0 || timerPlay % 4 == 1) {
+            if (timerPlay % 6 == 0 || timerPlay % 6 == 1 || timerPlay % 6 == 2) {
                 DrawTexture(*img_menu_empty, 0, 0, WHITE);
             }
+            break;
+
+        case GameState::INTRODUCTION:
+            DrawTexture(*img_introduction, 0, 0, WHITE);
+            if (timerIntroduction % 12 == 0) {
+                panAnimation--;
+            }
+            DrawTexture(*img_intro_cloud, panAnimation, 72, WHITE);
+
+            if (timerIntroduction % 6 == 0 || timerIntroduction % 6 == 1 || timerIntroduction % 6 == 2) {
+                DrawTextureRec(*img_intro_bat, { 0,0,16,16 }, { (float)panAnimation - 80, 60 }, WHITE);
+            }
+            else {
+                DrawTextureRec(*img_intro_bat, { 16,16,16,16 }, { (float)panAnimation - 80, 60 }, WHITE);
+            }
+            
+            if (timerIntroduction % 6 == 0 || timerIntroduction % 6 == 1 || timerIntroduction % 6 == 2) {
+                DrawTextureRec(*img_intro_bat, { 0,0,16,16 }, { -(float)panAnimation + 250, (float)panAnimation - 92}, WHITE);
+            }
+            else {
+                DrawTextureRec(*img_intro_bat, { 16,16,16,16 }, { -(float)panAnimation + 250, (float)panAnimation - 92 }, WHITE);
+            }
+
+            if (timerIntroduction % 2 == 0) {
+                playerAnim--;
+            }
+
+            if (timerIntroduction < 121) {
+                DrawTextureRec(*img_intro_simon, { 0,32 * 7,-32,32 }, { 124, 175 }, WHITE);
+            }
+            else {
+                if (timerIntroduction % 30 < 8) {
+                    DrawTextureRec(*img_intro_simon, { 0,0,-32,32 }, { (float)playerAnim, 175 }, WHITE);
+                }
+                else if (timerIntroduction % 30 < 16) {
+                    DrawTextureRec(*img_intro_simon, { 32*1,0,-32,32 }, { (float)playerAnim, 175 }, WHITE);
+                }
+                else if (timerIntroduction % 30 < 23) {
+                    DrawTextureRec(*img_intro_simon, { 32*2,0,-32,32 }, { (float)playerAnim, 175 }, WHITE);
+                }
+                else if (timerIntroduction % 30 < 30) {
+                    DrawTextureRec(*img_intro_simon, { 32*3,0,-32,32 }, { (float)playerAnim, 175 }, WHITE);
+                }
+            }
+
+            DrawTexture(*img_intro_gui, 0, 0, WHITE);
+
+
             break;
 
         case GameState::GAME_WIN:
             if (timerWin % 4 == 0) {
                 panAnimation--;
             }
-                DrawTexture(*img_game_win, 0, panAnimation, WHITE);
+            DrawTexture(*img_game_win, 0, panAnimation, WHITE);
             break;
 
         case GameState::PLAYING:
@@ -294,6 +395,12 @@ void Game::UnloadResources()
     data.ReleaseTexture(Resource::IMG_INTRO_UPC);
     data.ReleaseTexture(Resource::IMG_INTRO_BACKGROUND);
     data.ReleaseTexture(Resource::IMG_GAME_WIN);
+
+    data.ReleaseTexture(Resource::IMG_INTRODUCTION);
+    data.ReleaseTexture(Resource::IMG_INTRO_BAT);
+    data.ReleaseTexture(Resource::IMG_INTRO_CLOUD);
+    data.ReleaseTexture(Resource::IMG_HUD_INTRO);
+    data.ReleaseTexture(Resource::IMG_PLAYER);
 
     UnloadRenderTexture(target);
 }

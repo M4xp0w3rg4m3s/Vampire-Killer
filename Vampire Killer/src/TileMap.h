@@ -77,7 +77,7 @@ enum class Tile {
 	WINDOW,
 
 	// 104 <= id <= 107: wall stairs
-	WHITE_STAIRS_CORNER_LEFT, WHITE_STAIRS_CORNER_RIGHT,
+	WHITE_STAIRS_CORNER_RIGHT, WHITE_STAIRS_CORNER_LEFT,
 	WHITE_STAIRS_LEFT, WHITE_STAIRS_RIGHT,
 
 	// 108 <= id <= 109: floor
@@ -101,20 +101,28 @@ enum class Tile {
 	// 123: boss fence
 	BOSS_FENCE,
 
-	// 124 <= : special tiles
+	// 124 <= id <= 130: some special tiles
 	FIRE = 124, FIRE_FRAME1, FIRE_FRAME2,
 	CANDLE = 126, CANDLE_FRAME1, CANDLE_FRAME2,
-	CHAIN,
+	CHAIN, CHEST_CHAIN,
+
+	// 131 <= id <= 132: breakable tiles
+	BREAKABLE_BRICK_LEFT, BREAKABLE_BRICK_RIGHT,
+
+	// 133 <= id <= ??: more special tiles
+	SHIELD, KEY_CHEST, KEY_DOOR, CHEST_SHIELD,
+	HEART_BIG, HEART_SMALL,
+
 
 	// 200 =< id: entities' initial locations
 	PLAYER = 200,
 
 	// 500 =< id: end invisible teletransportating walls
-	LEFT = 500, RIGHT,
+	LEFT = 500, RIGHT,TOP,BOTTOM,
 	WIN = 505,
 
 	// 550 = solid invisible tile
-	INVISIBLE = 550,
+	INVISIBLE = 550, INVISIBLE_ENEMIES = 551,
 
 	//Intervals
 	STATIC_FIRST = TREE_FIRST_1,
@@ -142,9 +150,19 @@ public:
 	bool TestCollisionWallRight(const AABB& box) const;
 	bool TestCollisionLeft(const AABB& box) const;
 	bool TestCollisionRight(const AABB& box) const;
+	bool TestCollisionTop(const AABB& box) const;
+	bool TestCollisionBottom(const AABB& box) const;
 	bool TestCollisionWin(const AABB& box) const;
+	bool TestCollisionCandleFire(const AABB& box) const;
+	bool TestCollisionStairs(const AABB& box) const;
+	bool TestCollisionEnemies(const AABB& box) const;
 
-	
+	//Test for breakeable tiles
+	bool TestCollisionBreakableBrick(const AABB& box) const;
+
+	void TurnIntoAir();
+	void TurnIntoAirCandleFire();
+
 	//Test collision with the ground and update 'py' with the maximum y-position to prevent
 	//penetration of the grounded tile, that is, the pixel y-position above the grounded tile.
 	//Grounded tile = solid tile (blocks) or ladder tops.

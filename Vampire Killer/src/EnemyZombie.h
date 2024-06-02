@@ -9,6 +9,7 @@
 #define ZOMBIE_HITBOX_HEIGHT	32
 #define ZOMBIE_HITBOX_WIDTH		16
 
+#define ZOMBIE_DAMAGE			2
 
 class EnemyZombie : public Enemy
 {
@@ -29,15 +30,17 @@ public:
 	void AdvanceRight();
 	void AdvanceLeft();
 	void MoveX();
+	void MoveY();
 
 	void DrawDebug(const Color& col) const override;
 	void Release() override;
 
-	void SetAnimation(int id);
-
 private:
+
+	void StartFalling();
 
 	TileMap* map;
 
+	RenderComponent* render2;
 };
 

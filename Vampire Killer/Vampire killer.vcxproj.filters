@@ -46,9 +46,6 @@
     <ClCompile Include="src\AudioPlayer.cpp">
       <Filter>Entities</Filter>
     </ClCompile>
-    <ClCompile Include="src\Enemy.cpp">
-      <Filter>Entities\Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="src\EnemyManager.cpp">
       <Filter>Entities\Enemies</Filter>
     </ClCompile>
@@ -57,6 +54,27 @@
     </ClCompile>
     <ClCompile Include="src\EnemyPanther.cpp">
       <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Text.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EnemyBat.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Trader.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Boss.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Enemy.cpp">
+      <Filter>Entities\Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Stairs.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Door.cpp">
+      <Filter>Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +137,24 @@
     </ClInclude>
     <ClInclude Include="src\EnemyPanther.h">
       <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Text.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="src\EnemyBat.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Trader.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Boss.h">
+      <Filter>Entities\Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Stairs.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Door.h">
+      <Filter>Entities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

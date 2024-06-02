@@ -2,7 +2,14 @@
 #include "Globals.h"
 #include "Scene.h"
 
-enum class GameState { TRANSITION_1, TRANSITION_2, GAME_WIN, MAIN_MENU, INTRO_UPC, INTRO_BACKGROUND, MENU_PLAY, PLAYING, SETTINGS, CREDITS };
+enum class GameState {
+    INTRO_UPC, TRANSITION_1,
+    INTRO_BACKGROUND, TRANSITION_2,
+    INTRODUCTION,
+    MAIN_MENU,
+    MENU_PLAY,
+    PLAYING, 
+    GAME_WIN };
 
 class Game
 {
@@ -31,11 +38,20 @@ private:
     const Texture2D* img_intro_background;
     const Texture2D* img_game_win;
 
+    const Texture2D* img_introduction;
+    const Texture2D* img_intro_bat;
+    const Texture2D* img_intro_cloud;
+    const Texture2D* img_intro_gui;
+    const Texture2D* img_intro_simon;
+
     int timerWin;
     int timerLose;
     int timerPlay;
+    int timerIntroduction;
 
     int panAnimation;
+
+    float playerAnim;
     
 
     //To work with original game units and then scale the result

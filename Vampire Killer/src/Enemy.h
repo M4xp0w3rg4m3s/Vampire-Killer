@@ -6,14 +6,20 @@
 
 //Logic states
 enum class EnemyState {
-	IDLE, ADVANCING, DEAD
+	IDLE, ADVANCING, DEAD, FALLING
 };
 enum class EnemyLook { RIGHT, LEFT };
+
+enum class EnemyType {
+	ZOMBIE, PANTHER, BAT, TRADER, BOSS
+};
 
 //Rendering states
 enum class EnemyAnim {
 	IDLE_LEFT, IDLE_RIGHT,
-	ADVANCING_LEFT, ADVANCING_RIGHT,
+	ADVANCING_LEFT, ADVANCING_RIGHT, 
+	RED_TRADER,
+	MOVING,
 	EMPTY,
 	NUM_ANIMATIONS
 };
@@ -37,14 +43,33 @@ public:
 	virtual void DrawDebug(const Color& col) const;
 	virtual void Release();
 
+	bool IsKilled() const;
+
+	Vector2 GetKilledPosition() const;
+
+	virtual int GetLife() const;
+
+	virtual EnemyType GetType() const;
+	virtual bool GetPopUp() const;
+	virtual bool DeletePopUp() const;
+
+	bool isActive = true;
+
 protected:
 
-	bool isActive;
+	void Stop();
+	void SetAnimation(int id);
+
+	void DamagePlayer() const;
 
 	EnemyState state;
 	EnemyLook look;
+	EnemyType type;
 
 	int AnimationFrame;
 	int EnemySpeed;
+	int Damage;
+
+	bool killed = false;
 };
 

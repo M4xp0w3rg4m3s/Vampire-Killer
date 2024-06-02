@@ -9,17 +9,29 @@ enum class Resource {
     IMG_MENU,
     IMG_INTRO_UPC,
     IMG_INTRO_BACKGROUND,
+    IMG_INTRODUCTION,
+    IMG_INTRO_BAT,
+    IMG_INTRO_CLOUD,
     IMG_MENU_PLAY,
     IMG_MENU_EMPTY,
     IMG_PLAYER, 
     IMG_ZOMBIE,
     IMG_PANTHER,
+    IMG_HIT_EFFECT,
     IMG_WEAPON,
     IMG_TILES,
-    IMG_ITEMS,
     IMG_GAME_OVER,
-    IMG_GAME_WIN
-
+    IMG_GAME_WIN,
+    IMG_FONT,
+    IMG_OPEN_CHEST,
+    IMG_HUD,
+    IMG_HUD_INTRO,
+    IMG_HUD_ITEMS,
+    IMG_TRADER,
+    IMG_POPUP_TRADER,
+    IMG_DOOR,
+    IMG_BAT,
+    IMG_BOSS
 };
 
 class ResourceManager {

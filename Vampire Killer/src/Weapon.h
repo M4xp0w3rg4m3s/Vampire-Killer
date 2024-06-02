@@ -48,6 +48,12 @@ public:
 
 	void Attack(int frame, LookAt looking);
 
+	AABB HitboxOnAttack();
+
+	int GetFrame() const;
+
+	WeaponType GetWeaponType() const;
+
 private:
 
 	void AttackRight(int frame);
