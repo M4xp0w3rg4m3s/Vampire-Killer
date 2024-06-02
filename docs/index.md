@@ -2,9 +2,7 @@
 
 # **Project 1: Vampire Killer**
 
-<a class="github-button" href="https://github.com/M4xp0w3rg4m3s/Vampire-Killer/releases/download/v1.0/ZephyrusGames_VampireKiller_v1.0.zip" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-icon="octicon-download" data-size="large" aria-label="Download the alpha version of our tribute on GitHub">Download</a>
-
-<a class="github-button" href="https://github.com/M4xp0w3rg4m3s/Vampire-Killer/" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" aria-label="Watch M4xp0w3rg4m3s/Vampire-Killer on GitHub">Watch</a>
+<a class="github-button" href="https://github.com/M4xp0w3rg4m3s/Vampire-Killer/releases/download/v1.0/ZephyrusGames_VampireKiller_v1.0.zip" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-icon="octicon-download" data-size="large" aria-label="Download the alpha version of our tribute on GitHub">Download</a> <a class="github-button" href="https://github.com/M4xp0w3rg4m3s/Vampire-Killer/" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" aria-label="Watch M4xp0w3rg4m3s/Vampire-Killer on GitHub">Watch</a>
 
 ## Logotype
 
