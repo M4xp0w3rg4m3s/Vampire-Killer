@@ -1,9 +1,12 @@
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 # **Project 1: Vampire Killer**
-## Logotype
 
-<a class="github-button" href="https://github.com/M4xp0w3rg4m3s/Vampire-Killer/releases/tag/v1.0" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-icon="octicon-download" data-size="large" aria-label="Download the alpha version of our tribute on GitHub">Download</a>
+<a class="github-button" href="https://github.com/M4xp0w3rg4m3s/Vampire-Killer/releases/download/v1.0/ZephyrusGames_VampireKiller_v1.0.zip" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-icon="octicon-download" data-size="large" aria-label="Download the alpha version of our tribute on GitHub">Download</a>
+
+<a class="github-button" href="https://github.com/M4xp0w3rg4m3s/Vampire-Killer/" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" aria-label="Watch M4xp0w3rg4m3s/Vampire-Killer on GitHub">Watch</a>
+
+## Logotype
 
 > _Logo_
 
@@ -15,10 +18,14 @@
 * Programmer
 * Designer
 
+<a class="github-button" href="https://github.com/M4xp0w3rg4m3s" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" aria-label="Follow @M4xp0w3rg4m3s on GitHub">Follow @M4xp0w3rg4m3s</a>
+
 ### Guillem
 * [*Github - Guillem*](https://github.com/GuillemDev)
 * Programmer
 * Designer
+
+<a class="github-button" href="https://github.com/GuillemDev" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-size="large" aria-label="Follow @GuillemDev on GitHub">Follow @GuillemDev</a>
 
 ## Team photo
 ![Zephyrus Team photo](https://github.com/M4xp0w3rg4m3s/Vampire-Killer/assets/156011390/5d2bedac-e102-4ffd-b7bd-5e43b7c9936b)
@@ -42,3 +49,6 @@ In this game you play Simon Belmont, a descendant of a legendary clan of vampire
 
 # **Video of the aplha version**
 <iframe width="560" height="315" src="https://www.youtube.com/embed/TM-ENfidVEI?si=qc6ltd1XlKF2acyp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+# **Download**
+Download the alpha version *[here](https://github.com/M4xp0w3rg4m3s/Vampire-Killer/releases/tag/v1.0)*
