@@ -37,4 +37,4 @@ In this game you play Simon Belmont, a descendant of a legendary clan of vampire
 
 
 # **Video of the aplha version**
-<iframe width="740" height="590" src="https://www.youtube.com/watch?v=TM-ENfidVEI" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/TM-ENfidVEI?si=qc6ltd1XlKF2acyp" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
