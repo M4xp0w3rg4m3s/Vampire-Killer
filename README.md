@@ -21,7 +21,7 @@ Final Release Video *(1.0)*:
 
 * *[Guillem Martinez](https://github.com/GuillemDev)*
 
-## **Game Description **
+## **Game Description**
 
 In this game you play Simon Belmont,
 a descendant of a legendary clan of 
@@ -39,12 +39,14 @@ of terror.
 ## **Controls**
 
 * Controllers
+
 | Key | Action |
 -- | --
 |ESC | Exit game. |
 |F | Toggle fullscreen |
 
 * Player deafult controls
+
 | Key | Action |
 -- | --
 |Upwards Arrow |Jump.|
@@ -56,6 +58,7 @@ of terror.
 |F2 |Activate / Deactivate Debug Mode.|
 
 * *Only while in DebugMode*
+
 | Key | Action |
 -- | --
 |1 |Go to Level 1.|
@@ -82,7 +85,7 @@ of terror.
 |F5 |Get Damaged.|
 |F6 |Increase hearts by 99.|
 
-## ** List of Features **
+## **List of Features**
 
 * Intro UPC
 * Intro Teachers
