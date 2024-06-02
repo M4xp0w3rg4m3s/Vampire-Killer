@@ -9,11 +9,11 @@ A project made by Zephyrus Games
 
 First Release Video *(0.5)*:
 
-[Vampire Killer version 0.5 - CITM Bcn Zephyrus Games]((https://www.youtube.com/watch?v=6NMuUqSo27c)).
+[Vampire Killer *Prototype* - CITM Bcn Zephyrus Games]((https://www.youtube.com/watch?v=6NMuUqSo27c)).
 
 Final Release Video *(1.0)*:
 
-[Vampire Killer version 1 - CITM Bcn Zephyrus Games]().
+[Vampire Killer *Alpha* - CITM Bcn Zephyrus Games]().
 
 ## **Team Members**
 
