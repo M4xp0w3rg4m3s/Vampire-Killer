@@ -1,5 +1,9 @@
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
 # **Project 1: Vampire Killer**
 ## Logotype
+
+<a class="github-button" href="https://github.com/M4xp0w3rg4m3s/Vampire-Killer/releases/tag/v1.0" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-icon="octicon-download" data-size="large" aria-label="Download the alpha version of our tribute on GitHub">Download</a>
 
 > _Logo_
 
