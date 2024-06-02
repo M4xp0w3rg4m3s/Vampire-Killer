@@ -13,7 +13,7 @@ First Release Video *(0.5)*:
 
 Final Release Video *(1.0)*:
 
-[Vampire Killer *Alpha* - CITM Bcn Zephyrus Games]().
+[Vampire Killer *Alpha* - CITM Bcn Zephyrus Games](https://youtu.be/TM-ENfidVEI).
 
 ## **Team Members**
 
